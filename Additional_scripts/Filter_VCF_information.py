@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # SVModeller 
 
 # Additional script to remove information from VCF file keeping just the event length

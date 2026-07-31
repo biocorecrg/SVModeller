@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # SVModeller - Module 2
 
 # Model probabilities, insertion features, and genome wide distribution to generate new events

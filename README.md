@@ -170,9 +170,37 @@ Available data to run the modules for versions 0.1 and 0.2 available at:
 [Link to Zenodo](https://zenodo.org/records/14629433?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjkxODlmMGVmLTU4ZmMtNGQ5NC04MmRmLWNiNTc3NWRlZGEzYSIsImRhdGEiOnt9LCJyYW5kb20iOiIzMTQyNDg4MjcyYTI2ZDRmZTI3MTcwOGJkNTEzY2RiNyJ9.0ikZdwVU-K6ffwjmEb3HudqHvyz52Umt0XZyO91t_1ffEeP3VTV9iKaRhTWBf8ABoF03R24WMKzMu23yDjpX3Q)
 
 
-## Required software
-The Genome Analysis API [(GAPI)](https://github.com/REPBIO-LAB/GAPI.git), release 1.0.4, must be installed in the same directory as the SVModeller modules. 
+## Installation & Environment Setup
 
+### Option 1: Docker (Recommended)
+You can run SVModeller without installing external dependencies using the pre-built Docker container:
+
+```bash
+# Pull the latest Docker container
+docker pull ghcr.io/repbio-lab/svmodeller:latest
+
+# Run a module using Docker
+docker run --rm -v $(pwd):/data ghcr.io/repbio-lab/svmodeller:latest Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
+```
+
+### Option 2: Conda / Micromamba
+Create an environment with all Python dependencies and required bioinformatics tools (`samtools`, `minimap2`, `pbsim3`):
+
+```bash
+conda env create -f environment.yml
+conda activate svmodeller
+```
+
+### Option 3: Pip / Manual Installation
+Install Python dependencies via `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+Note: Ensure `pbsim3` (>=3.0.4), `minimap2` (>=2.22), and `samtools` (>=1.19.2) are installed and available in your system `PATH` for Module 5.
+
+## Required software
 SVModeller has been developed and tested with the following software versions:
 -	Python 3.9
 -	pandas 2.3.0

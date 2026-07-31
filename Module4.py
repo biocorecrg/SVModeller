@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # SVModeller - Module 4
 
 # Modify reference genome
