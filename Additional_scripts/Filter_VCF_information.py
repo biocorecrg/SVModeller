@@ -10,26 +10,13 @@
 # Output:
 # - Modified VCF file without information field, just keeping the event length
 
+import os
+import sys
 import argparse
 
-def filter_vcf_info(input_vcf, output_vcf):
-    with open(input_vcf, 'r') as infile, open(output_vcf, 'w') as outfile:
-        for line in infile:
-            if line.startswith('#'):
-                outfile.write(line)
-                continue
-
-            columns = line.strip().split('\t')
-            info_field = columns[7]
-
-            # Filter INFO fields to keep only INS_LEN or DEL_LEN
-            info_parts = info_field.split(';')
-            filtered_info = [item for item in info_parts if item.startswith('INS_LEN=') or item.startswith('DEL_LEN=')]
-
-            columns[7] = ';'.join(filtered_info) if filtered_info else '.'
-            outfile.write('\t'.join(columns) + '\n')
-        
-        print('VCF generated successfully')
+# Add parent directory to sys.path to locate functions module
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from functions import filter_vcf_info
 
 def main(input_vcf, output_vcf):
     # Print the paths of the input files

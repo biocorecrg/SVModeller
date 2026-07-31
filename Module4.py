@@ -20,15 +20,9 @@
 
 import argparse
 import pandas as pd
-from GAPI import formats
 import warnings
-
-def write_fasta(file_path, seq_dict):
-    '''Create a FASTA file from a dictionary of sequences'''
-    with open(file_path, 'w') as fasta_file:
-        for header, sequence in seq_dict.items():
-            fasta_file.write(f">{header}\n")
-            fasta_file.write(f"{sequence}\n")
+from GAPI import formats
+from functions import write_fasta
 
 # Remove FutureWarnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -68,23 +62,16 @@ def main(file1, file2, fasta_file):
         adjusted_beg = beg + offsets[ref_key]
 
         if event == 'Insertion':
-            # Modify reference coordinates: end = beg + 1
             sorted_df.at[index, 'end'] = beg + 1  # Insertions should have end = beg + 1
-            
-            # Do not modify the Length here; keep the original length of the insertion
-            # sorted_df.at[index, 'Length'] = 1  # Removed this line to keep the original length
 
-            # Insert into sequence
             if adjusted_beg <= len(fasta_reader.seqDict[ref_key]):
                 fasta_reader.seqDict[ref_key] = (
                     fasta_reader.seqDict[ref_key][:adjusted_beg] +
                     seq_insertion +
                     fasta_reader.seqDict[ref_key][adjusted_beg:]
                 )
-                # Update offset based on the length of the inserted sequence
                 offsets[ref_key] += len(seq_insertion)
 
-            # Haplotype coordinates for insertion
             sorted_df.at[index, 'beg_haplotype'] = adjusted_beg
             sorted_df.at[index, 'end_haplotype'] = adjusted_beg + len(seq_insertion)
 
@@ -94,12 +81,10 @@ def main(file1, file2, fasta_file):
                     fasta_reader.seqDict[ref_key][:adjusted_beg] +
                     fasta_reader.seqDict[ref_key][adjusted_beg + length:]
                 )
-                # Update offset based on the deletion length
                 offsets[ref_key] -= length
 
-            # Haplotype coordinates for deletion (only 1bp apart)
             sorted_df.at[index, 'beg_haplotype'] = adjusted_beg
-            sorted_df.at[index, 'end_haplotype'] = adjusted_beg + 1  # Only 1bp apart for deletions
+            sorted_df.at[index, 'end_haplotype'] = adjusted_beg + 1
 
     # Save outputs
     sorted_df.to_csv('Sorted_Genomic_Events.tsv', sep='\t', index=False)

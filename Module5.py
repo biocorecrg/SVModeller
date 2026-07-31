@@ -24,88 +24,17 @@
 # License
 # SVModeller is distributed under the AGPL-3.0.
 
-import subprocess
 import os
 import argparse
-import glob
 import warnings
-
-# Function to run PBSIM to generate synthetic reads for reference and modified genomes
-def run_pbsim(genome, method_file, method, depth, output_dir, output_reference):
-    if depth == 0:
-        print("Depth is 0. Skipping PBSIM execution.")
-        return
-    
-    method_file = os.path.abspath(method_file)
-    output_prefix = os.path.join(output_dir, output_reference)
-
-    if method == 'quality_score':
-        command = f"pbsim --strategy wgs --method qshmm --qshmm {method_file} --depth {depth} --genome {genome} --prefix {output_prefix}"
-    elif method == 'error_model':
-        command = f"pbsim --strategy wgs --method errhmm --errhmm {method_file} --depth {depth} --genome {genome} --prefix {output_prefix}"
-    elif method == 'training':
-        command = f"pbsim --strategy wgs --method sample --sample {method_file} --depth {depth} --genome {genome} --prefix {output_prefix}"
-    else:
-        raise ValueError(f"Unknown method: {method}")
-
-    print(f"Running PBSIM with command: {command}")
-    subprocess.run(command, shell=True, check=True)
-
-    return output_prefix
-
-# Function to align reads using Minimap2
-def run_minimap2(reference_file, fastq_file_1, fastq_file_2, output_bam, technology, threads):
-    fastqs = fastq_file_1
-    if fastq_file_2:
-        fastqs += f" {fastq_file_2}"
-
-    if technology == 'ONT':
-        command = f"minimap2 -ax map-ont {reference_file} {fastqs} -t {threads}"
-    elif technology == 'PB':
-        command = f"minimap2 -ax map-pb {reference_file} {fastqs} -t {threads}"
-    elif technology == 'HiFi':
-        command = f"minimap2 -ax map-hifi {reference_file} {fastqs} -t {threads}"
-    else:
-        raise ValueError(f"Unknown technology: {technology}")
-
-    command += f" | samtools view -bS -o {output_bam} -@ {threads}"
-    subprocess.run(command, shell=True, check=True)
-
-# Function to sort BAM file
-def sort_bam(bam_file, threads):
-    sorted_bam_file = bam_file.replace('.bam', '.sorted.bam')
-    command = f"samtools sort {bam_file} -o {sorted_bam_file} -@ {threads}"
-    print(f"Sorting BAM file with command: {command}")
-    subprocess.run(command, shell=True, check=True)
-    return sorted_bam_file
-
-# Function to index BAM file
-def index_bam(bam_file, threads):
-    command = f"samtools index {bam_file} -@ {threads}"
-    print(f"Indexing BAM file with command: {command}")
-    subprocess.run(command, shell=True, check=True)
-
-# Function to merge multiple BAM files
-def merge_bams(bam_files, output_bam, threads):
-    command = f"samtools merge -@ {threads} {output_bam} " + " ".join(bam_files)
-    print(f"Merging BAM files with command: {command}")
-    subprocess.run(command, shell=True, check=True)
-    return output_bam
-
-# Function to get multiple files
-def find_fastq_files(output_dir, prefix):
-    patterns = [
-        f"{prefix}_*.fastq",
-        f"{prefix}_*.fastq.gz",
-        f"{prefix}_*.fq",
-        f"{prefix}_*.fq.gz",
-    ]
-
-    files = []
-    for pattern in patterns:
-        files.extend(glob.glob(os.path.join(output_dir, pattern)))
-
-    return sorted(files)
+from functions import (
+    run_pbsim,
+    run_minimap2,
+    sort_bam,
+    index_bam,
+    merge_bams,
+    find_fastq_files
+)
 
 # Remove FutureWarnings
 warnings.simplefilter(action='ignore', category=FutureWarning)

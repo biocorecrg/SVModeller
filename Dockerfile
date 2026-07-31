@@ -29,7 +29,7 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER . /app
 
 # Make python modules executable
 USER root
-RUN chmod +x /app/Module*.py /app/Additional_scripts/*.py
+RUN chmod +x /app/Module*.py /app/Additional_scripts/*.py /app/functions.py
 
 USER $MAMBA_USER
 

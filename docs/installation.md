@@ -43,7 +43,7 @@ conda activate svmodeller
 
 ### Prerequisites
 Ensure the following bioinformatic tools are installed and in your system `PATH`:
-- **Python** >= 3.9
+- **Python** >= 3.10
 - **samtools** >= 1.19.2
 - **minimap2** >= 2.22
 - **pbsim3** >= 3.0.4

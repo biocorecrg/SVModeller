@@ -202,7 +202,7 @@ Note: Ensure `pbsim3` (>=3.0.4), `minimap2` (>=2.22), and `samtools` (>=1.19.2) 
 
 ## Required software
 SVModeller has been developed and tested with the following software versions:
--	Python 3.9
+-	Python 3.10
 -	pandas 2.3.0
 -	numpy 2.0.2
 -	distfit 1.8.9
