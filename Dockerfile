@@ -1,7 +1,11 @@
 FROM mambaorg/micromamba:1.5.8
 
+ARG VERSION=0.5.0
+ENV SVMODELLER_VERSION=${VERSION}
+
 LABEL org.opencontainers.image.title="SVModeller" \
       org.opencontainers.image.description="Simulator of synthetic human haplotypes containing embedded structural variants (SV)" \
+      org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.licenses="AGPL-3.0" \
       org.opencontainers.image.source="https://github.com/REPBIO-LAB/SVModeller"
 

@@ -50,11 +50,11 @@ graph TD
 ## Quick Example (Docker)
 
 ```bash
-# Pull the latest Docker container
-docker pull ghcr.io/repbio-lab/svmodeller:latest
+# Pull the v0.5.0 Docker container
+docker pull ghcr.io/repbio-lab/svmodeller:0.5.0
 
 # Run Module 1
-docker run --rm -v $(pwd):/data ghcr.io/repbio-lab/svmodeller:latest \
+docker run --rm -v $(pwd):/data ghcr.io/repbio-lab/svmodeller:0.5.0 \
     Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
 ```
 
@@ -65,3 +65,21 @@ docker run --rm -v $(pwd):/data ghcr.io/repbio-lab/svmodeller:latest \
 Developed by **Ismael Vera-Munoz** (orcid.org/0009-0009-2860-378X) at the Repetitive DNA Biology (REPBIO) Lab at the Centre for Genomic Regulation (CRG).
 
 Distributed under the **AGPL-3.0 License**.
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: false, theme: 'default' });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const elements = document.querySelectorAll('.language-mermaid, pre.mermaid, div.mermaid, .highlighter-rouge.language-mermaid');
+    elements.forEach((el) => {
+      const codeNode = el.querySelector('code') || el;
+      const code = codeNode.textContent.trim();
+      const div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = code;
+      el.replaceWith(div);
+    });
+    await mermaid.run();
+  });
+</script>
