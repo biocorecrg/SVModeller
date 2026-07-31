@@ -10,14 +10,14 @@ Using Docker avoids manual installation of native bioinformatics tools (`samtool
 
 ### Pull Image
 ```bash
-docker pull ghcr.io/repbio-lab/svmodeller:latest
+docker pull ghcr.io/repbio-lab/svmodeller:0.5.0
 ```
 
 ### Run Container
 Mount your local working directory containing input datasets into `/data`:
 
 ```bash
-docker run --rm -v $(pwd):/data ghcr.io/repbio-lab/svmodeller:latest \
+docker run --rm -v $(pwd):/data ghcr.io/repbio-lab/svmodeller:0.5.0 \
     Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
 ```
 

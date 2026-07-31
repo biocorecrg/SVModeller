@@ -1,0 +1,15 @@
+.git
+.gitignore
+.github
+*.pyc
+__pycache__/
+*.vcf
+*.fa
+*.fasta
+*.tsv
+*.bam
+*.bai
+*.fastq
+*.gz
+BAM_Output/
+.DS_Store
