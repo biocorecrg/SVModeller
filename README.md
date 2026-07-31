@@ -176,11 +176,11 @@ Available data to run the modules for versions 0.1 and 0.2 available at:
 You can run SVModeller without installing external dependencies using the pre-built Docker container:
 
 ```bash
-# Pull the latest Docker container
-docker pull ghcr.io/repbio-lab/svmodeller:latest
+# Pull the v0.5.0 Docker container
+docker pull ghcr.io/repbio-lab/svmodeller:0.5.0
 
 # Run a module using Docker
-docker run --rm -v $(pwd):/data ghcr.io/repbio-lab/svmodeller:latest Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
+docker run --rm -v $(pwd):/data ghcr.io/repbio-lab/svmodeller:0.5.0 Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
 ```
 
 ### Option 2: Conda / Micromamba
