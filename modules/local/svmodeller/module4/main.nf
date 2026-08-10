@@ -12,8 +12,8 @@ process SVMODELLER_MODULE4 {
     tuple val(meta3), path(deletions_table)
 
     output:
-    tuple val(meta), path("Modified_Reference_Genome.fasta"), emit: modified_genome
-    tuple val(meta), path("Sorted_Genomic_Events.tsv")     , emit: sorted_events
+    tuple val(meta), path("Modified_Reference_Genome.fasta.gz"), emit: modified_genome
+    tuple val(meta), path("Sorted_Genomic_Events.tsv.gz")      , emit: sorted_events
     tuple val("${task.process}"), val('svmodeller'), val('0.5.0'), topic: versions, emit: versions_svmodeller
 
     when:

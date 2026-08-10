@@ -13,6 +13,7 @@ if parent_dir not in sys.path:
     sys.path.insert(0, parent_dir)
 
 import glob
+import gzip
 import random
 import datetime
 import subprocess
@@ -230,7 +231,7 @@ def probabilities_df(table, output_path=None):
     name_distribution_df['Probability'] = name_distribution_df['number'] / total
     name_distribution_df = name_distribution_df.drop(columns=['number'])
     if output_path:
-        name_distribution_df.to_csv(output_path, sep='	', index=False)
+        name_distribution_df.to_csv(output_path, sep='	', index=False, compression='gzip')
     return name_distribution_df
 
 def mut_bins(bins, table, event_columns=None):
@@ -268,8 +269,8 @@ def SVA_VNTR_Motif(df):
     return df
 
 def extract_SVA_VNTR_Motifs(df):
-    filename="SVA_VNTR_Motifs.txt"
-    with open(filename, "w") as f:
+    filename="SVA_VNTR_Motifs.txt.gz"
+    with gzip.open(filename, "wt") as f:
         # Iterate through each row in the dataframe
         for motif in df['SVA_VNTR_Motif']:
             # Only write non-null motifs to the file
@@ -291,7 +292,7 @@ def extract_vntr_with_start(df):
     df_clean = df_clean[mask]
 
     # Save
-    df_clean.to_csv("VNTR_with_start_position.txt", sep='\t', index=False)
+    df_clean.to_csv("VNTR_with_start_position.txt.gz", sep='\t', index=False, compression='gzip')
 
     return df_clean
 
@@ -416,7 +417,7 @@ def insertion_features_df(input_dict):
                 df.at[event_index, column_name] = ','.join(map(str, values)) if values else ''
 
     # Save the Insertion Features df to a .tsv file
-    df.to_csv('Insertion_Features.tsv', sep='\t', index=False)
+    df.to_csv('Insertion_Features.tsv.gz', sep='\t', index=False, compression='gzip')
 
 def genome_wide_distribution(chromosome_length, bin_size, table):
     # Dictionary containing references as keys and their lengths as values:
@@ -436,7 +437,7 @@ def genome_wide_distribution(chromosome_length, bin_size, table):
     final_table = normalize_columns(res_table)
 
     # Save the result to a TSV file
-    final_table.to_csv('Genome_Wide_Distribution.tsv', sep='\t', index=False)
+    final_table.to_csv('Genome_Wide_Distribution.tsv.gz', sep='\t', index=False, compression='gzip')
 
 def consensus_seqs(file_path):
     '''
@@ -448,7 +449,8 @@ def consensus_seqs(file_path):
     sequences = {"Alu_Seq": "", "L1_Seq": "", "SVA_Alu-like_Seq": "", "SVA_SINE-R_Seq": "",
                 "SVA_MAST2_Seq": "", "NUMT_Seq": ""}
 
-    with open(file_path, "r") as file:
+    _open = gzip.open if str(file_path).endswith('.gz') else open
+    with _open(file_path, "rt") as file:
         lines = file.readlines()
 
     current_sequence = ""
@@ -497,7 +499,7 @@ def consensus_seqs(file_path):
     return sequences
 
 def probabilities_total_number(probabilities_numbers_df,num_events):
-    table = pd.read_csv(probabilities_numbers_df, sep='\t')
+    table = pd.read_csv(probabilities_numbers_df, sep='\t', compression='infer')
     print(f"Columns in the table: {table.columns}")
     if 'Probability' in table.columns:
         sampled_names = np.random.choice(table['Event'], size=num_events, p=table['Probability'])
@@ -611,7 +613,7 @@ def distribution_random_numbers(dict_insertion_features,num_events,dict_consensu
 
 def process_insertion_features_random_numbers(insertion_features_df,num_events,dict_consensus):
     # Open insertion features df
-    table_insertion_features = pd.read_csv(insertion_features_df, sep='\t')
+    table_insertion_features = pd.read_csv(insertion_features_df, sep='\t', compression='infer')
     # Create dictionary from the df
     dict_insertion_features = generate_dict_from_table(table_insertion_features)
     # Generate distributions of data (disfit) and dictionary of random numbers for every event and feature
@@ -623,7 +625,7 @@ def add_beg_end_columns(df_insertions, genome_wide_distribution_df):
     Function to add ref and beg columns to the df of insertions based on genome-wide distribution
     '''
     # Open insertion features df
-    genome_wide_distribution = pd.read_csv(genome_wide_distribution_df, sep='\t')
+    genome_wide_distribution = pd.read_csv(genome_wide_distribution_df, sep='\t', compression='infer')
 
     # Create new columns in the first DataFrame
     df_insertions['#ref'] = None
@@ -792,8 +794,8 @@ def update_dataframe(df_insertions, dict_consensus):
 
 def add_source_gene_info(df_insertions, source_L1_path, source_SVA_path):
     # Load the source element tables
-    table_source_L1 = pd.read_csv(source_L1_path, sep='\t')
-    table_source_SVA = pd.read_csv(source_SVA_path, sep='\t')
+    table_source_L1 = pd.read_csv(source_L1_path, sep='\t', compression='infer')
+    table_source_SVA = pd.read_csv(source_SVA_path, sep='\t', compression='infer')
 
     # Add necessary columns with default values
     df_insertions[['SRC_identifier', 'SRC_ref', 'SRC_beg', 'SRC_end', 'SRC_cont_PCAWG', 'SRC_strand', 'SRC_in_ref_genome']] = 0
@@ -862,7 +864,8 @@ def add_source_gene_info(df_insertions, source_L1_path, source_SVA_path):
 
 # Open and get SVAs VNTR motifs
 def read_file_and_store_lines(file_path):
-    with open(file_path, 'r') as file:
+    _open = gzip.open if str(file_path).endswith('.gz') else open
+    with _open(file_path, 'rt') as file:
         lines = [line.strip() for line in file]
     return lines
 
@@ -873,7 +876,7 @@ def VNTR_insertions(row, motifs_file):
     '''
 
     # Step 1: Read the motifs file
-    motifs_df = pd.read_csv(motifs_file, sep='\t')  # Reads the .tsv file containing motif information
+    motifs_df = pd.read_csv(motifs_file, sep='\t', compression='infer')  # Reads the .tsv file containing motif information
 
     # Step 2: Randomly select a row from the motifs file
     random_row = motifs_df.sample(n=1).iloc[0]
@@ -2328,7 +2331,7 @@ def create_vcf_file(df, reference_fasta, chromosome_length):
     contigs = sorted(df['#ref'].unique(), key=sort_chromosomes)
 
     # Open a VCF file to write to
-    with open('VCF_Insertions_SVModeller.vcf', 'w') as vcf_file:
+    with gzip.open('VCF_Insertions_SVModeller.vcf.gz', 'wt') as vcf_file:
         # Write VCF header
         vcf_file.write("##fileformat=VCFv4.2\n")
         vcf_file.write(f"##fileDate={current_date}\n")
@@ -2412,7 +2415,7 @@ def create_vcf_file(df, reference_fasta, chromosome_length):
 
                 vcf_file.write(f"{chrom}\t{pos}\t{event_id}\t{ref}\t{alt}\t{qual}\t{filter_val}\t{info}\n")
 
-    with open('VCF_Insertions_SVModeller.vcf', 'r') as file:
+    with gzip.open('VCF_Insertions_SVModeller.vcf.gz', 'rt') as file:
         content = file.read()
 
     content = content.replace("5PRIME_TD_LEN", "TD_LEN_5PRIME")
@@ -2425,7 +2428,7 @@ def create_vcf_file(df, reference_fasta, chromosome_length):
     content = content.replace("5PRIME_TD_SEQ", "TD_SEQ_5PRIME")
     content = content.replace("INS_LEN", "SVLEN")
 
-    with open('VCF_Insertions_SVModeller.vcf', 'w') as file:
+    with gzip.open('VCF_Insertions_SVModeller.vcf.gz', 'wt') as file:
         file.write(content)
 
     print("VCF file created successfully.")
@@ -2579,7 +2582,7 @@ def create_VCF(df, reference_fasta, chromosome_length):
     contigs = sorted(df['#ref'].unique(), key=sort_chromosomes)
 
     # Open a VCF file to write to
-    with open('VCF_Deletions_SVModeller.vcf', 'w') as vcf_file:
+    with gzip.open('VCF_Deletions_SVModeller.vcf.gz', 'wt') as vcf_file:
         # Write VCF header
         vcf_file.write("##fileformat=VCFv4.2\n")
         vcf_file.write(f"##fileDate={current_date}\n")
@@ -2632,12 +2635,12 @@ def create_VCF(df, reference_fasta, chromosome_length):
             # Write the VCF entry for each row
             vcf_file.write(f"{chrom}\t{pos}\t{event_id}\t{ref}\t{alt}\t{qual}\t{filter}\t{info}\n")
 
-    with open('VCF_Deletions_SVModeller.vcf', 'r') as file:
+    with gzip.open('VCF_Deletions_SVModeller.vcf.gz', 'rt') as file:
         content = file.read()
 
     content = content.replace("DEL_LEN", "SVLEN")
 
-    with open('VCF_Deletions_SVModeller.vcf', 'w') as file:
+    with gzip.open('VCF_Deletions_SVModeller.vcf.gz', 'wt') as file:
         file.write(content)
 
     print("VCF file created successfully.")
@@ -2645,8 +2648,9 @@ def create_VCF(df, reference_fasta, chromosome_length):
     return df
 
 def write_fasta(file_path, seq_dict):
-    '''Create a FASTA file from a dictionary of sequences'''
-    with open(file_path, 'w') as fasta_file:
+    '''Create a gzipped FASTA file from a dictionary of sequences'''
+    gz_path = str(file_path) if str(file_path).endswith('.gz') else str(file_path) + '.gz'
+    with gzip.open(gz_path, 'wt') as fasta_file:
         for header, sequence in seq_dict.items():
             fasta_file.write(f">{header}\n")
             fasta_file.write(f"{sequence}\n")
@@ -2729,7 +2733,9 @@ def find_fastq_files(output_dir, prefix):
     return sorted(files)
 
 def filter_vcf_info(input_vcf, output_vcf):
-    with open(input_vcf, 'r') as infile, open(output_vcf, 'w') as outfile:
+    _open_in  = gzip.open if str(input_vcf).endswith('.gz')  else open
+    _open_out = gzip.open if str(output_vcf).endswith('.gz') else open
+    with _open_in(input_vcf, 'rt') as infile, _open_out(output_vcf, 'wt') as outfile:
         for line in infile:
             if line.startswith('#'):
                 outfile.write(line)

@@ -12,9 +12,9 @@ process SVMODELLER_MODULE1 {
     val bin_size
 
     output:
-    tuple val(meta), path("Genome_Wide_Distribution.tsv"), emit: genome_wide_distribution
-    tuple val(meta), path("Insertion_Features.tsv")      , emit: insertion_features
-    tuple val(meta), path("Probabilities.tsv")           , emit: probabilities
+    tuple val(meta), path("Genome_Wide_Distribution.tsv.gz"), emit: genome_wide_distribution
+    tuple val(meta), path("Insertion_Features.tsv.gz")      , emit: insertion_features
+    tuple val(meta), path("Probabilities.tsv.gz")           , emit: probabilities
     tuple val("${task.process}"), val('svmodeller'), val('0.5.0'), topic: versions, emit: versions_svmodeller
 
     when:

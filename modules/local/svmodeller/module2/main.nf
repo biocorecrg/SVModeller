@@ -20,7 +20,7 @@ process SVMODELLER_MODULE2 {
     val num_events
 
     output:
-    tuple val(meta), path("Insertions_table.tsv"), emit: insertions_table
+    tuple val(meta), path("Insertions_table.tsv.gz"), emit: insertions_table
     tuple val("${task.process}"), val('svmodeller'), val('0.5.0'), topic: versions, emit: versions_svmodeller
 
     when:

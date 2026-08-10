@@ -34,8 +34,8 @@ def main(file1, file2, fasta_file):
     print(f'FASTA file: {fasta_file}')
 
     # Load and merge input TSV files
-    df_1 = pd.read_csv(file1, sep='\t')
-    merged_df = pd.concat([df_1, pd.read_csv(file2, sep='\t')], ignore_index=True) if file2 else df_1
+    df_1 = pd.read_csv(file1, sep='\t', compression='infer')
+    merged_df = pd.concat([df_1, pd.read_csv(file2, sep='\t', compression='infer')], ignore_index=True) if file2 else df_1
     sorted_df = merged_df.sort_values(by=['#ref', 'beg', 'Event_Type'])
 
     # Read reference genome
@@ -89,7 +89,7 @@ def main(file1, file2, fasta_file):
             sorted_df.at[index, 'end_haplotype'] = adjusted_beg + 1
 
     # Save outputs
-    sorted_df.to_csv('Sorted_Genomic_Events.tsv', sep='\t', index=False)
+    sorted_df.to_csv('Sorted_Genomic_Events.tsv.gz', sep='\t', index=False, compression='gzip')
     write_fasta("Modified_Reference_Genome.fasta", fasta_reader.seqDict)
 
 if __name__ == "__main__":

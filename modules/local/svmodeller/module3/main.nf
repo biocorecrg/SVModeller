@@ -13,7 +13,7 @@ process SVMODELLER_MODULE3 {
     val bin_size
 
     output:
-    tuple val(meta), path("Deletions_table.tsv"), emit: deletions_table
+    tuple val(meta), path("Deletions_table.tsv.gz"), emit: deletions_table
     tuple val("${task.process}"), val('svmodeller'), val('0.5.0'), topic: versions, emit: versions_svmodeller
 
     when:

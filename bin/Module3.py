@@ -58,7 +58,7 @@ def main(vcf_path, path_chromosome_length, num_events, bin_size, apply_VCF, refe
     # Generate the deletion events & save the output
     deletion_events = generate_deletion_events(probabilities, num_events, processed_table, genome_wide_distribution)
     deletion_events = deletion_events.rename(columns={'Event': 'name'})
-    deletion_events.to_csv('Deletions_table.tsv', sep='\t', index=False)
+    deletion_events.to_csv('Deletions_table.tsv.gz', sep='\t', index=False, compression='gzip')
 
     # If the VCF argument is provided, create a VCF file
     if apply_VCF:
