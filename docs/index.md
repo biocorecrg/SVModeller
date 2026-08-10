@@ -51,10 +51,10 @@ graph TD
 
 ```bash
 # Pull the v0.5.0 Docker container
-docker pull ghcr.io/repbio-lab/svmodeller:0.5.0
+docker pull ghcr.io/biocorecrg/svmodeller:0.5.0
 
 # Run Module 1
-docker run --rm -v $(pwd):/data ghcr.io/repbio-lab/svmodeller:0.5.0 \
+docker run --rm -v $(pwd):/data ghcr.io/biocorecrg/svmodeller:0.5.0 \
     Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
 ```
 

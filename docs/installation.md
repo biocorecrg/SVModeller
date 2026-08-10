@@ -10,14 +10,14 @@ Using Docker avoids manual installation of native bioinformatics tools (`samtool
 
 ### Pull Image
 ```bash
-docker pull ghcr.io/repbio-lab/svmodeller:0.5.0
+docker pull ghcr.io/biocorecrg/svmodeller:0.5.0
 ```
 
 ### Run Container
 Mount your local working directory containing input datasets into `/data`:
 
 ```bash
-docker run --rm -v $(pwd):/data ghcr.io/repbio-lab/svmodeller:0.5.0 \
+docker run --rm -v $(pwd):/data ghcr.io/biocorecrg/svmodeller:0.5.0 \
     Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
 ```
 
@@ -29,7 +29,7 @@ Conda automatically creates an isolated environment with exact software dependen
 
 ```bash
 # Clone repository
-git clone https://github.com/REPBIO-LAB/SVModeller.git
+git clone https://github.com/biocorecrg/SVModeller.git
 cd SVModeller
 
 # Create Conda environment

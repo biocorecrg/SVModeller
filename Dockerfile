@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.title="SVModeller" \
       org.opencontainers.image.description="Simulator of synthetic human haplotypes containing embedded structural variants (SV)" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.licenses="AGPL-3.0" \
-      org.opencontainers.image.source="https://github.com/REPBIO-LAB/SVModeller"
+      org.opencontainers.image.source="https://github.com/biocorecrg/SVModeller"
 
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && rm -rf /var/lib/apt/lists/*

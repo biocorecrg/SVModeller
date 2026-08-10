@@ -15,4 +15,4 @@ dependencies:
   - git
   - pip
   - pip:
-    - git+https://github.com/REPBIO-LAB/GAPI.git@v1.0.4
+    - git+https://github.com/REPBIO-LAB/GAPI.git

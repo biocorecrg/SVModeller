@@ -177,10 +177,10 @@ You can run SVModeller without installing external dependencies using the pre-bu
 
 ```bash
 # Pull the v0.5.0 Docker container
-docker pull ghcr.io/repbio-lab/svmodeller:0.5.0
+docker pull ghcr.io/biocorecrg/svmodeller:0.5.0
 
 # Run a module using Docker
-docker run --rm -v $(pwd):/data ghcr.io/repbio-lab/svmodeller:0.5.0 Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
+docker run --rm -v $(pwd):/data ghcr.io/biocorecrg/svmodeller:0.5.0 Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
 ```
 
 ### Option 2: Conda / Micromamba
@@ -222,4 +222,4 @@ For reproducibility and compatibility, it is recommended to use these exact vers
 SVModeller has been developed by Ismael Vera-Munoz (orcid.org/0009-0009-2860-378X) at the Repetitive DNA Biology (REPBIO) Lab at the Centre for Genomic Regulation (CRG) (2024-2026).
 
 ## License
-SVModeller is distributed under the AGPL-3.0. Consult the [LICENSE](https://github.com/REPBIO-LAB/SVModeller/blob/main/LICENSE) file for more information.
+SVModeller is distributed under the AGPL-3.0. Consult the [LICENSE](https://github.com/biocorecrg/SVModeller/blob/main/LICENSE) file for more information.
