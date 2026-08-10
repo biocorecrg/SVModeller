@@ -1,0 +1,77 @@
+name: svmodeller_module1
+description: Process input VCF with insertion structural variants and chromosome length file to extract insertion feature distributions, genomic bin probabilities, and background insertion statistics.
+keywords:
+  - structural variants
+  - simulation
+  - genomics
+  - insertions
+tools:
+  - svmodeller:
+      description: Simulator of synthetic human haplotypes containing embedded structural variants (SV)
+      homepage: https://github.com/biocorecrg/SVModeller
+      documentation: https://github.com/biocorecrg/SVModeller#readme
+      tool_dev_url: https://github.com/biocorecrg/SVModeller
+      doi: 10.5281/zenodo.18786409
+      licence:
+        - AGPL-3.0
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'svmodeller' ]
+    - vcf:
+        type: file
+        description: Input VCF file containing insertion structural variants
+  - - meta2:
+        type: map
+        description: Groovy Map containing reference information e.g. [ id:'svmodeller' ]
+    - chr_length:
+        type: file
+        description: File containing chromosome names and lengths
+  - - bin_size:
+        type: integer
+        description: Size of genomic bins in bp (default 1000000)
+output:
+  - genome_wide_distribution:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - Genome_Wide_Distribution.tsv:
+          type: file
+          description: TSV table of genome-wide event distribution across bins
+  - insertion_features:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - Insertion_Features.tsv:
+          type: file
+          description: TSV table of insertion feature counts and lengths
+  - probabilities:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - Probabilities.tsv:
+          type: file
+          description: TSV table of calculated insertion event probabilities
+  - versions_svmodeller:
+      - ${task.process}:
+          type: string
+          description: Process name
+      - svmodeller:
+          type: string
+          description: Tool name
+      - "0.5.0":
+          type: string
+          description: Tool version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - svmodeller:
+          type: string
+          description: Tool name
+      - "0.5.0":
+          type: string
+          description: Tool version
+authors:
+  - "@lcozzuto"

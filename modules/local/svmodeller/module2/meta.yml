@@ -1,0 +1,111 @@
+name: svmodeller_module2
+description: Simulate synthetic insertion structural variants based on learned feature distributions, consensus sequences, and source loci.
+keywords:
+  - structural variants
+  - simulation
+  - genomics
+  - insertions
+tools:
+  - svmodeller:
+      description: Simulator of synthetic human haplotypes containing embedded structural variants (SV)
+      homepage: https://github.com/biocorecrg/SVModeller
+      documentation: https://github.com/biocorecrg/SVModeller#readme
+      tool_dev_url: https://github.com/biocorecrg/SVModeller
+      doi: 10.5281/zenodo.18786409
+      licence:
+        - AGPL-3.0
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'svmodeller' ]
+    - consensus:
+        type: file
+        description: FASTA file containing consensus sequence models
+  - - meta2:
+        type: map
+        description: Groovy Map containing probabilities information
+    - probabilities_numbers:
+        type: file
+        description: File with event probabilities or target event numbers
+  - - meta3:
+        type: map
+        description: Groovy Map containing insertion features information
+    - insertion_features:
+        type: file
+        description: TSV table of insertion feature distributions
+  - - meta4:
+        type: map
+        description: Groovy Map containing genome-wide distribution information
+    - genome_wide:
+        type: file
+        description: TSV table of genome-wide event distribution
+  - - meta5:
+        type: map
+        description: Groovy Map containing L1 source loci information
+    - source_l1:
+        type: file
+        description: TSV file containing L1 source loci coordinates
+  - - meta6:
+        type: map
+        description: Groovy Map containing SVA source loci information
+    - source_sva:
+        type: file
+        description: TSV file containing SVA source loci coordinates
+  - - meta7:
+        type: map
+        description: Groovy Map containing motif information
+    - motifs:
+        type: file
+        description: File containing VNTR motifs with start positions
+  - - meta8:
+        type: map
+        description: Groovy Map containing SVA VNTR motif information
+    - sva_vntr:
+        type: file
+        description: File containing SVA VNTR motifs
+  - - meta9:
+        type: map
+        description: Groovy Map containing reference genome information
+    - ref_fasta:
+        type: file
+        description: Reference genome FASTA file
+  - - meta10:
+        type: map
+        description: Groovy Map containing chromosome length information
+    - chr_length:
+        type: file
+        description: File containing chromosome names and lengths
+  - - num_events:
+        type: integer
+        description: Target number of insertion events to simulate
+output:
+  - insertions_table:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - Insertions_table.tsv:
+          type: file
+          description: TSV table of generated insertion events
+  - versions_svmodeller:
+      - ${task.process}:
+          type: string
+          description: Process name
+      - svmodeller:
+          type: string
+          description: Tool name
+      - "0.5.0":
+          type: string
+          description: Tool version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - svmodeller:
+          type: string
+          description: Tool name
+      - "0.5.0":
+          type: string
+          description: Tool version
+authors:
+  - "@lcozzuto"

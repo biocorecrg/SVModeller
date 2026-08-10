@@ -1,0 +1,66 @@
+name: svmodeller_module3
+description: Process deletion structural variants from VCF data and simulate synthetic deletion events.
+keywords:
+  - structural variants
+  - simulation
+  - genomics
+  - deletions
+tools:
+  - svmodeller:
+      description: Simulator of synthetic human haplotypes containing embedded structural variants (SV)
+      homepage: https://github.com/biocorecrg/SVModeller
+      documentation: https://github.com/biocorecrg/SVModeller#readme
+      tool_dev_url: https://github.com/biocorecrg/SVModeller
+      doi: 10.5281/zenodo.18786409
+      licence:
+        - AGPL-3.0
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'svmodeller' ]
+    - vcf:
+        type: file
+        description: Input VCF file containing deletion structural variants
+  - - meta2:
+        type: map
+        description: Groovy Map containing reference information e.g. [ id:'svmodeller' ]
+    - chr_length:
+        type: file
+        description: File containing chromosome names and lengths
+  - - num_events:
+        type: integer
+        description: Target number of deletion events to simulate
+  - - bin_size:
+        type: integer
+        description: Size of genomic bins in bp (default 1000000)
+output:
+  - deletions_table:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - Deletions_table.tsv:
+          type: file
+          description: TSV table of generated deletion events
+  - versions_svmodeller:
+      - ${task.process}:
+          type: string
+          description: Process name
+      - svmodeller:
+          type: string
+          description: Tool name
+      - "0.5.0":
+          type: string
+          description: Tool version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - svmodeller:
+          type: string
+          description: Tool name
+      - "0.5.0":
+          type: string
+          description: Tool version
+authors:
+  - "@lcozzuto"

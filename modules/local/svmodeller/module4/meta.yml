@@ -1,0 +1,74 @@
+name: svmodeller_module4
+description: Embed simulated insertion and deletion structural variants into the reference genome FASTA sequence to produce modified haplotypes.
+keywords:
+  - structural variants
+  - simulation
+  - genomics
+  - reference genome
+  - embedding
+tools:
+  - svmodeller:
+      description: Simulator of synthetic human haplotypes containing embedded structural variants (SV)
+      homepage: https://github.com/biocorecrg/SVModeller
+      documentation: https://github.com/biocorecrg/SVModeller#readme
+      tool_dev_url: https://github.com/biocorecrg/SVModeller
+      doi: 10.5281/zenodo.18786409
+      licence:
+        - AGPL-3.0
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'svmodeller' ]
+    - insertions_table:
+        type: file
+        description: TSV table of generated insertion events
+  - - meta2:
+        type: map
+        description: Groovy Map containing reference information e.g. [ id:'svmodeller' ]
+    - ref_fasta:
+        type: file
+        description: Reference genome FASTA file
+  - - meta3:
+        type: map
+        description: Groovy Map containing deletion events information
+    - deletions_table:
+        type: file
+        description: TSV table of generated deletion events (optional)
+output:
+  - modified_genome:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - Modified_Reference_Genome.fasta:
+          type: file
+          description: Modified reference genome FASTA file with embedded SVs
+  - sorted_events:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - Sorted_Genomic_Events.tsv:
+          type: file
+          description: TSV file of all sorted genomic SV events embedded into the reference
+  - versions_svmodeller:
+      - ${task.process}:
+          type: string
+          description: Process name
+      - svmodeller:
+          type: string
+          description: Tool name
+      - "0.5.0":
+          type: string
+          description: Tool version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - svmodeller:
+          type: string
+          description: Tool name
+      - "0.5.0":
+          type: string
+          description: Tool version
+authors:
+  - "@lcozzuto"
