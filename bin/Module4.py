@@ -21,8 +21,8 @@
 import argparse
 import pandas as pd
 import warnings
-from GAPI import formats
 from functions import write_fasta, safe_int_val
+from GAPI import formats
 
 # Remove FutureWarnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
