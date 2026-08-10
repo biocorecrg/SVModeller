@@ -4,11 +4,11 @@
 
 # SVModeller
 
-SVModeller is a computational tool to simulate synthetic human haplotypes containing embedded structural variants (SV). This simulator has been trained using an extensive catalogue of curated polymorphic SVs identified in a dataset comprising 1.019 samples from the 1000 Genomes Project, sequenced with Oxford Nanopore long-read technology (Schloissnig et al., 2024). This dataset provides detailed sequence information and annotation of SV classes that has not been previously available. 
+SVModeller is a computational tool to simulate synthetic human haplotypes containing embedded structural variants (SV). This simulator has been trained using an extensive catalogue of curated polymorphic SVs identified in a dataset comprising 1.019 samples from the 1000 Genomes Project, sequenced with Oxford Nanopore long-read technology (Schloissnig et al., 2024). This dataset provides detailed sequence information and annotation of SV classes that has not been previously available.
 
 One of the key innovations of this simulator is its ability to include large repetitive insertions, such as Variable Number of Tandem Repeats (VNTR), mobile element insertions (MEI), transduction-related insertions, and mitochondrial insertions; all of them taking into consideration their specific features such as polyadenylation tails, SVA hexamers or TSDs, between others, addressing the limitations of prior simulators. This computational tool will enable the research community to create gold-standard sets of synthetic human genomes, which will be crucial for benchmarking and evaluating methods for detecting and annotating SVs using long-read sequencing data.
 
-The simulator is implemented in python (Van Rossum & Drake, 2009), and is structured in 5 different independent modules: 
+The simulator is implemented in python (Van Rossum & Drake, 2009), and is structured in 5 different independent modules:
 - Module 1: Process insertion features distributions from a variant calling file (VCF).
 - Module 2: Generate insertion events from user-defined distributions or those derived from Module 1.
 - Module 3: Generate deletion events sampling data stored in a VCF.
@@ -27,7 +27,7 @@ This module aims to process the insertion data from the VCF obtaining different 
 - VCF with insertion data _(VCF_Insertions.vcf)_
 - Chromosomes length _(chr_length.txt)_
 - OPTIONAL: Window size for genome segmentation, by default 1 Mega base _(integer number)_
-  
+
 **Output:**
 - Genome-wide distribution _(Genome_Wide_Distribution.tsv)_
 - Insertion features _(Insertion_Features.tsv)_

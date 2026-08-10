@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SVModeller 
+# SVModeller
 
 # Additional script to remove information from VCF file keeping just the event length
 
@@ -22,11 +22,11 @@ def main(input_vcf, output_vcf):
     # Print the paths of the input files
     print(f'VCF file path: {input_vcf}')
     print(f'VCF output path: {output_vcf}')
-    
+
     # Ensure .vcf extension
     if not output_vcf.endswith('.vcf'):
         output_vcf += '.vcf'
-    
+
     filter_vcf_info(input_vcf, output_vcf)
 
 if __name__ == "__main__":

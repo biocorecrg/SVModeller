@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SVModeller - Module 1 
+# SVModeller - Module 1
 
 # Obtain and process data from Variant Calling File (VCF)
 

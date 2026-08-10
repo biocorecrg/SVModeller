@@ -35,10 +35,10 @@ jobs:
           mkdir -p zenodo_data
           TOKEN="eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjI5ODkyYWRjLTc5YjUtNDRkYS1iMGU5LTc4OTE2ZGQ0ZTIzNiIsImRhdGEiOnt9LCJyYW5kb20iOiIyOTc3YzRiM2Q0OGIzOWRlYjY3NTRhOGViNDI5YmFmMiJ9.zwH3JwxIJ-taN4QT72WxYWUIPVnIWqq5QZUj1LL8alMAaHcyizdbBtYjJ7JWTUbUDOTaoyCwplyXz1JUXp86zA"
           RECORD_ID="18786409"
-          
+
           echo "Fetching file list from Zenodo API..."
           curl -s "https://zenodo.org/api/records/${RECORD_ID}?token=${TOKEN}" > record.json
-          
+
           python3 -c "
           import json, urllib.request, os
           with open('record.json') as f:

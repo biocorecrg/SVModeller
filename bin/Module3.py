@@ -44,17 +44,17 @@ def main(vcf_path, path_chromosome_length, num_events, bin_size, apply_VCF, refe
 
     # Get data from VCF file
     table = read_vcf_file_BED(vcf_path, sv_type='deletion')
-    
+
     # Process the data
     processed_table = process_bed_table(table, sv_type='deletion')
-    
+
     # Obtain genome-wide distribution of the events & normalize it
     genome_wide_distribution = classify_mutations_in_bins(path_chromosome_length, bin_size, processed_table)
     normalize_columns(genome_wide_distribution)
-    
+
     # Obtain probability of each event
     probabilities = probabilities_df(processed_table)
-    
+
     # Generate the deletion events & save the output
     deletion_events = generate_deletion_events(probabilities, num_events, processed_table, genome_wide_distribution)
     deletion_events = deletion_events.rename(columns={'Event': 'name'})

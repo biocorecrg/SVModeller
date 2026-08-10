@@ -57,7 +57,7 @@ def main(consensus_path, probabilities_numbers_path, insertion_features_path, ge
     print(f'File with VNTR motifs: {motifs_path}')
     print(f'File with reference genome: {reference_fasta_path}')
     print(f'File with SVA VNTR motifs: {SVA_VNTR_path}')
-    
+
     # Get consensus sequences
     consensus_dict = consensus_seqs(consensus_path)
     # Open SVAs VNTR motifs file
@@ -84,7 +84,7 @@ def main(consensus_path, probabilities_numbers_path, insertion_features_path, ge
     df_insertions6 = update_sequences(df_insertions6)
     # Save the output
     df_insertions6.to_csv('Insertions_table.tsv', sep='\t', index=False)
-    
+
     # If the VCF argument is provided, create a VCF file
     if apply_VCF:
         df_insertions7 = pd.read_csv('Insertions_table.tsv', sep='\t')
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     parser.add_argument('--chromosome_length_path', type=str, required=True, help='Path to the chromosome length file.')
     parser.add_argument('--num_events', type=int, default=100, required=False, help='Number of events to sample (optional, just in case of providing probabilities).')
     parser.add_argument('--VCF', action='store_true', required=False, help='If specified, creates a Variant Calling File (VCF)')
-    
+
     args = parser.parse_args()
 
     main(args.consensus_path, args.probabilities_numbers_path, args.insertion_features_path, args.genome_wide_path, args.source_L1_path, args.source_SVA_path, args.motifs_path, args.SVA_VNTR_path, args.reference_fasta_path, args.chromosome_length_path, args.num_events, apply_VCF=args.VCF)
