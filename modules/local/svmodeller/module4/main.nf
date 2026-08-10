@@ -23,6 +23,9 @@ process SVMODELLER_MODULE4 {
     def args = task.ext.args ?: ''
     def del_arg = deletions_table ? "--file2 ${deletions_table}" : ''
     """
+    mkdir -p \$PWD/tmp
+    export MPLCONFIGDIR=\$PWD/tmp
+
     Module4.py \\
         --file1 ${insertions_table} \\
         --fasta_file ${ref_fasta} \\

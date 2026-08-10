@@ -24,6 +24,9 @@ process SVMODELLER_MODULE1 {
     def args = task.ext.args ?: ''
     def bin_size_arg = bin_size ? "--bin_size ${bin_size}" : ''
     """
+    mkdir -p \$PWD/tmp
+    export MPLCONFIGDIR=\$PWD/tmp
+
     Module1.py \\
         --file_path ${vcf} \\
         --chromosome_length ${chr_length} \\

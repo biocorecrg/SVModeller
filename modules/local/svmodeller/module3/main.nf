@@ -24,6 +24,9 @@ process SVMODELLER_MODULE3 {
     def num_events_arg = num_events ? "--num_events ${num_events}" : ''
     def bin_size_arg = bin_size ? "--bin_size ${bin_size}" : ''
     """
+    mkdir -p \$PWD/tmp
+    export MPLCONFIGDIR=\$PWD/tmp
+
     Module3.py \\
         --vcf_path ${vcf} \\
         --path_chromosome_length ${chr_length} \\

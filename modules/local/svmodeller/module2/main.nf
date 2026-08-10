@@ -30,6 +30,9 @@ process SVMODELLER_MODULE2 {
     def args = task.ext.args ?: ''
     def num_events_arg = num_events ? "--num_events ${num_events}" : ''
     """
+    mkdir -p \$PWD/tmp
+    export MPLCONFIGDIR=\$PWD/tmp
+
     Module2.py \\
         --consensus_path ${consensus} \\
         --probabilities_numbers_path ${probabilities_numbers} \\
