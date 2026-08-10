@@ -33,13 +33,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: test_data
-          key: zenodo-test-data-v0.5
+          key: zenodo-test-data-v0.5-v2
 
       - name: Download Test Datasets from Zenodo
         if: steps.cache-data.outputs.cache-hit != 'true'
         run: |
           mkdir -p test_data
           BASE_URL="https://zenodo.org/records/18786409/files"
+          TOKEN="eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjI5ODkyYWRjLTc5YjUtNDRkYS1iMGU5LTc4OTE2ZGQ0ZTIzNiIsImRhdGEiOnt9LCJyYW5kb20iOiIyOTc3YzRiM2Q0OGIzOWRlYjY3NTRhOGViNDI5YmFmMiJ9.zwH3JwxIJ-taN4QT72WxYWUIPVnIWqq5QZUj1LL8alMAaHcyizdbBtYjJ7JWTUbUDOTaoyCwplyXz1JUXp86zA"
           FILES=(
             "VCF_Insertions.vcf"
             "VCF_Deletions.vcf"
@@ -54,7 +55,7 @@ jobs:
           )
           for FILE in "${FILES[@]}"; do
             echo "Downloading ${FILE}..."
-            curl -sL "${BASE_URL}/${FILE}?download=1" -o "test_data/${FILE}"
+            curl -sL "${BASE_URL}/${FILE}?download=1&token=${TOKEN}" -o "test_data/${FILE}"
           done
           ls -la test_data
 
