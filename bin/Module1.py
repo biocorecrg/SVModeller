@@ -47,7 +47,7 @@ def main(file_path, chromosome_length, bin_size):
     processed_dict = process_dictionary(dict1)
     insertion_features_df(processed_dict)
     genome_wide_distribution(chromosome_length, bin_size, processed_table)
-    probabilities_df(processed_table, output_path='Probabilities.tsv.gz')
+    probabilities_df(processed_table, output_path='Probabilities.tsv')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Obtain and process data from Variant Calling File (VCF)')

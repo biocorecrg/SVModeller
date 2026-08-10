@@ -33,5 +33,7 @@ process SVMODELLER_MODULE3 {
         ${num_events_arg} \\
         ${bin_size_arg} \\
         ${args}
+
+    gzip Deletions_table.tsv
     """
 }

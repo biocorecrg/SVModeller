@@ -32,5 +32,9 @@ process SVMODELLER_MODULE1 {
         --chromosome_length ${chr_length} \\
         ${bin_size_arg} \\
         ${args}
+
+    gzip Genome_Wide_Distribution.tsv
+    gzip Insertion_Features.tsv
+    gzip Probabilities.tsv
     """
 }

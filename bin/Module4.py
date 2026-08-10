@@ -89,7 +89,7 @@ def main(file1, file2, fasta_file):
             sorted_df.at[index, 'end_haplotype'] = adjusted_beg + 1
 
     # Save outputs
-    sorted_df.to_csv('Sorted_Genomic_Events.tsv.gz', sep='\t', index=False, compression='gzip')
+    sorted_df.to_csv('Sorted_Genomic_Events.tsv', sep='\t', index=False)
     write_fasta("Modified_Reference_Genome.fasta", fasta_reader.seqDict)
 
 if __name__ == "__main__":

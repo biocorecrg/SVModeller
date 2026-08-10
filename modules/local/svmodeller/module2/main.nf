@@ -46,5 +46,7 @@ process SVMODELLER_MODULE2 {
         --chromosome_length_path ${chr_length} \\
         ${num_events_arg} \\
         ${args}
+
+    gzip Insertions_table.tsv
     """
 }

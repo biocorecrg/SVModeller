@@ -83,11 +83,11 @@ def main(consensus_path, probabilities_numbers_path, insertion_features_path, ge
     # Update the insertion sequence
     df_insertions6 = update_sequences(df_insertions6)
     # Save the output
-    df_insertions6.to_csv('Insertions_table.tsv.gz', sep='\t', index=False, compression='gzip')
+    df_insertions6.to_csv('Insertions_table.tsv', sep='\t', index=False)
 
     # If the VCF argument is provided, create a VCF file
     if apply_VCF:
-        df_insertions7 = pd.read_csv('Insertions_table.tsv.gz', sep='\t', compression='infer')
+        df_insertions7 = pd.read_csv('Insertions_table.tsv', sep='\t')
         # Process the df to transform it to VCF format
         df_VCF_format = df_VCF(df_insertions7, reference_fasta_path)
         # Create the VCF

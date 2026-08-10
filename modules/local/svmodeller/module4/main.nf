@@ -31,5 +31,8 @@ process SVMODELLER_MODULE4 {
         --fasta_file ${ref_fasta} \\
         ${del_arg} \\
         ${args}
+
+    gzip Sorted_Genomic_Events.tsv
+    gzip Modified_Reference_Genome.fasta
     """
 }
