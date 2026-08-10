@@ -7,7 +7,7 @@ Creates all required inputs in toy_data/
 import os
 import random
 
-def create_toy_dataset(output_dir="toy_data"):
+def create_toy_dataset(output_dir="test_data"):
     os.makedirs(output_dir, exist_ok=True)
 
     # 1. Chromosome length file

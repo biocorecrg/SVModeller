@@ -1,7 +1,7 @@
 considerations.txt
 __pycache__/
 *.pyc
-toy_data/
+test_data/
 Genome_Wide_Distribution.tsv
 Insertion_Features.tsv
 Probabilities.tsv
