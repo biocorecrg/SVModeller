@@ -123,7 +123,8 @@ def filter_sd(dict_mutations, key_list):
     return dict_mutations
 
 def read_vcf_file_BED(file_path, sv_type='insertion'):
-    vcf = formats.VCF.vcf_parser(file_path)
+    vcf = formats.VCF()
+    vcf.read(file_path)
     data = []
     type_key = 'ITYPE_N' if sv_type == 'insertion' else 'DTYPE_N'
     for variant in vcf.variants:
