@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/images/logo_svmodeller.png" alt="SVModeller Logo" width="400">
+</p>
+
 # SVModeller
 
 SVModeller is a computational tool to simulate synthetic human haplotypes containing embedded structural variants (SV). This simulator has been trained using an extensive catalogue of curated polymorphic SVs identified in a dataset comprising 1.019 samples from the 1000 Genomes Project, sequenced with Oxford Nanopore long-read technology (Schloissnig et al., 2024). This dataset provides detailed sequence information and annotation of SV classes that has not been previously available. 
