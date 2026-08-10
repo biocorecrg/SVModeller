@@ -36,10 +36,10 @@ RUN chmod +x /app/Module*.py /app/Additional_scripts/*.py /app/functions.py
 
 USER $MAMBA_USER
 
-# Set environment PATH and PYTHONPATH
-ENV PATH="/opt/conda/bin:/app:/app/Additional_scripts:${PATH}"
+# Add /app and /app/Additional_scripts to front of PATH so all modules can be invoked directly by name
+ENV PATH="/app:/app/Additional_scripts:/opt/conda/bin:${PATH}"
 ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 WORKDIR /data
 
-CMD ["python3", "/app/Module1.py", "--help"]
+CMD ["Module1.py", "--help"]
