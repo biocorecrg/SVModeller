@@ -36,31 +36,43 @@ jobs:
         uses: actions/cache@v4
         with:
           path: test_data
-          key: zenodo-test-data-v0.5-v3
+          key: zenodo-test-data-v0.5-v4
 
-      - name: Download Test Datasets from Zenodo
+      - name: Download and Extract Test Datasets from Zenodo
         if: steps.cache-data.outputs.cache-hit != 'true'
         run: |
           mkdir -p test_data
-          BASE_URL="https://zenodo.org/records/18786409/files"
+          RECORD_ID="18786409"
+          BASE_URL="https://zenodo.org/records/${RECORD_ID}/files"
           TOKEN="eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjI5ODkyYWRjLTc5YjUtNDRkYS1iMGU5LTc4OTE2ZGQ0ZTIzNiIsImRhdGEiOnt9LCJyYW5kb20iOiIyOTc3YzRiM2Q0OGIzOWRlYjY3NTRhOGViNDI5YmFmMiJ9.zwH3JwxIJ-taN4QT72WxYWUIPVnIWqq5QZUj1LL8alMAaHcyizdbBtYjJ7JWTUbUDOTaoyCwplyXz1JUXp86zA"
-          FILES=(
-            "VCF_Insertions.vcf"
-            "VCF_Deletions.vcf"
-            "chr_length.txt"
-            "consensus_sequences_complete.fa"
-            "source_loci_LINE1.tsv"
-            "source_loci_SVA.tsv"
-            "VNTR_with_start_position.txt"
-            "SVA_VNTR_Motifs.txt"
-            "chm13v2.0.fa"
-            "Number_events.tsv"
-          )
-          for FILE in "${FILES[@]}"; do
-            echo "Downloading ${FILE}..."
-            curl -f -sL "${BASE_URL}/${FILE}?download=1&token=${TOKEN}" -o "test_data/${FILE}"
-            head -n 2 "test_data/${FILE}"
-          done
+
+          echo "Fetching dataset from Zenodo record ${RECORD_ID}..."
+          
+          if curl -f -sL "${BASE_URL}/svmodeller_data_v0.5.tar.gz?download=1&token=${TOKEN}" -o "test_data/svmodeller_data_v0.5.tar.gz"; then
+            echo "Extracting tar.gz dataset archive..."
+            tar -xzf test_data/svmodeller_data_v0.5.tar.gz -C test_data/
+          elif curl -f -sL "${BASE_URL}/svmodeller_data_v0.5.zip?download=1&token=${TOKEN}" -o "test_data/svmodeller_data_v0.5.zip"; then
+            echo "Extracting zip dataset archive..."
+            unzip -o test_data/svmodeller_data_v0.5.zip -d test_data/
+          else
+            echo "Downloading individual dataset files..."
+            FILES=(
+              "VCF_Insertions.vcf"
+              "VCF_Deletions.vcf"
+              "chr_length.txt"
+              "consensus_sequences_complete.fa"
+              "source_loci_LINE1.tsv"
+              "source_loci_SVA.tsv"
+              "VNTR_with_start_position.txt"
+              "SVA_VNTR_Motifs.txt"
+              "chm13v2.0.fa"
+              "Number_events.tsv"
+            )
+            for FILE in "${FILES[@]}"; do
+              echo "Downloading ${FILE}..."
+              curl -f -sL "${BASE_URL}/${FILE}?download=1&token=${TOKEN}" -o "test_data/${FILE}"
+            done
+          fi
           ls -la test_data
 
       - name: Run Module 1 Test
