@@ -14,7 +14,7 @@ process SVMODELLER_MODULE4 {
     output:
     tuple val(meta), path("Modified_Reference_Genome.fasta"), emit: modified_genome
     tuple val(meta), path("Sorted_Genomic_Events.tsv")     , emit: sorted_events
-    path "versions.yml"                                   , emit: versions
+    tuple val("${task.process}"), val('svmodeller'), val('0.5.0'), topic: versions, emit: versions_svmodeller
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +31,5 @@ process SVMODELLER_MODULE4 {
         --fasta_file ${ref_fasta} \\
         ${del_arg} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svmodeller: "0.5.0"
-    END_VERSIONS
     """
 }
