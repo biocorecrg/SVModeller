@@ -4,21 +4,9 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - 'LICENSE'
-      - 'considerations.txt'
-      - '.dockerignore'
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - 'LICENSE'
-      - 'considerations.txt'
-      - '.dockerignore'
   workflow_dispatch:
 
 jobs:
@@ -45,7 +33,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: test_data
-          key: zenodo-test-data-v0.5-v2
+          key: zenodo-test-data-v0.5-v3
 
       - name: Download Test Datasets from Zenodo
         if: steps.cache-data.outputs.cache-hit != 'true'
@@ -67,7 +55,8 @@ jobs:
           )
           for FILE in "${FILES[@]}"; do
             echo "Downloading ${FILE}..."
-            curl -sL "${BASE_URL}/${FILE}?download=1&token=${TOKEN}" -o "test_data/${FILE}"
+            curl -f -sL "${BASE_URL}/${FILE}?download=1&token=${TOKEN}" -o "test_data/${FILE}"
+            head -n 2 "test_data/${FILE}"
           done
           ls -la test_data
 

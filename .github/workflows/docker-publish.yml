@@ -4,22 +4,12 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'Dockerfile'
-      - 'environment.yml'
-      - 'requirements.txt'
-      - 'VERSION'
     tags:
       - 'v*.*.*'
       - 'v*'
   pull_request:
     branches:
       - main
-    paths:
-      - 'Dockerfile'
-      - 'environment.yml'
-      - 'requirements.txt'
-      - 'VERSION'
   workflow_dispatch:
 
 env:
