@@ -30,9 +30,9 @@ process SVMODELLER_MODULE1 {
         ${bin_size_arg} \\
         ${args}
 
-    cat <<EOF > versions.yml
+    cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         svmodeller: "0.5.0"
-    EOF
+    END_VERSIONS
     """
 }
