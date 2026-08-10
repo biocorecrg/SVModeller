@@ -14,5 +14,3 @@ dependencies:
   - pbsim3>=3.0.4
   - git
   - pip
-  - pip:
-    - git+https://github.com/REPBIO-LAB/GAPI.git

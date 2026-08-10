@@ -17,9 +17,12 @@ USER $MAMBA_USER
 # Copy environment configuration
 COPY --chown=$MAMBA_USER:$MAMBA_USER environment.yml /tmp/environment.yml
 
-# Install dependencies into base conda environment
+# Install conda dependencies into base environment
 RUN micromamba install -y -n base -f /tmp/environment.yml && \
     micromamba clean --all --yes
+
+# Install GAPI via pip into base environment
+RUN /opt/conda/bin/pip install --no-cache-dir git+https://github.com/REPBIO-LAB/GAPI.git
 
 # Set working directory
 WORKDIR /app
@@ -33,8 +36,8 @@ RUN chmod +x /app/Module*.py /app/Additional_scripts/*.py /app/functions.py
 
 USER $MAMBA_USER
 
-# Set environment PATH to include app directory and scripts
-ENV PATH="/app:/app/Additional_scripts:${PATH}"
+# Set environment PATH to include conda environment, app directory, and scripts
+ENV PATH="/opt/conda/bin:/app:/app/Additional_scripts:${PATH}"
 
 WORKDIR /data
 
