@@ -12,6 +12,89 @@ include { SVMODELLER_MODULE2 } from './modules/local/svmodeller/module2/main'
 include { SVMODELLER_MODULE3 } from './modules/local/svmodeller/module3/main'
 include { SVMODELLER_MODULE4 } from './modules/local/svmodeller/module4/main'
 
+def colorCodes() {
+    def c = [:]
+    c['bold']   = "\033[1m"
+    c['reset']  = "\033[0m"
+    c['line']   = "\033[0m"
+    c['yellow'] = "\033[0;33m"
+    c['black']  = "\033[0;30m"
+    c['red']    = "\033[0;31m"
+    c['green']  = "\033[0;32m"
+    c['white']  = "\033[1;37m"
+    c['cyan']   = "\033[0;36m"
+    c['gray']   = "\033[0;90m"
+    c['blue']   = "\033[0;34m"
+    return c
+}
+
+def helpMessage(type) {
+    def c = colorCodes()
+    def version = '0.5.0'
+    def message = ""
+
+    if (type == "log") {
+        message = """
+${c.yellow}${c.bold}
+=====================================================================
+BIOCORE@CRG SVModeller Pipeline  ~  version ${version}
+=====================================================================
+${c.reset}
+${c.bold}Input Parameters${c.reset}
+----------------------------------------------------
+${c.green}vcf_insertions${c.reset}            : ${params.vcf_insertions}
+${c.green}vcf_deletions${c.reset}             : ${params.vcf_deletions}
+${c.green}chr_length${c.reset}                : ${params.chr_length}
+${c.green}ref_fasta${c.reset}                 : ${params.ref_fasta}
+${c.green}consensus${c.reset}                 : ${params.consensus}
+${c.green}number_events${c.reset}             : ${params.number_events ?: 'None (Module1 probabilities)'}
+${c.green}source_l1${c.reset}                 : ${params.source_l1 ?: 'Default package loci'}
+${c.green}source_sva${c.reset}                : ${params.source_sva ?: 'Default package loci'}
+${c.green}motifs${c.reset}                    : ${params.motifs ?: 'Default package motifs'}
+${c.green}sva_vntr${c.reset}                  : ${params.sva_vntr ?: 'Default package motifs'}
+${c.green}num_events${c.reset}                : ${params.num_events}
+${c.green}bin_size${c.reset}                  : ${params.bin_size}
+${c.green}outdir${c.reset}                    : ${params.outdir}
+=====================================================================
+"""
+    } else if (type == "help") {
+        message = """
+${c.yellow}${c.bold}
+=====================================================================
+BIOCORE@CRG SVModeller Pipeline  ~  version ${version}
+=====================================================================
+${c.reset}
+${c.bold}${c.yellow}USAGE:${c.reset}
+  nextflow run . -params-file params.yaml -profile <profile> [options]
+
+${c.bold}${c.yellow}DESCRIPTION:${c.reset}
+  Simulator of synthetic human haplotypes containing embedded structural
+  variants (SV). Handles insertion feature modeling, insertion/deletion
+  simulation, and reference genome sequence modification.
+
+${c.bold}${c.yellow}REQUIRED PARAMETERS:${c.reset}
+  ${c.bold}${c.green}--vcf_insertions${c.reset}        : ${c.cyan}<path>${c.reset}  ${c.gray}# Path to VCF file with insertion SVs${c.reset}
+  ${c.bold}${c.green}--vcf_deletions${c.reset}         : ${c.cyan}<path>${c.reset}  ${c.gray}# Path to VCF file with deletion SVs${c.reset}
+  ${c.bold}${c.green}--chr_length${c.reset}            : ${c.cyan}<path>${c.reset}  ${c.gray}# Path to chromosome length text file${c.reset}
+  ${c.bold}${c.green}--ref_fasta${c.reset}             : ${c.cyan}<path>${c.reset}  ${c.gray}# Path to reference genome FASTA file${c.reset}
+  ${c.bold}${c.green}--consensus${c.reset}             : ${c.cyan}<path>${c.reset}  ${c.gray}# Path to consensus sequences FASTA file${c.reset}
+
+${c.bold}${c.yellow}OPTIONAL PARAMETERS:${c.reset}
+  ${c.bold}${c.green}--number_events${c.reset}         : ${c.cyan}<path>${c.reset}  ${c.gray}# TSV file with custom event frequencies${c.reset}
+  ${c.bold}${c.green}--source_l1${c.reset}             : ${c.cyan}<path>${c.reset}  ${c.gray}# TSV file with LINE-1 source loci${c.reset}
+  ${c.bold}${c.green}--source_sva${c.reset}            : ${c.cyan}<path>${c.reset}  ${c.gray}# TSV file with SVA source loci${c.reset}
+  ${c.bold}${c.green}--motifs${c.reset}                : ${c.cyan}<path>${c.reset}  ${c.gray}# Text file with VNTR motifs & start positions${c.reset}
+  ${c.bold}${c.green}--sva_vntr${c.reset}              : ${c.cyan}<path>${c.reset}  ${c.gray}# Text file with SVA VNTR motifs${c.reset}
+  ${c.bold}${c.green}--num_events${c.reset}            : ${c.cyan}<int>${c.reset}   ${c.gray}# Number of events to simulate (default: 10)${c.reset}
+  ${c.bold}${c.green}--bin_size${c.reset}              : ${c.cyan}<int>${c.reset}   ${c.gray}# Size of genomic bins in bp (default: 1000000)${c.reset}
+  ${c.bold}${c.green}--outdir${c.reset}                : ${c.cyan}<path>${c.reset}  ${c.gray}# Output directory (default: 'results')${c.reset}
+
+=====================================================================
+"""
+    }
+    return message
+}
+
 workflow SVMODELLER {
     take:
     vcf_insertions
@@ -74,6 +157,20 @@ workflow SVMODELLER {
 }
 
 workflow {
+    params.help = false
+    params.resume = false
+
+    if (params.help) {
+        log.info(helpMessage("help"))
+        exit(0)
+    } else {
+        log.info(helpMessage("log"))
+    }
+
+    if (params.resume) {
+        exit(1, "Are you making the classical --resume typo? Be careful!!!! ;)")
+    }
+
     // Validate inputs
     if (!params.vcf_insertions) { error "Parameter --vcf_insertions is required!" }
     if (!params.vcf_deletions)  { error "Parameter --vcf_deletions is required!" }

@@ -14,3 +14,6 @@ VNTR_with_start_position.txt
 SVA_VNTR_Motifs.txt
 zenodo_data/
 record.json
+.nextflow*
+work/
+results/
