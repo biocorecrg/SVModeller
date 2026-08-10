@@ -1,0 +1,22 @@
+# SVModeller Pipeline Test Parameters
+#======================================
+
+# Input Files (Toy Dataset)
+vcf_insertions: "toy_data/VCF_Insertions.vcf"
+vcf_deletions: "toy_data/VCF_Deletions.vcf"
+chr_length: "toy_data/chr_length.txt"
+ref_fasta: "toy_data/toy_ref.fa"
+consensus: "toy_data/consensus_sequences_complete.fa"
+number_events: "toy_data/Number_events.tsv"
+source_l1: "toy_data/source_loci_LINE1.tsv"
+source_sva: "toy_data/source_loci_SVA.tsv"
+motifs: "toy_data/VNTR_with_start_position.txt"
+sva_vntr: "toy_data/SVA_VNTR_Motifs.txt"
+
+# Simulation Settings
+num_events: 10
+bin_size: 1000000
+
+# Output Settings
+outdir: "results"
+publish_dir_mode: "copy"

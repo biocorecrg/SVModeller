@@ -1,0 +1,24 @@
+# SVModeller Pipeline Parameters
+#=================================
+
+# Input Files (Required)
+vcf_insertions: ""
+vcf_deletions: ""
+chr_length: ""
+ref_fasta: ""
+consensus: ""
+
+# Input Files (Optional)
+number_events: ""
+source_l1: ""
+source_sva: ""
+motifs: ""
+sva_vntr: ""
+
+# Simulation Settings
+num_events: 10
+bin_size: 1000000
+
+# Output Settings
+outdir: "results"
+publish_dir_mode: "copy"
