@@ -21,11 +21,11 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER environment.yml /tmp/environment.yml
 RUN micromamba install -y -n base -f /tmp/environment.yml && \
     micromamba clean --all --yes
 
-# Install GAPI via pip into base environment
-RUN /opt/conda/bin/pip install --no-cache-dir git+https://github.com/REPBIO-LAB/GAPI.git
-
 # Set working directory
 WORKDIR /app
+
+# Clone GAPI repository directly into /app/GAPI
+RUN git clone https://github.com/REPBIO-LAB/GAPI.git /app/GAPI
 
 # Copy repository content
 COPY --chown=$MAMBA_USER:$MAMBA_USER . /app
@@ -36,8 +36,9 @@ RUN chmod +x /app/Module*.py /app/Additional_scripts/*.py /app/functions.py
 
 USER $MAMBA_USER
 
-# Set environment PATH to include conda environment, app directory, and scripts
+# Set environment PATH and PYTHONPATH
 ENV PATH="/opt/conda/bin:/app:/app/Additional_scripts:${PATH}"
+ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 WORKDIR /data
 
