@@ -32,13 +32,13 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER . /app
 
 # Make python modules executable
 USER root
-RUN chmod +x /app/Module*.py /app/Additional_scripts/*.py /app/functions.py
+RUN chmod +x /app/bin/*.py /app/Additional_scripts/*.py
 
 USER $MAMBA_USER
 
-# Add /app and /app/Additional_scripts to front of PATH so all modules can be invoked directly by name
-ENV PATH="/app:/app/Additional_scripts:/opt/conda/bin:${PATH}"
-ENV PYTHONPATH="/app:${PYTHONPATH}"
+# Add /app/bin, /app, and /app/Additional_scripts to front of PATH so all modules can be invoked directly by name
+ENV PATH="/app/bin:/app:/app/Additional_scripts:/opt/conda/bin:${PATH}"
+ENV PYTHONPATH="/app/bin:/app:${PYTHONPATH}"
 
 WORKDIR /data
 
