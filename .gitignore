@@ -1,1 +1,14 @@
 considerations.txt
+__pycache__/
+*.pyc
+toy_data/
+Genome_Wide_Distribution.tsv
+Insertion_Features.tsv
+Probabilities.tsv
+Insertions_table.tsv
+Deletions_table.tsv
+Modified_Reference_Genome.fasta
+Sorted_Genomic_Events.tsv
+Separated_Motifs.tsv
+VNTR_with_start_position.txt
+SVA_VNTR_Motifs.txt
