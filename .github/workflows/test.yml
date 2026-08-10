@@ -4,9 +4,21 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
+      - 'considerations.txt'
+      - '.dockerignore'
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
+      - 'considerations.txt'
+      - '.dockerignore'
   workflow_dispatch:
 
 jobs:
