@@ -11,25 +11,10 @@ include { SVMODELLER_MODULE1 } from './modules/local/svmodeller/module1/main'
 include { SVMODELLER_MODULE2 } from './modules/local/svmodeller/module2/main'
 include { SVMODELLER_MODULE3 } from './modules/local/svmodeller/module3/main'
 include { SVMODELLER_MODULE4 } from './modules/local/svmodeller/module4/main'
-
-def colorCodes() {
-    def c = [:]
-    c['bold']   = "\033[1m"
-    c['reset']  = "\033[0m"
-    c['line']   = "\033[0m"
-    c['yellow'] = "\033[0;33m"
-    c['black']  = "\033[0;30m"
-    c['red']    = "\033[0;31m"
-    c['green']  = "\033[0;32m"
-    c['white']  = "\033[1;37m"
-    c['cyan']   = "\033[0;36m"
-    c['gray']   = "\033[0;90m"
-    c['blue']   = "\033[0;34m"
-    return c
-}
+include { logColours          } from './subworkflows/nf-core/utils_nfcore_pipeline/main'
 
 def helpMessage(type) {
-    def c = colorCodes()
+    def c = logColours(params.monochrome_logs ?: false)
     def version = '0.5.0'
     def message = ""
 
