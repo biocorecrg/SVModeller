@@ -19,6 +19,7 @@ sva_vntr: ""
 num_events: 10
 bin_size: 1000000
 
-# Output Settings
+# Output & Messaging Settings
 outdir: "results"
 publish_dir_mode: "copy"
+slack_url: ""
