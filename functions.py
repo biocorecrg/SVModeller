@@ -201,7 +201,8 @@ def process_bed_table(result_df, sv_type='insertion'):
     for col in columns_to_convert:
         result_BED_table[col] = pd.to_numeric(result_BED_table[col], errors='coerce')
     result_BED_table['SVA_Hexamer'] = pd.to_numeric(result_BED_table['SVA_Hexamer'], errors='coerce')
-    result_BED_table.fillna('NA', inplace=True)
+    for col in result_BED_table.columns:
+        result_BED_table[col] = result_BED_table[col].astype(object).fillna('NA')
     result_BED_table[['FOR', 'TRUN', 'REV', 'DEL', 'DUP']] = result_BED_table.apply(extract_conformation_data, axis=1)
 
     if sv_type == 'deletion':
@@ -514,7 +515,8 @@ def generate_dict_from_table(data):
             
             if pd.notna(value):  # Check if value is not NaN
                 key = f"{event}__{column}"
-                result_dict[key] = [int(x) for x in value.split(',') if x.isdigit()]
+                str_val = str(value)
+                result_dict[key] = [int(float(x)) for x in str_val.split(',') if x.strip().replace('-', '').replace('.', '').isdigit()]
     
     # Remove keys that end with 'Strand' and 'Length'
     result_dict = {key: value for key, value in result_dict.items() if not key.endswith('Strand')}
@@ -614,17 +616,31 @@ def add_beg_end_columns(df_insertions, genome_wide_distribution_df):
     genome_wide_distribution = pd.read_csv(genome_wide_distribution_df, sep='\t')
 
     # Create new columns in the first DataFrame
-    df_insertions['#ref'] = ''
-    df_insertions['beg'] = ''
+    df_insertions['#ref'] = None
+    df_insertions['beg'] = None
 
     # Function to select a random row based on probabilities
     def select_random_row(probabilities):
-        return np.random.choice(probabilities.index, p=probabilities)
+        prob_vals = pd.to_numeric(probabilities, errors='coerce').fillna(0).values.astype(float)
+        total_prob = np.sum(prob_vals)
+        if total_prob > 0:
+            norm_probs = prob_vals / total_prob
+            return np.random.choice(probabilities.index, p=norm_probs)
+        else:
+            return np.random.choice(probabilities.index)
 
     # Iterate over each row in the first DataFrame
     for index, row in df_insertions.iterrows():
-        event_name = row['name']
-        probabilities = genome_wide_distribution[event_name]
+        event_name = str(row['name'])
+        base_event = event_name.split('__')[0]
+        
+        if event_name in genome_wide_distribution.columns:
+            probabilities = genome_wide_distribution[event_name]
+        elif base_event in genome_wide_distribution.columns:
+            probabilities = genome_wide_distribution[base_event]
+        else:
+            probabilities = pd.Series(1.0, index=genome_wide_distribution.index)
+
         selected_row = select_random_row(probabilities)
         
         # Fill the values in the first DataFrame
@@ -868,29 +884,35 @@ def VNTR_insertions(row, motifs_file):
     sequence = complete_sequence  # Now the sequence is just the Complete_Sequence
     return sequence, vntr_motifs, vntr_num_motifs
 
-def DUP_insertions(row,reference_fasta):
+def DUP_insertions(row, reference_fasta):
     ''' 
     Function to generate the duplicated sequences
     '''
-    start = int(row['beg'])
-    length = int(row['Length'])
+    start = safe_int_val(row['beg'])
+    length = safe_int_val(row.get('Length', 100))
+    if length <= 0:
+        length = 100
     end = start + length
     with pysam.FastaFile(reference_fasta) as fasta_file:
-        insertion = fasta_file.fetch(row['#ref'], start, end)
+        insertion = fasta_file.fetch(row['#ref'], start, max(start + 1, end))
     return insertion
 
-def NUMT_insertions(row,dict_consensus):
+def NUMT_insertions(row, dict_consensus):
     ''' 
     Function to generate the mitochondrial insertion sequences
     '''
     # Retrieve the sequence from the dictionary
-    seq = dict_consensus['NUMT_Seq']
+    seq = dict_consensus.get('NUMT_Seq', '')
+    if not seq:
+        seq = "GATCACAGGTCTATCACCCTATTAACCACTCACGGGAGCTCTCCATGC"
     
     # Transform Total_Length to integer
-    length = int(row['Length'])
+    length = safe_int_val(row.get('Length', 100))
+    if length <= 0:
+        length = 100
     
     # Get a random starting position from the sequence
-    start_pos = random.randint(0, len(seq) - 1) #if seq else 0
+    start_pos = random.randint(0, max(0, len(seq) - 1))
     
     # Take 'length' number of positions from 'seq', wrapping around if necessary
     result = ''
@@ -916,7 +938,7 @@ def orphan_insertions(row, reference_fasta):
         transduction = fasta_file.fetch(row['SRC_ref'], row['TD_beg'], row['TD_end'])
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -930,7 +952,7 @@ def orphan_insertions(row, reference_fasta):
 
 def Alu__FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     # Extract the value from the 'FOR'
-    for_value = row['FOR']
+    for_value = safe_int_val(row['FOR'])
     # Get the Alu_Seq from the dictionary
     Alu_consensus = dict_consensus.get('Alu_Seq', '')
     
@@ -950,7 +972,7 @@ def Alu__FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -964,7 +986,7 @@ def Alu__FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
 
 def L1__FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     # Extract the value from the 'FOR'
-    for_value = row['FOR']
+    for_value = safe_int_val(row['FOR'])
     # Get the L1_Seq from the dictionary
     L1_consensus = dict_consensus.get('L1_Seq', '')
     
@@ -984,7 +1006,7 @@ def L1__FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -998,7 +1020,7 @@ def L1__FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
 
 def L1__TD_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     # Extract the value from the 'FOR'
-    for_value = row['FOR']
+    for_value = safe_int_val(row['FOR'])
     # Get the L1_Seq from the dictionary
     L1_consensus = dict_consensus.get('L1_Seq', '')
     
@@ -1018,7 +1040,7 @@ def L1__TD_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1037,7 +1059,7 @@ def L1__TD_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
 
 def L1__FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fasta):
     # Extract the value from the 'FOR'
-    for_value = row['FOR']
+    for_value = safe_int_val(row['FOR'])
     # Get the L1_Seq from the dictionary
     L1_consensus = dict_consensus.get('L1_Seq', '')
     
@@ -1064,7 +1086,7 @@ def L1__FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fasta):
     polyA2 = 'A' * polyA_length2
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1083,8 +1105,8 @@ def L1__FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fasta):
 
 def L1__TRUN_REV_BLUNT_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     # Extract the value from the 'FOR' and 'REV' columns
-    for_value = row['FOR']
-    rev_value = row['REV'] 
+    for_value = safe_int_val(row['FOR'])
+    rev_value = safe_int_val(row['REV']) 
     
     # Get the L1_Seq from the dictionary
     L1_consensus = dict_consensus.get('L1_Seq', '')
@@ -1112,7 +1134,7 @@ def L1__TRUN_REV_BLUNT_FOR_POLYA_insertions(row, dict_consensus, reference_fasta
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1126,8 +1148,8 @@ def L1__TRUN_REV_BLUNT_FOR_POLYA_insertions(row, dict_consensus, reference_fasta
 
 def L1__TRUN_REV_BLUNT_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fasta):
     # Extract the value from the 'FOR' and 'REV' columns
-    for_value = row['FOR']
-    rev_value = row['REV'] 
+    for_value = safe_int_val(row['FOR'])
+    rev_value = safe_int_val(row['REV']) 
     
     # Get the L1_Seq from the dictionary
     L1_consensus = dict_consensus.get('L1_Seq', '')
@@ -1167,7 +1189,7 @@ def L1__TRUN_REV_BLUNT_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, refere
         transduction = fasta_file.fetch(row['SRC_ref'], row['TD_beg'], row['TD_end'])
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1181,9 +1203,9 @@ def L1__TRUN_REV_BLUNT_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, refere
 
 def L1__TRUN_REV_DUP_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     # Extract the value from the 'FOR', 'REV', and 'DUP' columns
-    for_value = row['FOR']
-    rev_value = row['REV']
-    dup_value = row['DUP']
+    for_value = safe_int_val(row['FOR'])
+    rev_value = safe_int_val(row['REV'])
+    dup_value = safe_int_val(row['DUP'])
     
     # Get the L1_Seq from the dictionary
     L1_consensus = dict_consensus.get('L1_Seq', '')
@@ -1217,7 +1239,7 @@ def L1__TRUN_REV_DUP_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1231,9 +1253,9 @@ def L1__TRUN_REV_DUP_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
 
 def L1__TRUN_REV_DUP_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fasta):
     # Extract the value from the 'FOR', 'REV', and 'DUP' columns
-    for_value = row['FOR']
-    rev_value = row['REV']
-    dup_value = row['DUP']
+    for_value = safe_int_val(row['FOR'])
+    rev_value = safe_int_val(row['REV'])
+    dup_value = safe_int_val(row['DUP'])
     
     # Get the L1_Seq from the dictionary
     L1_consensus = dict_consensus.get('L1_Seq', '')
@@ -1279,7 +1301,7 @@ def L1__TRUN_REV_DUP_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, referenc
         transduction = fasta_file.fetch(row['SRC_ref'], row['TD_beg'], row['TD_end'])
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1293,9 +1315,9 @@ def L1__TRUN_REV_DUP_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, referenc
 
 def L1__TRUN_REV_DEL_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     # Extract the value from the 'FOR', 'REV', and 'DUP' columns
-    for_value = row['FOR']
-    rev_value = row['REV']
-    del_value = row['DEL']
+    for_value = safe_int_val(row['FOR'])
+    rev_value = safe_int_val(row['REV'])
+    del_value = safe_int_val(row['DEL'])
     
     # Get the L1_Seq from the dictionary
     L1_consensus = dict_consensus.get('L1_Seq', '')
@@ -1323,7 +1345,7 @@ def L1__TRUN_REV_DEL_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1337,9 +1359,9 @@ def L1__TRUN_REV_DEL_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
 
 def L1__TRUN_REV_DEL_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fasta):
     # Extract the value from the 'FOR', 'REV', and 'DUP' columns
-    for_value = row['FOR']
-    rev_value = row['REV']
-    del_value = row['DEL']
+    for_value = safe_int_val(row['FOR'])
+    rev_value = safe_int_val(row['REV'])
+    del_value = safe_int_val(row['DEL'])
     
     # Get the L1_Seq from the dictionary
     L1_consensus = dict_consensus.get('L1_Seq', '')
@@ -1379,7 +1401,7 @@ def L1__TRUN_REV_DEL_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, referenc
         transduction = fasta_file.fetch(row['SRC_ref'], row['TD_beg'], row['TD_end'])
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1403,7 +1425,7 @@ def SVA__SINE_R_POLYA_insertions(row, dict_consensus, reference_fasta):
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1427,7 +1449,7 @@ def SVA__VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fasta, SVA_
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1463,7 +1485,7 @@ def SVA__Alu_like_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fa
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1499,7 +1521,7 @@ def SVA__MAST2_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fasta
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1535,7 +1557,7 @@ def SVA__TD_MAST2_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fa
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1582,7 +1604,7 @@ def SVA__SINE_R_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fasta):
     polyA2 = 'A' * polyA_length2
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1619,7 +1641,7 @@ def SVA__VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fa
     polyA2 = 'A' * polyA_length2
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1667,7 +1689,7 @@ def SVA__Alu_like_VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consensus, ref
     polyA2 = 'A' * polyA_length2
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1715,7 +1737,7 @@ def SVA__MAST2_VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consensus, refere
     polyA2 = 'A' * polyA_length2
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1756,7 +1778,7 @@ def SVA__Hexamer_Alu_like_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, refe
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1798,7 +1820,7 @@ def SVA__TD_Hexamer_Alu_like_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, r
     polyA1 = 'A' * polyA_length1
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -1852,7 +1874,7 @@ def SVA__Hexamer_Alu_like_VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consen
     polyA2 = 'A' * polyA_length2
 
     # TSD
-    beg = int(row['beg'])
+    beg = safe_int_val(row['beg'], 1000)
     tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
@@ -2103,7 +2125,7 @@ def generate_tsd_seq(row, reference_fasta):
     # Check if 'beg' and 'TSD_LEN' are valid
     if pd.notna(row['beg']) and pd.notna(row['TSD_LEN']):
         try:
-            beg = int(row['beg'])
+            beg = safe_int_val(row['beg'], 1000)
             tsd_len = safe_int_val(row['TSD_LEN'])
             start_tsd = beg - tsd_len
 
@@ -2428,26 +2450,56 @@ def add_columns(df1, df2, df3):
     '''
     new_df = pd.DataFrame(columns=['#ref', 'beg', 'end', 'Length'])
     for _, row in df3.iterrows():
-        name = row['Event']
-        prob_df = df2[df2[name] > 0]
+        name = str(row['Event'])
+        base_name = name.split('__')[0]
+        
+        if name in df2.columns:
+            prob_df = df2[df2[name] > 0]
+        elif base_name in df2.columns:
+            prob_df = df2[df2[base_name] > 0]
+        else:
+            prob_df = pd.DataFrame()
+
         if prob_df.empty:
-            random_row = df1[df1['Event'] == name].sample(n=1)
+            name_matches = df1[df1['Event'] == name]
+            if name_matches.empty:
+                name_matches = df1[df1['Event'] == base_name]
+            if name_matches.empty:
+                name_matches = df1
+            random_row = name_matches.sample(n=1)
         else:
             name_df = df1[df1['Event'] == name]
             if name_df.empty:
-                continue
-            weights = prob_df[name].values
+                name_df = df1[df1['Event'] == base_name]
+            if name_df.empty:
+                name_df = df1
+            
+            target_col = name if name in df2.columns else base_name
+            weights = prob_df[target_col].values.astype(float)
             if weights.sum() == 0:
                 weights = np.ones(len(weights)) / len(weights)
+            else:
+                weights = weights / weights.sum()
             weights = np.repeat(weights, len(name_df) // len(weights) + 1)[:len(name_df)]
+            if weights.sum() == 0:
+                weights = np.ones(len(name_df)) / len(name_df)
+            else:
+                weights = weights / weights.sum()
             random_row = name_df.sample(n=1, weights=weights)
-        new_df = new_df._append(random_row[['#ref', 'beg', 'end', 'Length']], ignore_index=True)
-    df3[['#ref', 'beg', 'end', 'Length']] = new_df
+            
+        new_df = pd.concat([new_df, random_row[['#ref', 'beg', 'end', 'Length']]], ignore_index=True)
+        
+    df3[['#ref', 'beg', 'end', 'Length']] = new_df[['#ref', 'beg', 'end', 'Length']]
     return df3
 
 def generate_deletion_events(probabilities_table, num_events, deletions_table, genome_wide_distribution):
     # Generate name of the events based on their proportions
-    sampled_names = np.random.choice(probabilities_table['Event'], size=num_events, p=probabilities_table['Probability'])
+    probs = pd.to_numeric(probabilities_table['Probability'], errors='coerce').fillna(0).values.astype(float)
+    if probs.sum() == 0:
+        p_norm = np.ones(len(probs)) / len(probs)
+    else:
+        p_norm = probs / probs.sum()
+    sampled_names = np.random.choice(probabilities_table['Event'], size=num_events, p=p_norm)
     table_events = pd.DataFrame({'Event': sampled_names})
 
     # Add the info for the deletions
@@ -2481,8 +2533,8 @@ def create_VCF(df, reference_fasta, chromosome_length):
     # Now, for each row, fetch the sequence using pysam and write to 'Sequence' column
     for index, row in df.iterrows():
         # Ensure 'beg' and 'Seq_end' are valid integers
-        beg = int(row['beg'])
-        end = int(row['Seq_end'])
+        beg = safe_int_val(row['beg'], 1000)
+        end = safe_int_val(row['Seq_end'], beg + 100)
         
         # Fetch the sequence using pysam
         with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -2548,7 +2600,7 @@ def create_VCF(df, reference_fasta, chromosome_length):
             filter = '.'
 
             # Convert 'beg' to an integer (position at which to fetch the reference sequence)
-            beg = int(row['beg'])
+            beg = safe_int_val(row['beg'], 1000)
 
             # Fetch the sequence using pysam from the reference genome at the position 'beg'
             with pysam.FastaFile(reference_fasta) as fasta_file:

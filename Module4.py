@@ -22,7 +22,7 @@ import argparse
 import pandas as pd
 import warnings
 from GAPI import formats
-from functions import write_fasta
+from functions import write_fasta, safe_int_val
 
 # Remove FutureWarnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -49,11 +49,13 @@ def main(file1, file2, fasta_file):
 
     # Apply events and calculate haplotype coordinates on the fly
     for index, row in sorted_df.iterrows():
-        ref_key = row['#ref'].strip()
-        beg = int(row['beg'])
-        event = row['Event_Type']
-        length = int(row['Length']) if pd.notna(row['Length']) else 0
-        seq_insertion = row['Sequence_Insertion'] if 'Sequence_Insertion' in row and pd.notna(row['Sequence_Insertion']) else ''
+        if pd.isna(row['#ref']) or str(row['#ref']).strip() in ['', 'nan', 'None']:
+            continue
+        ref_key = str(row['#ref']).strip()
+        beg = safe_int_val(row['beg'], 0)
+        event = str(row['Event_Type']) if pd.notna(row['Event_Type']) else ''
+        length = safe_int_val(row.get('Length', 0))
+        seq_insertion = str(row['Sequence_Insertion']) if 'Sequence_Insertion' in row and pd.notna(row['Sequence_Insertion']) and row['Sequence_Insertion'] != 'NA' else ''
 
         if ref_key not in fasta_reader.seqDict:
             continue
