@@ -414,8 +414,8 @@ def genome_wide_distribution(chromosome_length, bin_size, table):
     # Bin size
     binSize = bin_size  # this is 1MB
     
-    # Generate the list of chromosomes  (assuming 'chr1' to 'chr22')
-    chromosomes = [f'chr{i}' for i in range(1, 23)]
+    # Use chromosomes present in chromosome_length file
+    chromosomes = list(chr_length.keys())
     
     # Create genomic bins based on chromosome lengths and bin size
     bins = gRanges.makeGenomicBins(chr_length, binSize, chromosomes)[::-1]
@@ -2413,8 +2413,9 @@ def classify_mutations_in_bins(chromosome_length, bin_size, merged_df):
     # Get chromosome lengths
     chr_length = formats.chrom_lengths_index(chromosome_length)
 
-    # Generate bins for the genome, including 'chrX'
-    bins = gRanges.makeGenomicBins(chr_length, bin_size, [f'chr{i}' for i in range(1, 23)] + ['chrX'])[::-1]
+    # Generate bins for the genome dynamically based on chromosome_length file
+    chromosomes = list(chr_length.keys())
+    bins = gRanges.makeGenomicBins(chr_length, bin_size, chromosomes)[::-1]
 
     # Classify mutations in each window of the genomic bins
     res_table = mut_bins(bins, merged_df)
