@@ -51,6 +51,17 @@ def TD_filter(df):
     df = df.drop(columns=['TD_Status'])
     return df
 
+def safe_int_val(val, default=0):
+    if pd.isna(val) or val is None:
+        return default
+    s = str(val).strip().strip("'\"")
+    if s.upper() in ('NA', 'NONE', 'NAN', '', 'N/A', '<NA>'):
+        return default
+    try:
+        return int(float(s))
+    except (ValueError, TypeError):
+        return default
+
 def extract_conformation_data(row):
     for_val, trun_val, rev_val, del_val, dup_val = (np.nan, np.nan, np.nan, np.nan, np.nan)
     conformation = str(row['Conformation'])
@@ -896,7 +907,7 @@ def orphan_insertions(row, reference_fasta):
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0 
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # Transduction
@@ -906,7 +917,7 @@ def orphan_insertions(row, reference_fasta):
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -935,12 +946,12 @@ def Alu__FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0 
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -969,12 +980,12 @@ def L1__FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0 
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1003,12 +1014,12 @@ def L1__TD_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0 
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1042,19 +1053,19 @@ def L1__FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fasta):
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0 
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # Poly A 2
     if pd.isna(row['PolyA_Length_2']) or row['PolyA_Length_2'] == 'NA':
         polyA_length2 = 0 
     else:
-        polyA_length2 = int(row['PolyA_Length_2'])
+        polyA_length2 = safe_int_val(row['PolyA_Length_2'])
     polyA2 = 'A' * polyA_length2
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1097,12 +1108,12 @@ def L1__TRUN_REV_BLUNT_FOR_POLYA_insertions(row, dict_consensus, reference_fasta
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0 
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1140,14 +1151,14 @@ def L1__TRUN_REV_BLUNT_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, refere
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0 
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # Poly A 2
     if pd.isna(row['PolyA_Length_2']) or row['PolyA_Length_2'] == 'NA':
         polyA_length2 = 0 
     else:
-        polyA_length2 = int(row['PolyA_Length_2'])
+        polyA_length2 = safe_int_val(row['PolyA_Length_2'])
     polyA2 = 'A' * polyA_length2
 
     # Transduction
@@ -1157,7 +1168,7 @@ def L1__TRUN_REV_BLUNT_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, refere
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1202,12 +1213,12 @@ def L1__TRUN_REV_DUP_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1252,14 +1263,14 @@ def L1__TRUN_REV_DUP_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, referenc
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # Poly A 2
     if pd.isna(row['PolyA_Length_2']) or row['PolyA_Length_2'] == 'NA':
         polyA_length2 = 0 
     else:
-        polyA_length2 = int(row['PolyA_Length_2'])
+        polyA_length2 = safe_int_val(row['PolyA_Length_2'])
     polyA2 = 'A' * polyA_length2
 
     # Transduction
@@ -1269,7 +1280,7 @@ def L1__TRUN_REV_DUP_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, referenc
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1308,12 +1319,12 @@ def L1__TRUN_REV_DEL_FOR_POLYA_insertions(row, dict_consensus, reference_fasta):
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1352,14 +1363,14 @@ def L1__TRUN_REV_DEL_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, referenc
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # Poly A 2
     if pd.isna(row['PolyA_Length_2']) or row['PolyA_Length_2'] == 'NA':
         polyA_length2 = 0 
     else:
-        polyA_length2 = int(row['PolyA_Length_2'])
+        polyA_length2 = safe_int_val(row['PolyA_Length_2'])
     polyA2 = 'A' * polyA_length2
 
     # Transduction
@@ -1369,7 +1380,7 @@ def L1__TRUN_REV_DEL_FOR_POLYA_TD_POLYA_insertions(row, dict_consensus, referenc
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1388,12 +1399,12 @@ def SVA__SINE_R_POLYA_insertions(row, dict_consensus, reference_fasta):
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1412,12 +1423,12 @@ def SVA__VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fasta, SVA_
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1425,7 +1436,7 @@ def SVA__VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fasta, SVA_
 
     # VNTR
     random_row = random.choice(SVA_VNTR_list).strip()  # Select random VNTR motif
-    sva_vntr_length = int(row['SVA_VNTR_Length'])  # Desired length of VNTR
+    sva_vntr_length = safe_int_val(row['SVA_VNTR_Length'])  # Desired length of VNTR
     
     # Generate VNTR sequence taking desired bases
     # In case VNTR is smaller than desired bases, repeat and wrap around the selected sequence
@@ -1448,12 +1459,12 @@ def SVA__Alu_like_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fa
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1461,7 +1472,7 @@ def SVA__Alu_like_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fa
 
     # VNTR
     random_row = random.choice(SVA_VNTR_list).strip()  # Select random VNTR motif
-    sva_vntr_length = int(row['SVA_VNTR_Length'])  # Desired length of VNTR
+    sva_vntr_length = safe_int_val(row['SVA_VNTR_Length'])  # Desired length of VNTR
     
     # Generate VNTR sequence taking desired bases
     # In case VNTR is smaller than desired bases, repeat and wrap around the selected sequence
@@ -1484,12 +1495,12 @@ def SVA__MAST2_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fasta
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1497,7 +1508,7 @@ def SVA__MAST2_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fasta
 
     # VNTR
     random_row = random.choice(SVA_VNTR_list).strip()  # Select random VNTR motif
-    sva_vntr_length = int(row['SVA_VNTR_Length'])  # Desired length of VNTR
+    sva_vntr_length = safe_int_val(row['SVA_VNTR_Length'])  # Desired length of VNTR
     
     # Generate VNTR sequence taking desired bases
     # In case VNTR is smaller than desired bases, repeat and wrap around the selected sequence
@@ -1520,12 +1531,12 @@ def SVA__TD_MAST2_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fa
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1533,7 +1544,7 @@ def SVA__TD_MAST2_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, reference_fa
 
     # VNTR
     random_row = random.choice(SVA_VNTR_list).strip()  # Select random VNTR motif
-    sva_vntr_length = int(row['SVA_VNTR_Length'])  # Desired length of VNTR
+    sva_vntr_length = safe_int_val(row['SVA_VNTR_Length'])  # Desired length of VNTR
     
     # Generate VNTR sequence taking desired bases
     # In case VNTR is smaller than desired bases, repeat and wrap around the selected sequence
@@ -1560,19 +1571,19 @@ def SVA__SINE_R_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fasta):
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # Poly A 2
     if pd.isna(row['PolyA_Length_2']) or row['PolyA_Length_2'] == 'NA':
         polyA_length2 = 0 
     else:
-        polyA_length2 = int(row['PolyA_Length_2'])
+        polyA_length2 = safe_int_val(row['PolyA_Length_2'])
     polyA2 = 'A' * polyA_length2
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1597,19 +1608,19 @@ def SVA__VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fa
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # Poly A 2
     if pd.isna(row['PolyA_Length_2']) or row['PolyA_Length_2'] == 'NA':
         polyA_length2 = 0 
     else:
-        polyA_length2 = int(row['PolyA_Length_2'])
+        polyA_length2 = safe_int_val(row['PolyA_Length_2'])
     polyA2 = 'A' * polyA_length2
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1617,7 +1628,7 @@ def SVA__VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consensus, reference_fa
 
     # VNTR
     random_row = random.choice(SVA_VNTR_list).strip()  # Select random VNTR motif
-    sva_vntr_length = int(row['SVA_VNTR_Length'])  # Desired length of VNTR
+    sva_vntr_length = safe_int_val(row['SVA_VNTR_Length'])  # Desired length of VNTR
     
     # Generate VNTR sequence taking desired bases
     # In case VNTR is smaller than desired bases, repeat and wrap around the selected sequence
@@ -1645,19 +1656,19 @@ def SVA__Alu_like_VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consensus, ref
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # Poly A 2
     if pd.isna(row['PolyA_Length_2']) or row['PolyA_Length_2'] == 'NA':
         polyA_length2 = 0 
     else:
-        polyA_length2 = int(row['PolyA_Length_2'])
+        polyA_length2 = safe_int_val(row['PolyA_Length_2'])
     polyA2 = 'A' * polyA_length2
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1665,7 +1676,7 @@ def SVA__Alu_like_VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consensus, ref
 
     # VNTR
     random_row = random.choice(SVA_VNTR_list).strip()  # Select random VNTR motif
-    sva_vntr_length = int(row['SVA_VNTR_Length'])  # Desired length of VNTR
+    sva_vntr_length = safe_int_val(row['SVA_VNTR_Length'])  # Desired length of VNTR
     
     # Generate VNTR sequence taking desired bases
     # In case VNTR is smaller than desired bases, repeat and wrap around the selected sequence
@@ -1693,19 +1704,19 @@ def SVA__MAST2_VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consensus, refere
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # Poly A 2
     if pd.isna(row['PolyA_Length_2']) or row['PolyA_Length_2'] == 'NA':
         polyA_length2 = 0 
     else:
-        polyA_length2 = int(row['PolyA_Length_2'])
+        polyA_length2 = safe_int_val(row['PolyA_Length_2'])
     polyA2 = 'A' * polyA_length2
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1713,7 +1724,7 @@ def SVA__MAST2_VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consensus, refere
 
     # VNTR
     random_row = random.choice(SVA_VNTR_list).strip()  # Select random VNTR motif
-    sva_vntr_length = int(row['SVA_VNTR_Length'])  # Desired length of VNTR
+    sva_vntr_length = safe_int_val(row['SVA_VNTR_Length'])  # Desired length of VNTR
     
     # Generate VNTR sequence taking desired bases
     # In case VNTR is smaller than desired bases, repeat and wrap around the selected sequence
@@ -1741,12 +1752,12 @@ def SVA__Hexamer_Alu_like_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, refe
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1754,7 +1765,7 @@ def SVA__Hexamer_Alu_like_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, refe
 
     # VNTR
     random_row = random.choice(SVA_VNTR_list).strip()  # Select random VNTR motif
-    sva_vntr_length = int(row['SVA_VNTR_Length'])  # Desired length of VNTR
+    sva_vntr_length = safe_int_val(row['SVA_VNTR_Length'])  # Desired length of VNTR
     
     # Generate VNTR sequence taking desired bases
     # In case VNTR is smaller than desired bases, repeat and wrap around the selected sequence
@@ -1765,7 +1776,7 @@ def SVA__Hexamer_Alu_like_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, refe
 
     # Hexamer
     hexamer = 'CCCTCT'
-    sva_hexamer_length = int(row['SVA_Hexamer'])  # Desired length of hexamer
+    sva_hexamer_length = safe_int_val(row['SVA_Hexamer'])  # Desired length of hexamer
     # Repeat the hexamer until we exceed or match the required length, then slice to get the exact length
     hexamer_seq = hexamer * (sva_hexamer_length // 6) + hexamer[:sva_hexamer_length % 6]
 
@@ -1783,12 +1794,12 @@ def SVA__TD_Hexamer_Alu_like_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, r
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1796,7 +1807,7 @@ def SVA__TD_Hexamer_Alu_like_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, r
 
     # VNTR
     random_row = random.choice(SVA_VNTR_list).strip()  # Select random VNTR motif
-    sva_vntr_length = int(row['SVA_VNTR_Length'])  # Desired length of VNTR
+    sva_vntr_length = safe_int_val(row['SVA_VNTR_Length'])  # Desired length of VNTR
     
     # Generate VNTR sequence taking desired bases
     # In case VNTR is smaller than desired bases, repeat and wrap around the selected sequence
@@ -1807,7 +1818,7 @@ def SVA__TD_Hexamer_Alu_like_VNTR_SINE_R_POLYA_insertions(row, dict_consensus, r
 
     # Hexamer
     hexamer = 'CCCTCT'
-    sva_hexamer_length = int(row['SVA_Hexamer'])  # Desired length of hexamer
+    sva_hexamer_length = safe_int_val(row['SVA_Hexamer'])  # Desired length of hexamer
     # Repeat the hexamer until we exceed or match the required length, then slice to get the exact length
     hexamer_seq = hexamer * (sva_hexamer_length // 6) + hexamer[:sva_hexamer_length % 6]
 
@@ -1830,19 +1841,19 @@ def SVA__Hexamer_Alu_like_VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consen
     if pd.isna(row['PolyA_Length_1']) or row['PolyA_Length_1'] == 'NA':
         polyA_length1 = 0
     else:
-        polyA_length1 = int(row['PolyA_Length_1'])
+        polyA_length1 = safe_int_val(row['PolyA_Length_1'])
     polyA1 = 'A' * polyA_length1
 
     # Poly A 2
     if pd.isna(row['PolyA_Length_2']) or row['PolyA_Length_2'] == 'NA':
         polyA_length2 = 0 
     else:
-        polyA_length2 = int(row['PolyA_Length_2'])
+        polyA_length2 = safe_int_val(row['PolyA_Length_2'])
     polyA2 = 'A' * polyA_length2
 
     # TSD
     beg = int(row['beg'])
-    tsd_len = int(row['TSD_Length'])
+    tsd_len = safe_int_val(row['TSD_Length'])
     start_tsd = beg - tsd_len
     # Fetch a sequence using pysam
     with pysam.FastaFile(reference_fasta) as fasta_file:
@@ -1850,7 +1861,7 @@ def SVA__Hexamer_Alu_like_VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consen
 
     # VNTR
     random_row = random.choice(SVA_VNTR_list).strip()  # Select random VNTR motif
-    sva_vntr_length = int(row['SVA_VNTR_Length'])  # Desired length of VNTR
+    sva_vntr_length = safe_int_val(row['SVA_VNTR_Length'])  # Desired length of VNTR
     
     # Generate VNTR sequence taking desired bases
     # In case VNTR is smaller than desired bases, repeat and wrap around the selected sequence
@@ -1861,7 +1872,7 @@ def SVA__Hexamer_Alu_like_VNTR_SINE_R_POLYA_TD_POLYA_insertions(row, dict_consen
 
     # Hexamer
     hexamer = 'CCCTCT'
-    sva_hexamer_length = int(row['SVA_Hexamer'])  # Desired length of hexamer
+    sva_hexamer_length = safe_int_val(row['SVA_Hexamer'])  # Desired length of hexamer
     # Repeat the hexamer until we exceed or match the required length, then slice to get the exact length
     hexamer_seq = hexamer * (sva_hexamer_length // 6) + hexamer[:sva_hexamer_length % 6]
 
@@ -2079,9 +2090,8 @@ def generate_hexamer_seq(row):
     if pd.notna(row['FAM_N']) and 'SVA' in row['FAM_N'] and pd.notna(row['CONFORMATION']) and 'Hexamer' in row['CONFORMATION']:
         hexamer = 'CCCTCT'
         try:
-            # Assuming HEXAMER_LEN is a column with the desired hexamer length
-            sva_hexamer_length = int(row['HEXAMER_LEN'])  # Desired length of hexamer
-            # Generate the hexamer sequence
+            # Assuming HEXAMER_LEN is a column with the desired hexamer length            
+            sva_hexamer_length = safe_int_val(row['HEXAMER_LEN'])  # Desired length of hexamer
             hexamer_seq = hexamer * (sva_hexamer_length // 6) + hexamer[:sva_hexamer_length % 6]
             return hexamer_seq
         except (ValueError, TypeError):
@@ -2094,7 +2104,7 @@ def generate_tsd_seq(row, reference_fasta):
     if pd.notna(row['beg']) and pd.notna(row['TSD_LEN']):
         try:
             beg = int(row['beg'])
-            tsd_len = int(row['TSD_LEN'])
+            tsd_len = safe_int_val(row['TSD_LEN'])
             start_tsd = beg - tsd_len
 
             # Fetch the sequence from the reference FASTA file using pysam
@@ -2144,8 +2154,8 @@ def generate_orphan_seq(row, reference_fasta):
 # Function to generate POLYA_LEN column
 def generate_polya_len(row):
     # Remove the decimal by converting the value to an integer before adding to the string
-    poly_a_len_1 = str(int(row['PolyA_Length_1'])) if pd.notna(row['PolyA_Length_1']) else ''
-    poly_a_len_2 = str(int(row['PolyA_Length_2'])) if pd.notna(row['PolyA_Length_2']) else ''
+    poly_a_len_1 = str(safe_int_val(row['PolyA_Length_1'])) if pd.notna(row['PolyA_Length_1']) else ''
+    poly_a_len_2 = str(safe_int_val(row['PolyA_Length_2'])) if pd.notna(row['PolyA_Length_2']) else ''
     
     if poly_a_len_1 and poly_a_len_2:
         return poly_a_len_1 + ',' + poly_a_len_2
@@ -2159,8 +2169,8 @@ def generate_polya_seq(row):
     strand = row['STRAND'] if pd.notna(row['STRAND']) else '+'
     
     # Determine the PolyA sequences
-    seq_1 = 'A' * int(row['PolyA_Length_1']) if pd.notna(row['PolyA_Length_1']) else ''
-    seq_2 = 'A' * int(row['PolyA_Length_2']) if pd.notna(row['PolyA_Length_2']) else ''
+    seq_1 = 'A' * safe_int_val(row['PolyA_Length_1']) if pd.notna(row['PolyA_Length_1']) else ''
+    seq_2 = 'A' * safe_int_val(row['PolyA_Length_2']) if pd.notna(row['PolyA_Length_2']) else ''
     
     if strand == '-':
         seq_1 = seq_1.replace('A', 'T') if seq_1 else ''
