@@ -11,7 +11,7 @@ include { SVMODELLER_MODULE1     } from './modules/local/svmodeller/module1/main
 include { SVMODELLER_MODULE2     } from './modules/local/svmodeller/module2/main'
 include { SVMODELLER_MODULE3     } from './modules/local/svmodeller/module3/main'
 include { SVMODELLER_MODULE4     } from './modules/local/svmodeller/module4/main'
-include { SVMODELLER_MODULE5     } from './modules/local/svmodeller/module5/main'
+include { SVMODELLER_MODULE5     } from './subworkflows/local/svmodeller/module5/main'
 include { GUNZIP                 } from './modules/nf-core/gunzip/main'
 include { SAMTOOLS_FAIDX         } from './modules/nf-core/samtools/faidx/main'
 include { logColours             } from './subworkflows/nf-core/utils_nfcore_pipeline/main'
