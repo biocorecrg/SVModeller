@@ -26,7 +26,7 @@
 ```mermaid
 graph TD
     VCF_IN[Input VCF Insertions] --> M1[Module 1: Distribution Analysis]
-    M1 --> DIST[Features & Probabilities TSVs]
+    M1 --> DIST["Features & Probabilities TSVs"]
     DIST --> M2[Module 2: Generate Insertion Events]
     REF_FA[Reference Genome FASTA] --> M2
     M2 --> INS_TAB[Insertions Table TSV]
@@ -42,7 +42,7 @@ graph TD
 
     MOD_FA --> M5[Module 5: Read Simulation & BAM Alignment]
     REF_FA --> M5
-    M5 --> BAM[Simulated BAM & FastQ Reads]
+    M5 --> BAM["Simulated BAM & FastQ Reads"]
 ```
 
 ---
