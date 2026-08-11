@@ -193,17 +193,21 @@ workflow {
     if (!params.vcf_deletions)  { error "Parameter --vcf_deletions is required!" }
     if (!params.ref_fasta)      { error "Parameter --ref_fasta is required!" }
     if (!params.consensus)      { error "Parameter --consensus is required!" }
+    if (!params.source_l1)      { error "Parameter --source_l1 is required!" }
+    if (!params.source_sva)     { error "Parameter --source_sva is required!" }
+    if (!params.motifs)         { error "Parameter --motifs is required!" }
+    if (!params.sva_vntr)       { error "Parameter --sva_vntr is required!" }
 
     // Channel preparation
-    ch_vcf_insertions = Channel.fromPath(params.vcf_insertions).map { file -> [ [ id:'svmodeller' ], file ] }
-    ch_vcf_deletions  = Channel.fromPath(params.vcf_deletions).map  { file -> [ [ id:'svmodeller' ], file ] }
-    ch_ref_fasta      = Channel.fromPath(params.ref_fasta).map      { file -> [ [ id:'svmodeller' ], file ] }
-    ch_consensus      = Channel.fromPath(params.consensus).map      { file -> [ [ id:'svmodeller' ], file ] }
+    ch_vcf_insertions = Channel.fromPath(params.vcf_insertions).map { file -> [ [ id:file.simpleName ], file ] }
+    ch_vcf_deletions  = Channel.fromPath(params.vcf_deletions).map  { file -> [ [ id:file.simpleName ], file ] }
+    ch_ref_fasta      = Channel.fromPath(params.ref_fasta).map      { file -> [ [ id:file.simpleName ], file ] }
+    ch_consensus      = Channel.fromPath(params.consensus).map      { file -> [ [ id:file.simpleName ], file ] }
 
-    ch_source_l1      = params.source_l1 ? Channel.fromPath(params.source_l1).map { file -> [ [ id:'svmodeller' ], file ] } : Channel.fromPath("$projectDir/test_data/source_loci_LINE1.tsv").map { file -> [ [ id:'svmodeller' ], file ] }
-    ch_source_sva     = params.source_sva ? Channel.fromPath(params.source_sva).map { file -> [ [ id:'svmodeller' ], file ] } : Channel.fromPath("$projectDir/test_data/source_loci_SVA.tsv").map { file -> [ [ id:'svmodeller' ], file ] }
-    ch_motifs         = params.motifs ? Channel.fromPath(params.motifs).map { file -> [ [ id:'svmodeller' ], file ] } : Channel.fromPath("$projectDir/test_data/VNTR_with_start_position.txt").map { file -> [ [ id:'svmodeller' ], file ] }
-    ch_sva_vntr       = params.sva_vntr ? Channel.fromPath(params.sva_vntr).map { file -> [ [ id:'svmodeller' ], file ] } : Channel.fromPath("$projectDir/test_data/SVA_VNTR_Motifs.txt").map { file -> [ [ id:'svmodeller' ], file ] }
+    ch_source_l1      = Channel.fromPath(params.source_l1).map      { file -> [ [ id:file.simpleName ], file ] }
+    ch_source_sva     = Channel.fromPath(params.source_sva).map     { file -> [ [ id:file.simpleName ], file ] }
+    ch_motifs         = Channel.fromPath(params.motifs).map         { file -> [ [ id:file.simpleName ], file ] }
+    ch_sva_vntr       = Channel.fromPath(params.sva_vntr).map       { file -> [ [ id:file.simpleName ], file ] }
 
     SVMODELLER (
         ch_vcf_insertions,
