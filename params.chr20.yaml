@@ -24,4 +24,3 @@ bin_size: 1000000
 outdir: "results_chr20"
 publish_dir_mode: "copy"
 slack_url: ""
-SLACK_URL: ""
