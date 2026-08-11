@@ -1,20 +1,20 @@
 # SVModeller Pipeline Parameters - chr20 test dataset
 #=======================================================
 
-# Input Files (Required)
-vcf_insertions: "svmodeller_test_data/svmodeller_input/VCF_Insertions.chr20.vcf.gz"
-vcf_deletions:  "svmodeller_test_data/svmodeller_input/VCF_Deletions.chr20.vcf.gz"
-chr_length:     "svmodeller_test_data/svmodeller_input/hs1.chrom.sizes.txt"
-ref_fasta:      "svmodeller_test_data/svmodeller_input/chm13v2.0.chr20.fa.gz"
-consensus:      "svmodeller_test_data/svmodeller_input/consensus_sequences_complete.fa"
+# Input Files (Required) - from svmodeller_test_data/pipeline_inputs/
+vcf_insertions: "svmodeller_test_data/pipeline_inputs/VCF_Insertions.chr20.vcf.gz"
+vcf_deletions:  "svmodeller_test_data/pipeline_inputs/VCF_Deletions.chr20.vcf.gz"
+chr_length:     "svmodeller_test_data/pipeline_inputs/hs1.chrom.sizes.txt"
+ref_fasta:      "svmodeller_test_data/pipeline_inputs/chm13v2.0.chr20.fa.gz"
+consensus:      "svmodeller_test_data/pipeline_inputs/consensus_sequences_complete.fa"
 
 # Input Files (Optional)
 # Leave number_events empty so Module 1 probabilities feed into Module 2
 number_events: ""
-source_l1:     "svmodeller_test_data/svmodeller_input/source_loci_LINE1_chr20.tsv.gz"
-source_sva:    "svmodeller_test_data/svmodeller_input/source_loci_SVA_chr20.tsv.gz"
-motifs:        "svmodeller_test_data/svmodeller_input/VNTR_with_start_position_chr20.tsv.gz"
-sva_vntr:      "svmodeller_test_data/svmodeller_input/SVA_VNTR_Motifs_chr20.tsv.gz"
+source_l1:     "svmodeller_test_data/pipeline_inputs/source_loci_LINE1_chr20.tsv.gz"
+source_sva:    "svmodeller_test_data/pipeline_inputs/source_loci_SVA_chr20.tsv.gz"
+motifs:        "svmodeller_test_data/pipeline_inputs/VNTR_with_start_position_chr20.tsv.gz"
+sva_vntr:      "svmodeller_test_data/pipeline_inputs/SVA_VNTR_Motifs_chr20.tsv.gz"
 
 # Simulation Settings
 num_events: 1000
