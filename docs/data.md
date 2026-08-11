@@ -1,8 +1,10 @@
-# Reference Datasets & Zenodo Repositories
-
-[Home](index.html) | [Installation](installation.html) | [Modules](modules.html)
-
 ---
+layout: default
+title: Data Formats
+nav_order: 4
+---
+
+# Reference Datasets & Zenodo Repositories
 
 Pre-computed distribution sets, motif lists, model profiles, and consensus sequences trained on 1,019 long-read sequencing samples from the 1000 Genomes Project are publicly available on Zenodo.
 

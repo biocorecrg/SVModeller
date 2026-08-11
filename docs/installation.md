@@ -1,8 +1,10 @@
-# Installation Guide
-
-[Home](index.html) | [Modules](modules.html) | [Data](data.html)
-
 ---
+layout: default
+title: Installation & Running
+nav_order: 2
+---
+
+# Installation Guide
 
 ## 1. Docker Installation (Recommended)
 

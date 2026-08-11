@@ -1,3 +1,9 @@
+---
+layout: default
+title: Home
+nav_order: 1
+---
+
 # SVModeller Documentation
 
 **SVModeller** is a computational simulator designed to create synthetic human haplotypes containing embedded structural variants (SVs). The simulator has been trained on an extensive catalogue of curated polymorphic SVs identified across 1,019 samples from the 1000 Genomes Project sequenced with Oxford Nanopore long-read technology.

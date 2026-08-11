@@ -1,8 +1,10 @@
-# Module Reference Guide
-
-[Home](index.html) | [Installation](installation.html) | [Data](data.html)
-
 ---
+layout: default
+title: Modules Reference
+nav_order: 3
+---
+
+# Module Reference Guide
 
 ## Module 1: Distribution Analysis
 

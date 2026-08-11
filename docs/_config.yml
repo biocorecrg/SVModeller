@@ -1,6 +1,17 @@
 title: SVModeller
 description: A computational tool to simulate synthetic human haplotypes containing embedded structural variants (SV)
-theme: jekyll-theme-cayman
-show_downloads: true
-github:
-  is_project_page: true
+remote_theme: just-the-docs/just-the-docs
+
+# Search configuration
+search_enabled: true
+search_tokenizer_separator: /[\s\-]+/
+
+# Navigation settings
+nav_sort: page_order
+
+# GitHub Settings
+gh_edit_link: true
+gh_edit_link_text: "Edit this page on GitHub"
+gh_edit_repository: "https://github.com/biocorecrg/SVModeller"
+gh_edit_branch: "main"
+gh_edit_view_mode: "tree"
