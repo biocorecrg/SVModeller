@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Installation Guide
 
 ## 1. Docker Installation (Recommended)

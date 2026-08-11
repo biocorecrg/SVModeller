@@ -1,0 +1,3 @@
+title: SVModeller
+description: A computational tool to simulate synthetic human haplotypes containing embedded structural variants (SV)
+remote_theme: carlosperate/jekyll-theme-rtd@v1.4.0

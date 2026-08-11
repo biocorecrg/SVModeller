@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Module Reference Guide
 
 ## Module 1: Distribution Analysis
