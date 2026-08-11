@@ -1,9 +1,3 @@
----
-layout: default
-title: Modules Reference
-nav_order: 3
----
-
 # Module Reference Guide
 
 ## Module 1: Distribution Analysis

@@ -1,9 +1,3 @@
----
-layout: default
-title: Installation & Running
-nav_order: 2
----
-
 # Installation Guide
 
 ## 1. Docker Installation (Recommended)

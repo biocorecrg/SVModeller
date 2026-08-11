@@ -1,9 +1,3 @@
----
-layout: default
-title: Home
-nav_order: 1
----
-
 # SVModeller Documentation
 
 **SVModeller** is a computational simulator designed to create synthetic human haplotypes containing embedded structural variants (SVs). The simulator has been trained on an extensive catalogue of curated polymorphic SVs identified across 1,019 samples from the 1000 Genomes Project sequenced with Oxford Nanopore long-read technology.
@@ -21,10 +15,10 @@ nav_order: 1
 
 ## Documentation Sections
 
-1. [Installation Guide](installation.html): How to set up SVModeller using Docker, Conda, or Pip.
-2. [Module Reference Guide](modules.html): Comprehensive parameter breakdown, input/output files, and sample commands for Modules 1 through 5.
-3. [Running as a Nextflow Pipeline](installation.html#4-running-as-a-nextflow-pipeline): Guide on executing the end-to-end pipeline.
-4. [Data & Reference Sets](data.html): Access pre-calculated model distributions and reference datasets on Zenodo.
+1. [Installation Guide](installation.md): How to set up SVModeller using Docker, Conda, or Pip.
+2. [Module Reference Guide](modules.md): Comprehensive parameter breakdown, input/output files, and sample commands for Modules 1 through 5.
+3. [Running as a Nextflow Pipeline](installation.md#4-running-as-a-nextflow-pipeline): Guide on executing the end-to-end pipeline.
+4. [Data & Reference Sets](data.md): Access pre-calculated model distributions and reference datasets on Zenodo.
 
 ---
 
