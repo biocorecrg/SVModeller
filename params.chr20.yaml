@@ -17,7 +17,7 @@ bin_size:   1000000
 
 # Module 5 - Read Simulation
 # sim_method options: qshmm | errhmm | sample
-method_file:      "svmodeller_test_data/pipeline_inputs/QSHMM-RSII.model"
+# method_file: not set — using the model bundled in the container (/usr/local/data/QSHMM-RSII.model)
 sim_method:       "qshmm"
 coverage:         30
 allele_frequency: 0.5

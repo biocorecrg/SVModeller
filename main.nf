@@ -229,7 +229,7 @@ workflow {
     if (!params.source_sva)       { error "Parameter --source_sva is required!" }
     if (!params.motifs)           { error "Parameter --motifs is required!" }
     if (!params.sva_vntr)         { error "Parameter --sva_vntr is required!" }
-    if (!params.method_file)            { error "Parameter --method_file is required!" }
+    if (!params.method_file)            { log.warn "Parameter --method_file not set; PBSIM3 will use the model bundled in the container." }
     if (!params.sim_method)             { error "Parameter --sim_method is required!" }
     if (params.coverage == null)        { error "Parameter --coverage is required!" }
     if (params.allele_frequency == null){ error "Parameter --allele_frequency is required!" }
@@ -244,7 +244,9 @@ workflow {
     ch_source_sva     = fromStringToNFCoreSeqs(params.source_sva, true).map     { meta, files -> [ meta, files[0] ] }
     ch_motifs         = fromStringToNFCoreSeqs(params.motifs, true).map         { meta, files -> [ meta, files[0] ] }
     ch_sva_vntr       = fromStringToNFCoreSeqs(params.sva_vntr, true).map       { meta, files -> [ meta, files[0] ] }
-    ch_method_file    = fromStringToNFCoreSeqs(params.method_file, true).map    { meta, files -> [ meta, files[0] ] }
+    ch_method_file    = params.method_file
+        ? fromStringToNFCoreSeqs(params.method_file, true).map { meta, files -> [ meta, files[0] ] }
+        : Channel.of( [ [id: 'no_model'], [] ] )
 
     SVMODELLER (
         ch_vcf_insertions,

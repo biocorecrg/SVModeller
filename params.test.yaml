@@ -16,7 +16,7 @@ num_events: 10
 bin_size:   1000000
 
 # Module 5 - Read Simulation
-method_file:      "test_data/QSHMM-RSII.model"
+# method_file: not set — using the model bundled in the container (/usr/local/data/QSHMM-RSII.model)
 sim_method:       "qshmm"
 coverage:         10
 allele_frequency: 0.5

@@ -21,7 +21,11 @@ bin_size:   1000000
 # sim_method:  qshmm | errhmm | sample
 # coverage:    total sequencing depth
 # allele_frequency: fraction of reads from the modified genome (0.0 – 1.0)
-method_file:       ""
+# method_file: optional path to a custom PBSIM3 model file
+# If omitted, the model bundled in the container is used:
+#   /usr/local/data/QSHMM-RSII.model  (for qshmm)
+#   /usr/local/data/ERRHMM-RSII.model (for errhmm)
+# method_file:     ""
 sim_method:        "qshmm"
 coverage:          30
 allele_frequency:  0.5
