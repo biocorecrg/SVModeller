@@ -25,7 +25,7 @@ RUN micromamba install -y -n base -f /tmp/environment.yml && \
 WORKDIR /app
 
 # Clone GAPI repository directly into /app/GAPI
-RUN git clone https://github.com/biocorecrg/GAPI.git /app/GAPI
+RUN git clone --depth 1 https://github.com/biocorecrg/GAPI.git /app/GAPI
 
 # Copy repository content
 COPY --chown=$MAMBA_USER:$MAMBA_USER . /app
