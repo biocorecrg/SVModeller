@@ -17,7 +17,4 @@ sva_vntr:      "svmodeller_test_data/pipeline_inputs/SVA_VNTR_Motifs_chr20.tsv.g
 num_events: 1000
 bin_size: 1000000
 
-# Output Settings
-outdir: "results_chr20"
-publish_dir_mode: "copy"
 slack_url: ""

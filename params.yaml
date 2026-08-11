@@ -4,7 +4,6 @@
 # Input Files (Required)
 vcf_insertions: ""
 vcf_deletions: ""
-chr_length: ""
 ref_fasta: ""
 consensus: ""
 
@@ -17,7 +16,4 @@ sva_vntr: ""
 num_events: 10
 bin_size: 1000000
 
-# Output & Messaging Settings
-outdir: "results"
-publish_dir_mode: "copy"
 slack_url: ""
