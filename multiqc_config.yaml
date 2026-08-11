@@ -1,0 +1,30 @@
+title: "SVModeller - pipeline"
+subtitle: "Simulation of synthetic human haplotypes with structural variants"
+intro_text: >
+  <div style="background-color: #e0f7fa; border: 2px solid #00acc1; border-radius: 8px; padding: 20px; margin: 10px 0;">
+    <p style="margin-top: 0;">This report was generated using the <strong>SVModeller</strong> pipeline.</p>
+  </div>
+
+custom_logo: 'logo_svmodeller.png'
+custom_logo_url: 'https://github.com/biocorecrg/SVModeller'
+custom_logo_title: 'SVModeller'
+
+disable_version_detection: true
+
+module_order:
+ - alnQC:
+        name: "Alignment QC"
+        info: 'This section shows alignment quality statistics'
+ - methods-description:
+        name: "Methods description"
+        info: 'This section shows methods description and citations'
+
+quiet: true
+
+report_section_order:
+  alnQC:
+    order: -2000
+  all:
+    order: -1000
+  methods-description:
+    order: -998

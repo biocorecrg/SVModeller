@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+nextflow.enable.moduleBinaries = true
 
 /*
  * SVModeller Pipeline
@@ -17,6 +18,11 @@ include { SAMTOOLS_FAIDX         } from './modules/nf-core/samtools/faidx/main'
 include { logColours             } from './subworkflows/nf-core/utils_nfcore_pipeline/main'
 include { end_messaged ; fromStringToNFCoreSeqs } from './BioNextflow3/global_functions.nf'
 include { emptyMeta              } from './BioNextflow3/global_functions.nf'
+include { BAM2STATS              } from './BioNextflow3/modules/local/bam2stats/main'
+include { JOIN_BAM_STATS         } from './BioNextflow3/modules/local/stats/join_bam_stats/main'
+include { METHODS_SECTION        } from './BioNextflow3/modules/local/methods/main'
+include { MULTIQC                } from './modules/nf-core/multiqc/main'
+include { make_yaml_methods ; makeSoftwareVersionYamlFile ; add_report_header_info ; fromParToValueFileChannel } from './BioNextflow3/global_functions.nf'
 
 workflow {
 
@@ -77,7 +83,11 @@ workflow {
     // Channel preparation
     ch_vcf_insertions = fromStringToNFCoreSeqs(params.vcf_insertions, true).map { meta, files -> [meta, files[0]] }
     ch_vcf_deletions = fromStringToNFCoreSeqs(params.vcf_deletions, true).map { meta, files -> [meta, files[0]] }
-    ch_ref_fasta = fromStringToNFCoreSeqs(params.ref_fasta, true).map { meta, files -> [meta, files[0]] }
+    ch_ref_fasta = fromStringToNFCoreSeqs(params.ref_fasta, true).map { meta, files ->
+        def new_meta = meta.clone()
+        new_meta.id = meta.id.replaceAll(/\.fa(\.gz)?$/, '')
+        [new_meta, files[0]]
+    }
     ch_consensus = fromStringToNFCoreSeqs(params.consensus, true).map { meta, files -> [meta, files[0]] }
 
     ch_source_l1 = fromStringToNFCoreSeqs(params.source_l1, true).map { meta, files -> [meta, files[0]] }
@@ -105,6 +115,55 @@ workflow {
         params.allele_frequency,
     )
 
+    // BAM2STATS
+    bam2stats_out = BAM2STATS(SVMODELLER.out.bam, SVMODELLER.out.ref_fasta.collect())
+    join_bam_stats = JOIN_BAM_STATS(bam2stats_out.stats.map { it[1] }.collect()).join_stats
+
+    // Gather versions
+    ch_versions = Channel.topic("versions")
+    ch_collated_versions = makeSoftwareVersionYamlFile(ch_versions)
+
+    // Methods section
+    module_paths = channel.fromPath(["${projectDir}/modules", "${projectDir}/BioNextflow3/modules/local"]).collect()
+
+    def mypars = [:]
+    mypars.sim_method = params.sim_method
+    mypars.coverage = params.coverage
+    mypars.allele_frequency = params.allele_frequency
+    def yaml_methods = make_yaml_methods(mypars, "progPars")
+    meth_file = channel.of(yaml_methods).collectFile(name: 'methods.yaml', newLine: true)
+
+    template = channel.fromPath("${projectDir}/template.yml", checkIfExists: true)
+
+    METHODS_SECTION(module_paths, meth_file, template, ch_collated_versions)
+
+    // Mix MultiQC data
+    multiqc_data = channel.of()
+    multiqc_data = multiqc_data.mix(join_bam_stats)
+    multiqc_data = multiqc_data.mix(METHODS_SECTION.out).collect()
+    multiqc_data = multiqc_data.mix(ch_collated_versions)
+
+    // Run MultiQC
+    def header_map = [:]
+    header_map.project = "SVModeller"
+    def multiconfig = add_report_header_info("${projectDir}/multiqc_config.yaml", header_map)
+    def logo = fromParToValueFileChannel("${projectDir}/logo_svmodeller.png")
+
+    multiqc_files = multiqc_data
+        .collect()
+        .map { files ->
+            def flat_files = files.flatten()
+            def sorted_files = flat_files.sort { a, b -> a?.name <=> b?.name }
+            [['id': "all"], sorted_files]
+        }
+        .combine(multiconfig)
+        .combine(logo)
+        .map { meta, files, config, lg ->
+            [meta, files, config, lg, [], []]
+        }
+
+    multiout = MULTIQC(multiqc_files)
+
     publish:
     genome_wide_distribution = SVMODELLER.out.genome_wide_distribution
     insertion_features       = SVMODELLER.out.insertion_features
@@ -115,6 +174,8 @@ workflow {
     sorted_events            = SVMODELLER.out.sorted_events
     bam                      = SVMODELLER.out.bam
     bai                      = SVMODELLER.out.bai
+    report                   = multiout.report
+    report_data              = multiout.data
 
     onComplete:
     end_messaged(params.slack_url)
@@ -174,6 +235,14 @@ output {
         path { meta, file ->
             file >> "module5/${file.name}"
         }
+    }
+    report {
+        mode 'copy'
+        path "report"
+    }
+    report_data {
+        mode 'copy'
+        path "report"
     }
 }
 
@@ -248,8 +317,12 @@ workflow SVMODELLER {
     )
 
     // Module 5: Simulate long reads from reference & modified genomes, align, merge
+    ch_modified_genome_aligned_meta = SVMODELLER_MODULE4.out.modified_genome
+        .combine(ch_ref_fasta_decompressed)
+        .map { meta_mod, fasta_mod, meta_ref, fasta_ref -> [ meta_ref, fasta_mod ] }
+
     SVMODELLER_MODULE5(
-        SVMODELLER_MODULE4.out.modified_genome,
+        ch_modified_genome_aligned_meta,
         ch_ref_fasta_decompressed,
         method_file,
         sim_method,
@@ -267,6 +340,7 @@ workflow SVMODELLER {
     sorted_events = SVMODELLER_MODULE4.out.sorted_events
     bam = SVMODELLER_MODULE5.out.bam
     bai = SVMODELLER_MODULE5.out.bai
+    ref_fasta = ch_ref_fasta_decompressed
 
     emit:
     genome_wide_distribution
@@ -278,6 +352,7 @@ workflow SVMODELLER {
     sorted_events
     bam
     bai
+    ref_fasta
 }
 
 def helpMessage(type) {

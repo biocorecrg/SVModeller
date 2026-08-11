@@ -160,3 +160,21 @@ Removes standard VCF INFO fields while retaining event length information.
 ```bash
 Filter_VCF_information.py input.vcf output_filtered.vcf
 ```
+
+---
+
+## MultiQC & Methods Section Reporting
+
+The Nextflow pipeline automatically integrates **MultiQC** to compile and present alignment quality statistics along with an auto-generated methods citation section.
+
+### BAM Statistics (BAM2STATS)
+After Module 5 completes read simulation and alignment, the pipeline runs the `BAM2STATS` module to calculate sequencing alignment and quality statistics. These stats are merged via `JOIN_BAM_STATS` and displayed as the **Alignment QC** table in the MultiQC report.
+
+### Auto-Generated Methods Section
+The pipeline extracts the parameters used for execution and utilizes the `METHODS_SECTION` module to automatically compile a methods description including references/citations for the tools used (`pbsim3`, `minimap2`, `samtools`, and `svmodeller`).
+
+This results in a `methods_description_mqc.yml` file which MultiQC renders under the **Methods description** section.
+
+### Outputs
+- `results/report/multiqc_report.html`: The interactive HTML report summarizing the pipeline run, alignment QC stats, and citations.
+- `results/report/multiqc_data/`: The directory containing raw statistics tables and structured JSON data.
