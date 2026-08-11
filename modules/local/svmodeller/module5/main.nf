@@ -3,8 +3,8 @@ process SVMODELLER_MODULE5 {
     label 'process_high'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'ghcr.io/biocorecrg/svmodeller:sha-7132366' :
-        'ghcr.io/biocorecrg/svmodeller:sha-7132366' }"
+        'ghcr.io/biocorecrg/svmodeller:sha-09ab4c7' :
+        'ghcr.io/biocorecrg/svmodeller:sha-09ab4c7' }"
 
     input:
     tuple val(meta),  path(modified_genome)
