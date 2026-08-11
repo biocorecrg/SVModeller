@@ -3,8 +3,8 @@ process SVMODELLER_MODULE1 {
     label 'process_single'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'ghcr.io/biocorecrg/svmodeller:0.5.0' :
-        'ghcr.io/biocorecrg/svmodeller:0.5.0' }"
+        'ghcr.io/biocorecrg/svmodeller:sha-2098462' :
+        'ghcr.io/biocorecrg/svmodeller:sha-2098462' }"
 
     input:
     tuple val(meta), path(vcf)
