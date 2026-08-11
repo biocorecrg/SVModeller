@@ -20,20 +20,15 @@ process SVMODELLER_MODULE4 {
     task.ext.when == null || task.ext.when
 
     script:
-    def args           = task.ext.args ?: ''
-    def del_arg        = deletions_table ? "--file2 ${deletions_table}" : ''
-    // GAPI FASTA.read now supports .gz, but keep explicit gunzip as fallback safety
-    def ref_fasta_arg  = ref_fasta.name.endsWith('.gz') ? ref_fasta.baseName : ref_fasta.name
-    def decompress_ref = ref_fasta.name.endsWith('.gz') ? "gunzip -k ${ref_fasta}" : ''
+    def args    = task.ext.args ?: ''
+    def del_arg = deletions_table ? "--file2 ${deletions_table}" : ''
     """
     mkdir -p \$PWD/tmp
     export MPLCONFIGDIR=\$PWD/tmp
 
-    ${decompress_ref}
-
     Module4.py \\
         --file1 ${insertions_table} \\
-        --fasta_file ${ref_fasta_arg} \\
+        --fasta_file ${ref_fasta} \\
         ${del_arg} \\
         ${args}
 

@@ -27,16 +27,11 @@ process SVMODELLER_MODULE2 {
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args ?: ''
+    def args           = task.ext.args ?: ''
     def num_events_arg = num_events ? "--num_events ${num_events}" : ''
-    // pysam requires uncompressed FASTA (or bgzipped+indexed); gunzip if needed
-    def ref_fasta_arg  = ref_fasta.name.endsWith('.gz') ? ref_fasta.baseName : ref_fasta.name
-    def decompress_ref = ref_fasta.name.endsWith('.gz') ? "gunzip -k ${ref_fasta}" : ''
     """
     mkdir -p \$PWD/tmp
     export MPLCONFIGDIR=\$PWD/tmp
-
-    ${decompress_ref}
 
     Module2.py \\
         --consensus_path ${consensus} \\
@@ -47,7 +42,7 @@ process SVMODELLER_MODULE2 {
         --source_SVA_path ${source_sva} \\
         --motifs_path ${motifs} \\
         --SVA_VNTR_path ${sva_vntr} \\
-        --reference_fasta_path ${ref_fasta_arg} \\
+        --reference_fasta_path ${ref_fasta} \\
         --chromosome_length_path ${chr_length} \\
         ${num_events_arg} \\
         ${args}

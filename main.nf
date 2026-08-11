@@ -11,6 +11,7 @@ include { SVMODELLER_MODULE1 } from './modules/local/svmodeller/module1/main'
 include { SVMODELLER_MODULE2 } from './modules/local/svmodeller/module2/main'
 include { SVMODELLER_MODULE3 } from './modules/local/svmodeller/module3/main'
 include { SVMODELLER_MODULE4 } from './modules/local/svmodeller/module4/main'
+include { GUNZIP             } from './modules/nf-core/gunzip/main'
 include { logColours          } from './subworkflows/nf-core/utils_nfcore_pipeline/main'
 
 def helpMessage(type) {
@@ -102,6 +103,19 @@ workflow SVMODELLER {
     bin_size
 
     main:
+    // Decompress ref_fasta with the nf-core GUNZIP module if gzipped
+    ch_ref_fasta_ready = ref_fasta
+        .branch {
+            meta, fasta ->
+            compressed:   fasta.name.endsWith('.gz')
+            uncompressed: true
+        }
+
+    GUNZIP(ch_ref_fasta_ready.compressed)
+
+    ch_ref_fasta_decompressed = ch_ref_fasta_ready.uncompressed
+        .mix(GUNZIP.out.gunzip)
+
     // Module 1: Build insertion model
     SVMODELLER_MODULE1(
         vcf_insertions,
@@ -122,7 +136,7 @@ workflow SVMODELLER {
         source_sva,
         motifs,
         sva_vntr,
-        ref_fasta,
+        ch_ref_fasta_decompressed,
         chr_length,
         num_events
     )
@@ -138,7 +152,7 @@ workflow SVMODELLER {
     // Module 4: Embed SVs into reference genome
     SVMODELLER_MODULE4(
         SVMODELLER_MODULE2.out.insertions_table,
-        ref_fasta,
+        ch_ref_fasta_decompressed,
         SVMODELLER_MODULE3.out.deletions_table
     )
 
