@@ -3,6 +3,15 @@
   "homePage": "",
   "repos": {
     "https://github.com/nf-core/modules.git": {
+      "modules": {
+        "nf-core": {
+          "gunzip": {
+            "branch": "master",
+            "git_sha": "0902eac3012baaf4f9ab6513c8c55acc9353c96c",
+            "installed_by": ["modules"]
+          }
+        }
+      },
       "subworkflows": {
         "nf-core": {
           "utils_nfcore_pipeline": {

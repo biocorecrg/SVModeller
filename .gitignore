@@ -17,3 +17,4 @@ record.json
 .nextflow*
 work/
 results/
+GAPI/
