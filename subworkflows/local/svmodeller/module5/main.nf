@@ -1,9 +1,9 @@
 include { PBSIM3                          } from '../../../../BioNextflow3/modules/local/pbsim3/main'
 include { PBSIM3         as PBSIM3_MOD   } from '../../../../BioNextflow3/modules/local/pbsim3/main'
-include { MINIMAP2_ALIGN                  } from '../../../nf-core/minimap2/align/main'
-include { MINIMAP2_ALIGN as MINIMAP2_ALIGN_MOD } from '../../../nf-core/minimap2/align/main'
-include { SAMTOOLS_MERGE                  } from '../../../nf-core/samtools/merge/main'
-include { SAMTOOLS_INDEX                  } from '../../../nf-core/samtools/index/main'
+include { MINIMAP2_ALIGN                  } from '../../../../modules/nf-core/minimap2/align/main'
+include { MINIMAP2_ALIGN as MINIMAP2_ALIGN_MOD } from '../../../../modules/nf-core/minimap2/align/main'
+include { SAMTOOLS_MERGE                  } from '../../../../modules/nf-core/samtools/merge/main'
+include { SAMTOOLS_INDEX                  } from '../../../../modules/nf-core/samtools/index/main'
 
 workflow SVMODELLER_MODULE5 {
     take:
