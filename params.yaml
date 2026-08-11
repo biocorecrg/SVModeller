@@ -8,8 +8,6 @@ chr_length: ""
 ref_fasta: ""
 consensus: ""
 
-# Input Files (Optional)
-number_events: ""
 source_l1: ""
 source_sva: ""
 motifs: ""
