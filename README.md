@@ -223,7 +223,7 @@ For reproducibility and compatibility, it is recommended to use these exact vers
 
 
 ## Developers
-SVModeller has been developed by Ismael Vera-Munoz (orcid.org/0009-0009-2860-378X) at the Repetitive DNA Biology (REPBIO) Lab at the Centre for Genomic Regulation (CRG) (2024-2026).
+SVModeller has been developed by Ismael Vera-Munoz (orcid.org/0009-0009-2860-378X) at the Repetitive DNA Biology (REPBIO) Lab at the Centre for Genomic Regulation (CRG) (2024-2026). The new refactoring and setting up of the new pipeline was done by Luca Cozzuto (https://orcid.org/0000-0003-3194-8892)
 
 ## License
 SVModeller is distributed under the AGPL-3.0. Consult the [LICENSE](https://github.com/biocorecrg/SVModeller/blob/main/LICENSE) file for more information.
