@@ -3,17 +3,27 @@
 
 # Input Files (Required)
 vcf_insertions: ""
-vcf_deletions: ""
-ref_fasta: ""
-consensus: ""
+vcf_deletions:  ""
+ref_fasta:      ""
+consensus:      ""
 
-source_l1: ""
-source_sva: ""
-motifs: ""
-sva_vntr: ""
+source_l1:      ""
+source_sva:     ""
+motifs:         ""
+sva_vntr:       ""
 
 # Simulation Settings
 num_events: 10
-bin_size: 1000000
+bin_size:   1000000
+
+# Module 5 - Read Simulation
+# method_file: path to the PBSIM3 model file (.qshmm, .errhmm, or sample FASTQ)
+# sim_method:  qshmm | errhmm | sample
+# coverage:    total sequencing depth
+# allele_frequency: fraction of reads from the modified genome (0.0 – 1.0)
+method_file:       ""
+sim_method:        "qshmm"
+coverage:          30
+allele_frequency:  0.5
 
 slack_url: ""

@@ -11,9 +11,11 @@ include { SVMODELLER_MODULE1 } from './modules/local/svmodeller/module1/main'
 include { SVMODELLER_MODULE2 } from './modules/local/svmodeller/module2/main'
 include { SVMODELLER_MODULE3 } from './modules/local/svmodeller/module3/main'
 include { SVMODELLER_MODULE4 } from './modules/local/svmodeller/module4/main'
+include { SVMODELLER_MODULE5 } from './modules/local/svmodeller/module5/main'
 include { GUNZIP             } from './modules/nf-core/gunzip/main'
 include { SAMTOOLS_FAIDX     } from './modules/nf-core/samtools/faidx/main'
 include { logColours          } from './subworkflows/nf-core/utils_nfcore_pipeline/main'
+include { end_messaged; fromStringToNFCoreSeqs } from './BioNextflow3/global_functions.nf'
 
 def helpMessage(type) {
     def c = logColours(params.monochrome_logs ?: false)
@@ -43,6 +45,12 @@ ${c.green}sva_vntr${c.reset}                  : ${params.sva_vntr ?: 'Default pa
 ${c.green}num_events${c.reset}                : ${params.num_events}
 ${c.green}bin_size${c.reset}                  : ${params.bin_size}
 ${c.green}outdir${c.reset}                    : ${params.outdir}
+${c.bold}Module 5 Parameters${c.reset}
+----------------------------------------------------
+${c.green}method_file${c.reset}               : ${params.method_file}
+${c.green}sim_method${c.reset}                : ${params.sim_method}
+${c.green}coverage${c.reset}                  : ${params.coverage}
+${c.green}allele_frequency${c.reset}          : ${params.allele_frequency}
 =====================================================================
 """
     } else if (type == "help") {
@@ -76,6 +84,12 @@ ${c.bold}${c.yellow}OPTIONAL PARAMETERS:${c.reset}
   ${c.bold}${c.green}--sva_vntr${c.reset}              : ${c.cyan}<path>${c.reset}  ${c.gray}# Text file with SVA VNTR motifs${c.reset}
   ${c.bold}${c.green}--num_events${c.reset}            : ${c.cyan}<int>${c.reset}   ${c.gray}# Number of events to simulate (default: 10)${c.reset}
   ${c.bold}${c.green}--bin_size${c.reset}              : ${c.cyan}<int>${c.reset}   ${c.gray}# Size of genomic bins in bp (default: 1000000)${c.reset}
+
+${c.bold}${c.yellow}MODULE 5 PARAMETERS:${c.reset}
+  ${c.bold}${c.green}--method_file${c.reset}           : ${c.cyan}<path>${c.reset}  ${c.gray}# PBSIM3 model file (.qshmm, .errhmm, or sample)${c.reset}
+  ${c.bold}${c.green}--sim_method${c.reset}            : ${c.cyan}<str>${c.reset}   ${c.gray}# Simulation method: qshmm | errhmm | sample${c.reset}
+  ${c.bold}${c.green}--coverage${c.reset}              : ${c.cyan}<int>${c.reset}   ${c.gray}# Total sequencing coverage depth${c.reset}
+  ${c.bold}${c.green}--allele_frequency${c.reset}      : ${c.cyan}<float>${c.reset} ${c.gray}# Fraction of reads from the modified genome (0.0-1.0)${c.reset}
   ${c.bold}${c.green}--outdir${c.reset}                : ${c.cyan}<path>${c.reset}  ${c.gray}# Output directory (default: 'results')${c.reset}
 
 =====================================================================
@@ -96,6 +110,10 @@ workflow SVMODELLER {
     sva_vntr
     num_events
     bin_size
+    method_file
+    sim_method
+    coverage
+    allele_frequency
 
     main:
     // Decompress ref_fasta with the nf-core GUNZIP module if gzipped
@@ -153,6 +171,16 @@ workflow SVMODELLER {
         SVMODELLER_MODULE3.out.deletions_table
     )
 
+    // Module 5: Simulate long reads from reference & modified genomes, align, merge
+    SVMODELLER_MODULE5(
+        SVMODELLER_MODULE4.out.modified_genome,
+        ch_ref_fasta_decompressed,
+        method_file,
+        sim_method,
+        coverage,
+        allele_frequency
+    )
+
     // Assign output channels for publishing
     genome_wide_distribution = SVMODELLER_MODULE1.out.genome_wide_distribution
     insertion_features       = SVMODELLER_MODULE1.out.insertion_features
@@ -161,6 +189,8 @@ workflow SVMODELLER {
     deletions_table          = SVMODELLER_MODULE3.out.deletions_table
     modified_genome          = SVMODELLER_MODULE4.out.modified_genome
     sorted_events            = SVMODELLER_MODULE4.out.sorted_events
+    bam                      = SVMODELLER_MODULE5.out.bam
+    bai                      = SVMODELLER_MODULE5.out.bai
 
     emit:
     genome_wide_distribution
@@ -170,6 +200,8 @@ workflow SVMODELLER {
     deletions_table
     modified_genome
     sorted_events
+    bam
+    bai
 }
 
 workflow {
@@ -188,26 +220,31 @@ workflow {
         exit(1, "Are you making the classical --resume typo? Be careful!!!! ;)")
     }
 
-    // Validate inputs
-    if (!params.vcf_insertions) { error "Parameter --vcf_insertions is required!" }
-    if (!params.vcf_deletions)  { error "Parameter --vcf_deletions is required!" }
-    if (!params.ref_fasta)      { error "Parameter --ref_fasta is required!" }
-    if (!params.consensus)      { error "Parameter --consensus is required!" }
-    if (!params.source_l1)      { error "Parameter --source_l1 is required!" }
-    if (!params.source_sva)     { error "Parameter --source_sva is required!" }
-    if (!params.motifs)         { error "Parameter --motifs is required!" }
-    if (!params.sva_vntr)       { error "Parameter --sva_vntr is required!" }
+    // Validate required inputs
+    if (!params.vcf_insertions)   { error "Parameter --vcf_insertions is required!" }
+    if (!params.vcf_deletions)    { error "Parameter --vcf_deletions is required!" }
+    if (!params.ref_fasta)        { error "Parameter --ref_fasta is required!" }
+    if (!params.consensus)        { error "Parameter --consensus is required!" }
+    if (!params.source_l1)        { error "Parameter --source_l1 is required!" }
+    if (!params.source_sva)       { error "Parameter --source_sva is required!" }
+    if (!params.motifs)           { error "Parameter --motifs is required!" }
+    if (!params.sva_vntr)         { error "Parameter --sva_vntr is required!" }
+    if (!params.method_file)            { error "Parameter --method_file is required!" }
+    if (!params.sim_method)             { error "Parameter --sim_method is required!" }
+    if (params.coverage == null)        { error "Parameter --coverage is required!" }
+    if (params.allele_frequency == null){ error "Parameter --allele_frequency is required!" }
 
     // Channel preparation
-    ch_vcf_insertions = Channel.fromPath(params.vcf_insertions).map { file -> [ [ id:file.simpleName ], file ] }
-    ch_vcf_deletions  = Channel.fromPath(params.vcf_deletions).map  { file -> [ [ id:file.simpleName ], file ] }
-    ch_ref_fasta      = Channel.fromPath(params.ref_fasta).map      { file -> [ [ id:file.simpleName ], file ] }
-    ch_consensus      = Channel.fromPath(params.consensus).map      { file -> [ [ id:file.simpleName ], file ] }
+    ch_vcf_insertions = fromStringToNFCoreSeqs(params.vcf_insertions, true).map { meta, files -> [ meta, files[0] ] }
+    ch_vcf_deletions  = fromStringToNFCoreSeqs(params.vcf_deletions, true).map  { meta, files -> [ meta, files[0] ] }
+    ch_ref_fasta      = fromStringToNFCoreSeqs(params.ref_fasta, true).map      { meta, files -> [ meta, files[0] ] }
+    ch_consensus      = fromStringToNFCoreSeqs(params.consensus, true).map      { meta, files -> [ meta, files[0] ] }
 
-    ch_source_l1      = Channel.fromPath(params.source_l1).map      { file -> [ [ id:file.simpleName ], file ] }
-    ch_source_sva     = Channel.fromPath(params.source_sva).map     { file -> [ [ id:file.simpleName ], file ] }
-    ch_motifs         = Channel.fromPath(params.motifs).map         { file -> [ [ id:file.simpleName ], file ] }
-    ch_sva_vntr       = Channel.fromPath(params.sva_vntr).map       { file -> [ [ id:file.simpleName ], file ] }
+    ch_source_l1      = fromStringToNFCoreSeqs(params.source_l1, true).map      { meta, files -> [ meta, files[0] ] }
+    ch_source_sva     = fromStringToNFCoreSeqs(params.source_sva, true).map     { meta, files -> [ meta, files[0] ] }
+    ch_motifs         = fromStringToNFCoreSeqs(params.motifs, true).map         { meta, files -> [ meta, files[0] ] }
+    ch_sva_vntr       = fromStringToNFCoreSeqs(params.sva_vntr, true).map       { meta, files -> [ meta, files[0] ] }
+    ch_method_file    = fromStringToNFCoreSeqs(params.method_file, true).map    { meta, files -> [ meta, files[0] ] }
 
     SVMODELLER (
         ch_vcf_insertions,
@@ -219,7 +256,11 @@ workflow {
         ch_motifs,
         ch_sva_vntr,
         params.num_events,
-        params.bin_size
+        params.bin_size,
+        ch_method_file,
+        params.sim_method,
+        params.coverage,
+        params.allele_frequency
     )
 
     publish:
@@ -230,6 +271,11 @@ workflow {
     deletions_table          = SVMODELLER.out.deletions_table
     modified_genome          = SVMODELLER.out.modified_genome
     sorted_events            = SVMODELLER.out.sorted_events
+    bam                      = SVMODELLER.out.bam
+    bai                      = SVMODELLER.out.bai
+
+    onComplete:
+    end_messaged(params.slack_url)
 }
 
 output {
@@ -273,6 +319,18 @@ output {
         mode 'copy'
         path { meta, file ->
             file >> "module4/${file.name}"
+        }
+    }
+    bam {
+        mode 'copy'
+        path { meta, file ->
+            file >> "module5/${file.name}"
+        }
+    }
+    bai {
+        mode 'copy'
+        path { meta, file ->
+            file >> "module5/${file.name}"
         }
     }
 }
