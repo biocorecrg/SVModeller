@@ -73,21 +73,3 @@ nextflow run . -profile applecontainer -params-file params.test.yaml -resume
 Developed by **Ismael Vera-Munoz** (orcid.org/0009-0009-2860-378X) at the Repetitive DNA Biology (REPBIO) Lab at the Centre for Genomic Regulation (CRG).
 
 Distributed under the **AGPL-3.0 License**.
-
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: false, theme: 'default' });
-
-  document.addEventListener('DOMContentLoaded', async () => {
-    const elements = document.querySelectorAll('.language-mermaid, pre.mermaid, div.mermaid, .highlighter-rouge.language-mermaid');
-    elements.forEach((el) => {
-      const codeNode = el.querySelector('code') || el;
-      const code = codeNode.textContent.trim();
-      const div = document.createElement('div');
-      div.className = 'mermaid';
-      div.textContent = code;
-      el.replaceWith(div);
-    });
-    await mermaid.run();
-  });
-</script>
