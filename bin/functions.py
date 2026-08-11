@@ -656,7 +656,7 @@ def add_beg_end_columns(df_insertions, genome_wide_distribution_df):
         selected_row = select_random_row(probabilities)
 
         # Fill the values in the first DataFrame
-        df_insertions.at[index, '#ref'] = genome_wide_distribution.at[selected_row, 'window']
+        df_insertions.at[index, '#ref'] = str(genome_wide_distribution.at[selected_row, 'window']).split(':')[0]
         df_insertions.at[index, 'beg'] = np.random.randint(genome_wide_distribution.at[selected_row, 'beg'], genome_wide_distribution.at[selected_row, 'end'])
 
     return df_insertions
