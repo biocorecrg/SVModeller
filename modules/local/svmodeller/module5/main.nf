@@ -19,17 +19,16 @@ workflow SVMODELLER_MODULE5 {
     def ref_depth = (coverage * (1.0 - allele_frequency)) as Integer
     def mod_depth = (coverage * allele_frequency) as Integer
 
-    // Broadcast method_file path for combining
-    ch_mf = method_file.map { meta2, mf -> mf }
+    ch_mf = method_file.map { it[1] }
 
     // 1. Simulate reads from the reference genome
     ch_ref_sim = ref_fasta
         .combine(ch_mf)
-        .map { meta, genome, mf -> [ [ id: "${meta.id}_ref" ], genome, [ id: 'method' ], mf ] }
+        .map { it -> [ [ id: "${it[0].id}_ref" ], it[1], [ id: 'method' ], it[2] ?: [] ] }
 
     PBSIM3(
-        ch_ref_sim.map { meta, genome, meta2, mf -> [ meta, genome ] },
-        ch_ref_sim.map { meta, genome, meta2, mf -> [ meta2, mf  ] },
+        ch_ref_sim.map { it -> [ it[0], it[1] ] },
+        ch_ref_sim.map { it -> [ it[2], it[3] ] },
         sim_method,
         ref_depth
     )
@@ -37,11 +36,11 @@ workflow SVMODELLER_MODULE5 {
     // 2. Simulate reads from the modified genome
     ch_mod_sim = modified_genome
         .combine(ch_mf)
-        .map { meta, genome, mf -> [ [ id: "${meta.id}_mod" ], genome, [ id: 'method' ], mf ] }
+        .map { it -> [ [ id: "${it[0].id}_mod" ], it[1], [ id: 'method' ], it[2] ?: [] ] }
 
     PBSIM3_MOD(
-        ch_mod_sim.map { meta, genome, meta2, mf -> [ meta, genome ] },
-        ch_mod_sim.map { meta, genome, meta2, mf -> [ meta2, mf  ] },
+        ch_mod_sim.map { it -> [ it[0], it[1] ] },
+        ch_mod_sim.map { it -> [ it[2], it[3] ] },
         sim_method,
         mod_depth
     )
@@ -69,14 +68,16 @@ workflow SVMODELLER_MODULE5 {
     // 5. Collect all BAMs, strip _ref/_mod suffix, group by sample ID
     ch_all_bams = MINIMAP2_ALIGN.out.bam
         .mix(MINIMAP2_ALIGN_MOD.out.bam)
-        .map { meta, bam ->
+        .map { it ->
+            def meta = it[0]
+            def bam = it[1]
             def sample_id = meta.id.replaceAll(/_ref$|_mod$/, '')
             [ [ id: sample_id ], bam ]
         }
         .groupTuple()
 
     // SAMTOOLS_MERGE: tuple val(meta), path(bams), path(indices) + reference tuple
-    ch_merge_input = ch_all_bams.map { meta, bams -> [ meta, bams, [] ] }
+    ch_merge_input = ch_all_bams.map { it -> [ it[0], it[1], [] ] }
 
     SAMTOOLS_MERGE(
         ch_merge_input,
