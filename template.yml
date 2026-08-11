@@ -1,0 +1,18 @@
+header: "<div class='alert alert-info'>"
+
+svmodeller: "<p>Structural variant simulation was performed using <strong>SVModeller</strong> version #svmodeller.</p>"
+
+pbsim3: "<p>Long read sequencing simulation was performed using <strong>PBSIM3</strong> version #pbsim3 #[CIT].</p>"
+
+minimap2: "<p>Reads were aligned using <strong>Minimap2</strong> version #minimap2 #[CIT].</p>"
+
+samtools: "<p>BAM files were sorted, merged, and indexed using <strong>Samtools</strong> version #samtools #[CIT].</p>"
+
+tail: |
+  </br></br>
+  <h4>Citations</h4>
+  <ol>
+    <li>#pbsim3</li>
+    <li>#minimap2</li>
+    <li>#samtools</li>
+  </ol></div>
