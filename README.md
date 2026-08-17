@@ -204,6 +204,42 @@ pip install -r requirements.txt
 
 Note: Ensure `pbsim3` (>=3.0.4), `minimap2` (>=2.22), and `samtools` (>=1.19.2) are installed and available in your system `PATH` for Module 5.
 
+## Running as a Nextflow Pipeline
+
+SVModeller includes an end-to-end **Nextflow pipeline** to automate all five modules. It supports multiple container engines (Docker, Singularity, Apple Silicon/Lima) and automatically compiles comprehensive quality metrics.
+
+### 1. Requirements
+- Nextflow (`!>=25.10.4`)
+- Docker, Singularity, or Apple Silicon container engine configuration.
+
+### 2. Execution Examples
+
+#### Using Docker (Standard):
+```bash
+nextflow run . \
+    -profile standard \
+    --vcf_insertions test_data/VCF_Insertions.vcf.gz \
+    --vcf_deletions test_data/VCF_Deletions.vcf.gz \
+    --ref_fasta test_data/reference.fasta.gz \
+    --consensus test_data/consensus.fa.gz \
+    --coverage 30 \
+    --allele_frequency 0.5 \
+    --outdir results
+```
+
+#### On Apple Silicon (macOS):
+```bash
+nextflow run . -profile applecontainer -params-file params.test.yaml -resume
+```
+
+### 3. Pipeline Output & Reporting
+
+The Nextflow pipeline automatically aggregates statistics and versions from the run into an interactive **MultiQC** report:
+
+* **Alignment Quality Control:** Computes mapping quality metrics from the simulated BAM files via the `BAM2STATS` and `JOIN_BAM_STATS` modules, displaying them under the **Alignment QC** section.
+* **Auto-generated Methods & Citations:** Dynamically builds a methods description block (rendering under **Methods description**) citing all tools utilized in the run (`pbsim3`, `minimap2`, `samtools`, and `svmodeller`).
+* **MultiQC Report Output:** Located at `results/report/multiqc_report.html`.
+
 ## Required software
 SVModeller has been developed and tested with the following software versions:
 -	Python 3.10
