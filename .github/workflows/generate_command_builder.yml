@@ -23,11 +23,14 @@ jobs:
           docker run --rm -v "$(pwd):/workspace" \
             ghcr.io/biocorecrg/nf_command_builder:latest \
             /workspace -o /workspace/docs/command_builder.html -t "SVModeller"
+          echo -e "---\nlayout: default\ntitle: Command Builder\n---\n" > docs/command_builder.md
+          cat docs/command_builder.html >> docs/command_builder.md
+          rm docs/command_builder.html
 
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/command_builder.html
+          git add docs/command_builder.md
           git diff-index --quiet HEAD || git commit -m "Auto-generate interactive HTML command builder [skip ci]"
           git push

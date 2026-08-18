@@ -1,3 +1,8 @@
+---
+layout: default
+title: Command Builder
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
