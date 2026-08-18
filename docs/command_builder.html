@@ -293,8 +293,17 @@
                 { id: 'vcf_deletions', label: 'VCF Deletions', type: 'text', default: 'test_data/VCF_Deletions.vcf.gz' },
                 { id: 'ref_fasta', label: 'Reference FASTA', type: 'text', default: 'test_data/reference.fasta.gz' },
                 { id: 'consensus', label: 'Consensus Sequences FASTA', type: 'text', default: 'test_data/consensus.fa.gz' },
+                { id: 'source_l1', label: 'LINE1 Source Loci', type: 'text', default: 'test_data/source_loci_LINE1.tsv' },
+                { id: 'source_sva', label: 'SVA Source Loci', type: 'text', default: 'test_data/source_loci_SVA.tsv' },
+                { id: 'motifs', label: 'Motifs List', type: 'text', default: 'test_data/VNTR_with_start_position.txt' },
+                { id: 'sva_vntr', label: 'SVA VNTR Motifs', type: 'text', default: 'test_data/SVA_VNTR_Motifs.txt' },
+                { id: 'num_events', label: 'Number of Events', type: 'number', default: 10 },
+                { id: 'bin_size', label: 'Bin Size (bp)', type: 'number', default: 1000000 },
+                { id: 'sim_method', label: 'Read Simulation Method', type: 'select', options: ['error_model', 'quality_score', 'training'], default: 'error_model' },
+                { id: 'method_file', label: 'Method Model/FastQ File', type: 'text', default: 'ERRHMM-ONT-HQ.model' },
                 { id: 'coverage', label: 'Target Coverage (X)', type: 'number', default: 30 },
                 { id: 'allele_frequency', label: 'Allele Frequency (AF)', type: 'text', default: '0.5' },
+                { id: 'technology', label: 'Sequencing Technology', type: 'select', options: ['ONT', 'PB', 'HiFi'], default: 'ONT' },
                 { id: 'outdir', label: 'Output Directory', type: 'text', default: 'results' },
                 { id: 'resume', label: 'Resume Execution', type: 'checkbox', default: true, help: 'Enable caching and resume last incomplete run' }
             ],
@@ -437,7 +446,12 @@
                 if (paramsFile.trim() !== '') {
                     cmd += ` -params-file ${paramsFile.trim()}`;
                 } else {
-                    const params = ['vcf_insertions', 'vcf_deletions', 'ref_fasta', 'consensus', 'coverage', 'allele_frequency', 'outdir'];
+                    const params = [
+                        'vcf_insertions', 'vcf_deletions', 'ref_fasta', 'consensus',
+                        'source_l1', 'source_sva', 'motifs', 'sva_vntr',
+                        'num_events', 'bin_size', 'sim_method', 'method_file',
+                        'coverage', 'allele_frequency', 'technology', 'outdir'
+                    ];
                     params.forEach(p => {
                         const val = document.getElementById(p).value;
                         if (val !== '') {
