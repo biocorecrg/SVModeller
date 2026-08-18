@@ -192,7 +192,7 @@ title: Command Builder
             </div>
             <pre><code id="commandOutput"></code></pre>
         </div>
-
+        
         <div class="output-card">
             <div class="output-header">
                 <span class="output-title">params.yaml Content</span>
@@ -268,17 +268,17 @@ title: Command Builder
         function generateCommand() {
             let cmd = `nextflow run ${pipelinePath}`;
             let yaml = '';
-
+            
             const profileEl = document.getElementById('profile');
             if (profileEl && profileEl.value) {
                 cmd += ` -profile ${profileEl.value}`;
             }
-
+            
             const workDirEl = document.getElementById('work_dir');
             if (workDirEl && workDirEl.value.trim() !== '') {
                 cmd += ` -w ${workDirEl.value.trim()}`;
             }
-
+            
             const resumeEl = document.getElementById('resume');
             if (resumeEl && resumeEl.checked) {
                 cmd += ' -resume';
@@ -295,7 +295,7 @@ title: Command Builder
 
             inputsData.forEach(field => {
                 if (['profile', 'work_dir', 'paramsFile', 'resume', 'bg'].includes(field.id)) return;
-
+                
                 const el = document.getElementById(field.id);
                 if (!el) return;
 
@@ -317,7 +317,7 @@ title: Command Builder
                     }
                 }
             });
-
+            
             document.getElementById('commandOutput').textContent = cmd;
             document.getElementById('yamlOutput').textContent = yaml;
         }
@@ -329,7 +329,7 @@ title: Command Builder
                 setTimeout(() => btn.textContent = 'Copy', 2000);
             });
         });
-
+        
         document.getElementById('copyYamlBtn').addEventListener('click', () => {
             navigator.clipboard.writeText(document.getElementById('yamlOutput').textContent).then(() => {
                 const btn = document.getElementById('copyYamlBtn');
