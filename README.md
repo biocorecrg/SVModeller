@@ -204,6 +204,9 @@ pip install -r requirements.txt
 
 Note: Ensure `pbsim3` (>=3.0.4), `minimap2` (>=2.22), and `samtools` (>=1.19.2) are installed and available in your system `PATH` for Module 5.
 
+### Interactive Command Builder
+To quickly construct commands for both the Nextflow pipeline and standalone modules, open the interactive [Command Builder](command_builder.html) in your browser.
+
 ## Running as a Nextflow Pipeline
 
 SVModeller includes an end-to-end **Nextflow pipeline** to automate all five modules. It supports multiple container engines (Docker, Singularity, Apple Silicon/Lima) and automatically compiles comprehensive quality metrics.

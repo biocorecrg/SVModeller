@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVModeller Command Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-primary: #0ea5e9;
+            --accent-hover: #0284c7;
+            --border-color: #e2e8f0;
+            --code-bg: #1e293b;
+            --code-text: #f8fafc;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .help-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: -0.25rem;
+        }
+
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 0.625rem 0.875rem;
+            font-size: 0.875rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        select:focus, input[type="text"]:focus, input[type="number"]:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+        }
+
+        /* Toggle Button Group */
+        .toggle-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            background-color: var(--bg-primary);
+            padding: 0.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 640px) {
+            .toggle-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .toggle-btn.active {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Module Select Grid */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .module-btn {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s ease;
+        }
+
+        .module-btn.active {
+            background-color: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        /* Output Command Box */
+        .output-card {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            box-shadow: var(--shadow-md);
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.75rem;
+        }
+
+        .output-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .copy-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--code-text);
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-x: auto;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SVModeller Command Builder</h1>
+            <p class="subtitle">Quickly configure and construct your Nextflow pipeline or standalone module commands.</p>
+        </header>
+
+        <!-- Mode Select -->
+        <div class="card">
+            <div class="grid">
+                <div class="form-group full-width">
+                    <label>Execution Mode</label>
+                    <div class="toggle-group" id="modeSelector">
+                        <button class="toggle-btn active" data-mode="nextflow">Nextflow Pipeline</button>
+                        <button class="toggle-btn" data-mode="python-module">Standalone Python Module</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration Inputs -->
+        <div class="card">
+            <div class="grid" id="formInputs">
+                <!-- Inputs generated dynamically based on active mode -->
+            </div>
+        </div>
+
+        <!-- Output Command -->
+        <div class="output-card">
+            <div class="output-header">
+                <span class="output-title">Generated Command</span>
+                <button class="copy-btn" id="copyBtn">Copy Command</button>
+            </div>
+            <pre><code id="commandOutput"># Command will appear here</code></pre>
+        </div>
+    </div>
+
+    <script>
+        const inputsData = {
+            nextflow: [
+                { id: 'profile', label: 'Nextflow Profile', type: 'select', options: ['standard', 'applecontainer', 'test', 'mac'], default: 'standard', help: 'Container profile to use for execution' },
+                { id: 'paramsFile', label: 'Params File (.yaml)', type: 'text', default: '', placeholder: 'params.yaml (Optional)' },
+                { id: 'vcf_insertions', label: 'VCF Insertions', type: 'text', default: 'test_data/VCF_Insertions.vcf.gz' },
+                { id: 'vcf_deletions', label: 'VCF Deletions', type: 'text', default: 'test_data/VCF_Deletions.vcf.gz' },
+                { id: 'ref_fasta', label: 'Reference FASTA', type: 'text', default: 'test_data/reference.fasta.gz' },
+                { id: 'consensus', label: 'Consensus Sequences FASTA', type: 'text', default: 'test_data/consensus.fa.gz' },
+                { id: 'coverage', label: 'Target Coverage (X)', type: 'number', default: 30 },
+                { id: 'allele_frequency', label: 'Allele Frequency (AF)', type: 'text', default: '0.5' },
+                { id: 'outdir', label: 'Output Directory', type: 'text', default: 'results' },
+                { id: 'resume', label: 'Resume Execution', type: 'checkbox', default: true, help: 'Enable caching and resume last incomplete run' }
+            ],
+            'python-module': [
+                { id: 'module', label: 'Select Module', type: 'select', options: ['Module 1 (Distribution Analysis)', 'Module 2 (Insertions Generator)', 'Module 3 (Deletions Generator)', 'Module 4 (Genome Mod)', 'Module 5 (Read Sim)'], default: 'Module 1 (Distribution Analysis)' },
+                // Module 1 options
+                { id: 'm1_file_path', label: 'VCF File Path', type: 'text', default: 'VCF_Insertions.vcf', module: 'Module 1 (Distribution Analysis)' },
+                { id: 'm1_chr_len', label: 'Chromosome Length File', type: 'text', default: 'chr_length.txt', module: 'Module 1 (Distribution Analysis)' },
+                // Module 2 options
+                { id: 'm2_consensus', label: 'Consensus Sequences Path', type: 'text', default: 'consensus_sequences_complete.fa', module: 'Module 2 (Insertions Generator)' },
+                { id: 'm2_probabilities', label: 'Probabilities/Number Table', type: 'text', default: 'Number_events.tsv', module: 'Module 2 (Insertions Generator)' },
+                { id: 'm2_features', label: 'Insertion Features Path', type: 'text', default: 'Insertion_Features.tsv', module: 'Module 2 (Insertions Generator)' },
+                { id: 'm2_genome_wide', label: 'Genome-Wide Distribution Path', type: 'text', default: 'Genome_Wide_Distribution.tsv', module: 'Module 2 (Insertions Generator)' },
+                { id: 'm2_source_l1', label: 'LINE1 Source Loci Path', type: 'text', default: 'source_loci_LINE1.tsv', module: 'Module 2 (Insertions Generator)' },
+                { id: 'm2_source_sva', label: 'SVA Source Loci Path', type: 'text', default: 'source_loci_SVA.tsv', module: 'Module 2 (Insertions Generator)' },
+                { id: 'm2_motifs', label: 'Motifs List Path', type: 'text', default: 'VNTR_with_start_position.txt', module: 'Module 2 (Insertions Generator)' },
+                { id: 'm2_sva_vntr', label: 'SVA VNTR Motifs Path', type: 'text', default: 'SVA_VNTR_Motifs.txt', module: 'Module 2 (Insertions Generator)' },
+                { id: 'm2_ref_fasta', label: 'Reference FASTA Path', type: 'text', default: 'chm13v2.0.fa', module: 'Module 2 (Insertions Generator)' },
+                { id: 'm2_chr_len', label: 'Chromosome Length File', type: 'text', default: 'chr_length.txt', module: 'Module 2 (Insertions Generator)' },
+                { id: 'm2_vcf', label: 'Output VCF', type: 'checkbox', default: true, module: 'Module 2 (Insertions Generator)' },
+                // Module 3 options
+                { id: 'm3_vcf', label: 'VCF Deletions Path', type: 'text', default: 'VCF_Deletions.vcf', module: 'Module 3 (Deletions Generator)' },
+                { id: 'm3_chr_len', label: 'Chromosome Length File', type: 'text', default: 'chr_length.txt', module: 'Module 3 (Deletions Generator)' },
+                { id: 'm3_num_events', label: 'Number of Events', type: 'number', default: 1000, module: 'Module 3 (Deletions Generator)' },
+                { id: 'm3_ref_fasta', label: 'Reference FASTA Path', type: 'text', default: 'chm13v2.0.fa', module: 'Module 3 (Deletions Generator)' },
+                { id: 'm3_vcf_out', label: 'Output VCF', type: 'checkbox', default: true, module: 'Module 3 (Deletions Generator)' },
+                // Module 4 options
+                { id: 'm4_insertions', label: 'Insertions Table (.tsv)', type: 'text', default: 'Insertions_table.tsv', module: 'Module 4 (Genome Mod)' },
+                { id: 'm4_ref_fasta', label: 'Reference FASTA Path', type: 'text', default: 'chm13v2.0.fa', module: 'Module 4 (Genome Mod)' },
+                { id: 'm4_deletions', label: 'Deletions Table (.tsv)', type: 'text', default: 'Deletions_table.tsv', module: 'Module 4 (Genome Mod)' },
+                // Module 5 options
+                { id: 'm5_ref_fasta', label: 'Reference FASTA Path', type: 'text', default: 'chm13v2.0.fa', module: 'Module 5 (Read Sim)' },
+                { id: 'm5_mod_fasta', label: 'Modified Genome Path', type: 'text', default: 'Modified_Reference_Genome.fasta', module: 'Module 5 (Read Sim)' },
+                { id: 'm5_method_file', label: 'Method File (.model / .fastq)', type: 'text', default: 'ERRHMM-ONT-HQ.model', module: 'Module 5 (Read Sim)' },
+                { id: 'm5_method', label: 'Method Type', type: 'select', options: ['error_model', 'quality_score', 'training'], default: 'error_model', module: 'Module 5 (Read Sim)' },
+                { id: 'm5_coverage', label: 'Target Coverage (X)', type: 'number', default: 30, module: 'Module 5 (Read Sim)' },
+                { id: 'm5_af', label: 'Allele Frequency (AF)', type: 'text', default: '0.5', module: 'Module 5 (Read Sim)' },
+                { id: 'm5_outdir', label: 'Output Directory', type: 'text', default: 'BAM_Output', module: 'Module 5 (Read Sim)' },
+                { id: 'm5_tech', label: 'Technology', type: 'select', options: ['ONT', 'PB', 'HiFi'], default: 'ONT', module: 'Module 5 (Read Sim)' },
+                { id: 'm5_threads', label: 'Threads', type: 'number', default: 8, module: 'Module 5 (Read Sim)' }
+            ]
+        };
+
+        let currentMode = 'nextflow';
+
+        function renderInputs() {
+            const container = document.getElementById('formInputs');
+            container.innerHTML = '';
+            const fields = inputsData[currentMode];
+
+            fields.forEach(field => {
+                const formGroup = document.createElement('div');
+                formGroup.className = 'form-group';
+                formGroup.id = `group-${field.id}`;
+
+                // Add module grouping filter if Standalone Mode
+                if (currentMode === 'python-module' && field.module) {
+                    formGroup.setAttribute('data-module', field.module);
+                }
+
+                if (field.type === 'checkbox') {
+                    formGroup.className = 'form-group checkbox-group';
+                    formGroup.innerHTML = `
+                        <input type="checkbox" id="${field.id}" ${field.default ? 'checked' : ''}>
+                        <label for="${field.id}">${field.label}</label>
+                    `;
+                } else {
+                    formGroup.innerHTML = `<label for="${field.id}">${field.label}</label>`;
+
+                    if (field.type === 'select') {
+                        const select = document.createElement('select');
+                        select.id = field.id;
+                        field.options.forEach(opt => {
+                            const option = document.createElement('option');
+                            option.value = opt;
+                            option.textContent = opt;
+                            if (opt === field.default) option.selected = true;
+                            select.appendChild(option);
+                        });
+                        formGroup.appendChild(select);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = field.type;
+                        input.id = field.id;
+                        input.value = field.default;
+                        if (field.placeholder) input.placeholder = field.placeholder;
+                        formGroup.appendChild(input);
+                    }
+                }
+
+                if (field.help) {
+                    const help = document.createElement('span');
+                    help.className = 'help-text';
+                    help.textContent = field.help;
+                    formGroup.appendChild(help);
+                }
+
+                container.appendChild(formGroup);
+            });
+
+            // Listen for changes
+            container.querySelectorAll('input, select').forEach(el => {
+                el.addEventListener('input', generateCommand);
+                el.addEventListener('change', generateCommand);
+            });
+
+            // If standalone python module, handle module specific fields visibility
+            if (currentMode === 'python-module') {
+                const moduleSelect = document.getElementById('module');
+                moduleSelect.addEventListener('change', filterModuleInputs);
+                filterModuleInputs();
+            }
+
+            generateCommand();
+        }
+
+        function filterModuleInputs() {
+            const currentSelectedModule = document.getElementById('module').value;
+            const groups = document.querySelectorAll('[data-module]');
+            groups.forEach(group => {
+                if (group.getAttribute('data-module') === currentSelectedModule) {
+                    group.classList.remove('hidden');
+                } else {
+                    group.classList.add('hidden');
+                }
+            });
+            generateCommand();
+        }
+
+        function generateCommand() {
+            let cmd = '';
+
+            if (currentMode === 'nextflow') {
+                const profile = document.getElementById('profile').value;
+                const paramsFile = document.getElementById('paramsFile').value;
+                const resume = document.getElementById('resume').checked;
+
+                cmd = `nextflow run . -profile ${profile}`;
+
+                if (paramsFile.trim() !== '') {
+                    cmd += ` -params-file ${paramsFile.trim()}`;
+                } else {
+                    const params = ['vcf_insertions', 'vcf_deletions', 'ref_fasta', 'consensus', 'coverage', 'allele_frequency', 'outdir'];
+                    params.forEach(p => {
+                        const val = document.getElementById(p).value;
+                        if (val !== '') {
+                            cmd += ` --${p} ${val}`;
+                        }
+                    });
+                }
+
+                if (resume) {
+                    cmd += ' -resume';
+                }
+            } else {
+                const module = document.getElementById('module').value;
+                if (module.includes('Module 1')) {
+                    const file = document.getElementById('m1_file_path').value;
+                    const chr = document.getElementById('m1_chr_len').value;
+                    cmd = `python3 Module1.py --file_path ${file} --chromosome_length ${chr}`;
+                } else if (module.includes('Module 2')) {
+                    cmd = `python3 Module2.py \\\n` +
+                          `    --consensus_path ${document.getElementById('m2_consensus').value} \\\n` +
+                          `    --probabilities_numbers_path ${document.getElementById('m2_probabilities').value} \\\n` +
+                          `    --insertion_features_path ${document.getElementById('m2_features').value} \\\n` +
+                          `    --genome_wide_path ${document.getElementById('m2_genome_wide').value} \\\n` +
+                          `    --source_L1_path ${document.getElementById('m2_source_l1').value} \\\n` +
+                          `    --source_SVA_path ${document.getElementById('m2_source_sva').value} \\\n` +
+                          `    --motifs_path ${document.getElementById('m2_motifs').value} \\\n` +
+                          `    --SVA_VNTR_path ${document.getElementById('m2_sva_vntr').value} \\\n` +
+                          `    --reference_fasta_path ${document.getElementById('m2_ref_fasta').value} \\\n` +
+                          `    --chromosome_length_path ${document.getElementById('m2_chr_len').value}`;
+                    if (document.getElementById('m2_vcf').checked) {
+                        cmd += ` \\\n    --VCF`;
+                    }
+                } else if (module.includes('Module 3')) {
+                    cmd = `python3 Module3.py \\\n` +
+                          `    --vcf_path ${document.getElementById('m3_vcf').value} \\\n` +
+                          `    --path_chromosome_length ${document.getElementById('m3_chr_len').value} \\\n` +
+                          `    --num_events ${document.getElementById('m3_num_events').value} \\\n` +
+                          `    --reference_fasta_path ${document.getElementById('m3_ref_fasta').value}`;
+                    if (document.getElementById('m3_vcf_out').checked) {
+                        cmd += ` \\\n    --VCF`;
+                    }
+                } else if (module.includes('Module 4')) {
+                    cmd = `python3 Module4.py \\\n` +
+                          `    --file1 ${document.getElementById('m4_insertions').value} \\\n` +
+                          `    --fasta_file ${document.getElementById('m4_ref_fasta').value} \\\n` +
+                          `    --file2 ${document.getElementById('m4_deletions').value}`;
+                } else if (module.includes('Module 5')) {
+                    cmd = `python3 Module5.py \\\n` +
+                          `    --reference_genome ${document.getElementById('m5_ref_fasta').value} \\\n` +
+                          `    --modified_genome ${document.getElementById('m5_mod_fasta').value} \\\n` +
+                          `    --method_file ${document.getElementById('m5_method_file').value} \\\n` +
+                          `    --method ${document.getElementById('m5_method').value} \\\n` +
+                          `    --coverage ${document.getElementById('m5_coverage').value} \\\n` +
+                          `    --allele_frequency ${document.getElementById('m5_af').value} \\\n` +
+                          `    --output_dir ${document.getElementById('m5_outdir').value} \\\n` +
+                          `    --technology ${document.getElementById('m5_tech').value} \\\n` +
+                          `    --threads ${document.getElementById('m5_threads').value}`;
+                }
+            }
+
+            document.getElementById('commandOutput').textContent = cmd;
+        }
+
+        // Toggle Switch Listeners
+        document.querySelectorAll('#modeSelector button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('#modeSelector button').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentMode = e.target.getAttribute('data-mode');
+                renderInputs();
+            });
+        });
+
+        // Copy Clipboard Action
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            const codeText = document.getElementById('commandOutput').textContent;
+            navigator.clipboard.writeText(codeText).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy Command', 2000);
+            });
+        });
+
+        // Initial setup
+        renderInputs();
+    </script>
+</body>
+</html>

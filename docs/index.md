@@ -23,6 +23,7 @@ layout: default
 2. [Module Reference Guide](modules.md): Comprehensive parameter breakdown, input/output files, and sample commands for Modules 1 through 5.
 3. [Running as a Nextflow Pipeline](installation.md#4-running-as-a-nextflow-pipeline): Guide on executing the end-to-end pipeline.
 4. [Data & Reference Sets](data.md): Access pre-calculated model distributions and reference datasets on Zenodo.
+5. [Interactive Command Builder](../command_builder.html): Dynamically construct your pipeline or module run commands in the browser.
 
 ---
 
