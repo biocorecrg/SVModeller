@@ -3,16 +3,7 @@ layout: default
 title: Command Builder
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVModeller Command Builder</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
+<style>
         :root {
             --bg-primary: #f8fafc;
             --bg-secondary: #ffffff;
@@ -183,9 +174,8 @@ title: Command Builder
             line-height: 1.6;
         }
     </style>
-</head>
-<body>
-    <div class="container">
+
+<div class="container">
         <header>
             <h1>SVModeller Command Builder</h1>
             <p class="subtitle">Simulation of synthetic human haplotypes containing embedded structural variants</p>
@@ -202,7 +192,7 @@ title: Command Builder
             </div>
             <pre><code id="commandOutput"></code></pre>
         </div>
-        
+
         <div class="output-card">
             <div class="output-header">
                 <span class="output-title">params.yaml Content</span>
@@ -278,17 +268,17 @@ title: Command Builder
         function generateCommand() {
             let cmd = `nextflow run ${pipelinePath}`;
             let yaml = '';
-            
+
             const profileEl = document.getElementById('profile');
             if (profileEl && profileEl.value) {
                 cmd += ` -profile ${profileEl.value}`;
             }
-            
+
             const workDirEl = document.getElementById('work_dir');
             if (workDirEl && workDirEl.value.trim() !== '') {
                 cmd += ` -w ${workDirEl.value.trim()}`;
             }
-            
+
             const resumeEl = document.getElementById('resume');
             if (resumeEl && resumeEl.checked) {
                 cmd += ' -resume';
@@ -305,7 +295,7 @@ title: Command Builder
 
             inputsData.forEach(field => {
                 if (['profile', 'work_dir', 'paramsFile', 'resume', 'bg'].includes(field.id)) return;
-                
+
                 const el = document.getElementById(field.id);
                 if (!el) return;
 
@@ -327,7 +317,7 @@ title: Command Builder
                     }
                 }
             });
-            
+
             document.getElementById('commandOutput').textContent = cmd;
             document.getElementById('yamlOutput').textContent = yaml;
         }
@@ -339,7 +329,7 @@ title: Command Builder
                 setTimeout(() => btn.textContent = 'Copy', 2000);
             });
         });
-        
+
         document.getElementById('copyYamlBtn').addEventListener('click', () => {
             navigator.clipboard.writeText(document.getElementById('yamlOutput').textContent).then(() => {
                 const btn = document.getElementById('copyYamlBtn');
@@ -350,5 +340,3 @@ title: Command Builder
 
         renderInputs();
     </script>
-</body>
-</html>
