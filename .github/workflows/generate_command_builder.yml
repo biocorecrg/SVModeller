@@ -8,6 +8,7 @@ on:
       - 'nextflow.config'
       - 'params.yaml'
       - '.github/workflows/generate_command_builder.yml'
+  workflow_dispatch:
 
 jobs:
   build-html:
