@@ -17,17 +17,17 @@ num_events: 10
 bin_size:   1000000
 
 # Module 5 - Read Simulation
-# method_file: path to the PBSIM3 model file (.qshmm, .errhmm, or sample FASTQ)
-# sim_method:  qshmm | errhmm | sample
-# coverage:    total sequencing depth
-# allele_frequency: fraction of reads from the modified genome (0.0 – 1.0)
-# method_file: optional path to a custom PBSIM3 model file
-# If omitted, the model bundled in the container is used:
-#   /usr/local/data/QSHMM-RSII.model  (for qshmm)
-#   /usr/local/data/ERRHMM-RSII.model (for errhmm)
-# method_file:     ""
+
+# sim_method: Read simulation method (can be qshmm, errhmm, or sample)
 sim_method:        "qshmm"
+
+# coverage: Total sequencing depth (e.g. 30 for 30x)
 coverage:          30
+
+# allele_frequency: Fraction of reads from the modified genome (0.0 - 1.0)
 allele_frequency:  0.5
+
+# method_file: Optional path to a custom PBSIM3 model file (.qshmm, .errhmm, or sample FASTQ). If omitted, the model bundled in the container is used: /usr/local/data/QSHMM-RSII.model (for qshmm) or /usr/local/data/ERRHMM-RSII.model (for errhmm)
+method_file:       ""
 
 slack_url: ""
