@@ -1,0 +1,33 @@
+name: Generate Command Builder
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'nextflow.config'
+      - 'params.yaml'
+      - '.github/workflows/generate_command_builder.yml'
+
+jobs:
+  build-html:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate HTML Command Builder
+        run: |
+          docker run --rm -v "$(pwd):/workspace" \
+            ghcr.io/biocorecrg/nf_command_builder:latest \
+            /workspace -o /workspace/docs/command_builder.html -t "SVModeller"
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/command_builder.html
+          git diff-index --quiet HEAD || git commit -m "Auto-generate interactive HTML command builder [skip ci]"
+          git push
