@@ -214,6 +214,7 @@ title: Command Builder
 
     <script>
         const inputsData = [{"id": "profile", "label": "Nextflow Profile", "type": "select", "options": ["crg", "newcrg", "applecontainer", "apple", "standard", "docker", "singularity", "test"], "default": "crg", "section": "Execution Settings"}, {"id": "work_dir", "label": "Work Directory", "type": "text", "default": "", "placeholder": "work (Optional)", "fullWidth": true, "section": "Execution Settings"}, {"id": "paramsFile", "label": "Params File Name", "type": "text", "default": "params.yaml", "placeholder": "params.yaml", "fullWidth": true, "help": "The filename to save the generated YAML under (default: params.yaml).", "section": "Execution Settings"}, {"id": "resume", "label": "Resume Execution (-resume)", "type": "checkbox", "default": false, "section": "Execution Settings"}, {"id": "bg", "label": "Run in Background (-bg)", "type": "checkbox", "default": false, "section": "Execution Settings"}, {"id": "vcf_insertions", "label": "Vcf Insertions", "type": "text", "default": "", "section": "Input Files (Required)"}, {"id": "vcf_deletions", "label": "Vcf Deletions", "type": "text", "default": "", "section": "Input Files (Required)"}, {"id": "ref_fasta", "label": "Ref Fasta", "type": "text", "default": "", "section": "Input Files (Required)", "placeholder": "Path to ref_fasta"}, {"id": "consensus", "label": "Consensus", "type": "text", "default": "", "section": "Input Files (Required)"}, {"id": "source_l1", "label": "Source L1", "type": "text", "default": "", "section": "Input Files (Required)"}, {"id": "source_sva", "label": "Source Sva", "type": "text", "default": "", "section": "Input Files (Required)"}, {"id": "motifs", "label": "Motifs", "type": "text", "default": "", "section": "Input Files (Required)"}, {"id": "sva_vntr", "label": "Sva Vntr", "type": "text", "default": "", "section": "Input Files (Required)"}, {"id": "num_events", "label": "Num Events", "type": "number", "default": 10, "section": "Simulation Settings"}, {"id": "bin_size", "label": "Bin Size", "type": "number", "default": 1000000, "section": "Simulation Settings"}, {"id": "sim_method", "label": "Sim Method", "type": "select", "default": "qshmm", "section": "Module 5 - Read Simulation", "options": ["qshmm", "errhmm", "sample FASTQ"], "help": "method_file: path to the PBSIM3 model file (.qshmm, .errhmm, or sample FASTQ) sim_method:  qshmm | errhmm | sample coverage:    total sequencing depth allele_frequency: fraction of reads from the modified genome (0.0 \u2013 1.0) method_file: optional path to a custom PBSIM3 model file If omitted, the model bundled in the container is used: /usr/local/data/QSHMM-RSII.model  (for qshmm) /usr/local/data/ERRHMM-RSII.model (for errhmm) method_file:     \"\""}, {"id": "coverage", "label": "Coverage", "type": "number", "default": 30, "section": "Module 5 - Read Simulation"}, {"id": "allele_frequency", "label": "Allele Frequency", "type": "number", "default": 0.5, "section": "Module 5 - Read Simulation"}, {"id": "slack_url", "label": "Slack Url", "type": "text", "default": "", "section": "Module 5 - Read Simulation"}];
+        const yamlLinesData = [{"type": "comment", "text": "# SVModeller Pipeline Parameters"}, {"type": "comment", "text": "#================================="}, {"type": "empty"}, {"type": "comment", "text": "# Input Files (Required)"}, {"type": "field", "id": "vcf_insertions", "key": "vcf_insertions", "indent": "", "colonSep": ": ", "quote": "\"", "val": "", "isBool": false, "isNumber": false, "inlineComment": ""}, {"type": "field", "id": "vcf_deletions", "key": "vcf_deletions", "indent": "", "colonSep": ":  ", "quote": "\"", "val": "", "isBool": false, "isNumber": false, "inlineComment": ""}, {"type": "field", "id": "ref_fasta", "key": "ref_fasta", "indent": "", "colonSep": ":      ", "quote": "\"", "val": "", "isBool": false, "isNumber": false, "inlineComment": ""}, {"type": "field", "id": "consensus", "key": "consensus", "indent": "", "colonSep": ":      ", "quote": "\"", "val": "", "isBool": false, "isNumber": false, "inlineComment": ""}, {"type": "empty"}, {"type": "field", "id": "source_l1", "key": "source_l1", "indent": "", "colonSep": ":      ", "quote": "\"", "val": "", "isBool": false, "isNumber": false, "inlineComment": ""}, {"type": "field", "id": "source_sva", "key": "source_sva", "indent": "", "colonSep": ":     ", "quote": "\"", "val": "", "isBool": false, "isNumber": false, "inlineComment": ""}, {"type": "field", "id": "motifs", "key": "motifs", "indent": "", "colonSep": ":         ", "quote": "\"", "val": "", "isBool": false, "isNumber": false, "inlineComment": ""}, {"type": "field", "id": "sva_vntr", "key": "sva_vntr", "indent": "", "colonSep": ":       ", "quote": "\"", "val": "", "isBool": false, "isNumber": false, "inlineComment": ""}, {"type": "empty"}, {"type": "comment", "text": "# Simulation Settings"}, {"type": "field", "id": "num_events", "key": "num_events", "indent": "", "colonSep": ": ", "quote": "", "val": 10, "isBool": false, "isNumber": true, "inlineComment": ""}, {"type": "field", "id": "bin_size", "key": "bin_size", "indent": "", "colonSep": ":   ", "quote": "", "val": 1000000, "isBool": false, "isNumber": true, "inlineComment": ""}, {"type": "empty"}, {"type": "comment", "text": "# Module 5 - Read Simulation"}, {"type": "comment", "text": "# method_file: path to the PBSIM3 model file (.qshmm, .errhmm, or sample FASTQ)"}, {"type": "comment", "text": "# sim_method:  qshmm | errhmm | sample"}, {"type": "comment", "text": "# coverage:    total sequencing depth"}, {"type": "comment", "text": "# allele_frequency: fraction of reads from the modified genome (0.0 \u2013 1.0)"}, {"type": "comment", "text": "# method_file: optional path to a custom PBSIM3 model file"}, {"type": "comment", "text": "# If omitted, the model bundled in the container is used:"}, {"type": "comment", "text": "#   /usr/local/data/QSHMM-RSII.model  (for qshmm)"}, {"type": "comment", "text": "#   /usr/local/data/ERRHMM-RSII.model (for errhmm)"}, {"type": "comment", "text": "# method_file:     \"\""}, {"type": "field", "id": "sim_method", "key": "sim_method", "indent": "", "colonSep": ":        ", "quote": "\"", "val": "qshmm", "isBool": false, "isNumber": false, "inlineComment": ""}, {"type": "field", "id": "coverage", "key": "coverage", "indent": "", "colonSep": ":          ", "quote": "", "val": 30, "isBool": false, "isNumber": true, "inlineComment": ""}, {"type": "field", "id": "allele_frequency", "key": "allele_frequency", "indent": "", "colonSep": ":  ", "quote": "", "val": 0.5, "isBool": false, "isNumber": true, "inlineComment": ""}, {"type": "empty"}, {"type": "field", "id": "slack_url", "key": "slack_url", "indent": "", "colonSep": ": ", "quote": "\"", "val": "", "isBool": false, "isNumber": false, "inlineComment": ""}];
         const pipelinePath = "main.nf";
 
         function renderInputs() {
@@ -277,7 +278,6 @@ title: Command Builder
 
         function generateCommand() {
             let cmd = `nextflow run ${pipelinePath}`;
-            let yaml = '';
             
             const profileEl = document.getElementById('profile');
             if (profileEl && profileEl.value) {
@@ -303,30 +303,57 @@ title: Command Builder
             const paramsFile = (paramsFileEl && paramsFileEl.value.trim()) ? paramsFileEl.value.trim() : 'params.yaml';
             cmd += ` -params-file ${paramsFile}`;
 
-            inputsData.forEach(field => {
-                if (['profile', 'work_dir', 'paramsFile', 'resume', 'bg'].includes(field.id)) return;
-                
-                const el = document.getElementById(field.id);
-                if (!el) return;
-
-                if (field.type === 'checkbox') {
-                    const isChecked = el.checked;
-                    if (isChecked || field.default !== false) {
-                        yaml += `${field.id}: ${isChecked}\n`;
-                    }
-                } else {
-                    const val = el.value;
-                    if (val !== '') {
-                        if (field.type === 'number') {
-                            yaml += `${field.id}: ${val}\n`;
-                        } else {
-                            yaml += `${field.id}: "${val}"\n`;
+            let yaml = '';
+            if (yamlLinesData && yamlLinesData.length > 0) {
+                yamlLinesData.forEach(line => {
+                    if (line.type === 'comment') {
+                        yaml += line.text + '\n';
+                    } else if (line.type === 'empty') {
+                        yaml += '\n';
+                    } else if (line.type === 'parent') {
+                        yaml += line.text + '\n';
+                    } else if (line.type === 'field') {
+                        const el = document.getElementById(line.id);
+                        let val = line.val;
+                        if (el) {
+                            val = (el.type === 'checkbox') ? el.checked : el.value;
                         }
-                    } else if (field.preserveEmpty) {
-                        yaml += `${field.id}: ""\n`;
+                        
+                        let valStr = '';
+                        if (typeof val === 'boolean' || line.isBool) {
+                            valStr = val ? 'true' : 'false';
+                        } else if (line.isNumber) {
+                            valStr = (val !== '' && val !== null && val !== undefined) ? String(val) : '0';
+                        } else if (line.quote === '"') {
+                            valStr = `"${val}"`;
+                        } else if (line.quote === "'") {
+                            valStr = `'${val}'`;
+                        } else {
+                            valStr = String(val);
+                        }
+                        
+                        const colonSep = line.colonSep || ': ';
+                        yaml += `${line.indent}${line.key}${colonSep}${valStr}${line.inlineComment || ''}\n`;
                     }
-                }
-            });
+                });
+            } else {
+                // Fallback if no yamlLinesData
+                inputsData.forEach(field => {
+                    if (['profile', 'work_dir', 'paramsFile', 'resume', 'bg'].includes(field.id)) return;
+                    const el = document.getElementById(field.id);
+                    if (!el) return;
+                    if (field.type === 'checkbox') {
+                        yaml += `${field.id}: ${el.checked}\n`;
+                    } else {
+                        const v = el.value;
+                        if (field.type === 'number') {
+                            yaml += `${field.id}: ${v}\n`;
+                        } else {
+                            yaml += `${field.id}: "${v}"\n`;
+                        }
+                    }
+                });
+            }
             
             document.getElementById('commandOutput').textContent = cmd;
             document.getElementById('yamlOutput').textContent = yaml;
