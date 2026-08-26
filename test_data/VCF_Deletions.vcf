@@ -1,8 +1,0 @@
-##fileformat=VCFv4.2
-##INFO=<ID=DTYPE_N,Number=1,Type=String,Description="SV Deletion Type">
-##INFO=<ID=FAM_N,Number=1,Type=String,Description="Family">
-##INFO=<ID=DEL_LEN,Number=1,Type=Integer,Description="Deletion Length">
-#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
-chr22	15000	.	ACGTACGTACGT	A	.	PASS	DTYPE_N=DEL;FAM_N=NA;DEL_LEN=11
-chr22	35000	.	GACGTACGTACGTACGT	G	.	PASS	DTYPE_N=DEL;FAM_N=NA;DEL_LEN=16
-chr22	60000	.	TACGTACGT	T	.	PASS	DTYPE_N=DEL;FAM_N=NA;DEL_LEN=8
