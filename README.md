@@ -2,7 +2,7 @@
   <img src="docs/images/logo_svmodeller.png" alt="SVModeller Logo" width="400">
 </p>
 
-![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A525.10.4-23aa62.svg)
+![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A526.04.1-23aa62.svg)
 ![Nextflow](https://img.shields.io/badge/nextflow-strict-23aa62.svg)
 [![Nextflow CI](https://github.com/biocorecrg/SVModeller/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/biocorecrg/SVModeller/actions/workflows/ci.yml)
 
@@ -217,7 +217,7 @@ To quickly construct commands for both the Nextflow pipeline and standalone modu
 SVModeller includes an end-to-end **Nextflow pipeline** to automate all five modules. It supports multiple container engines (Docker, Singularity, Apple Silicon/Lima) and automatically compiles comprehensive quality metrics.
 
 ### 1. Requirements
-- Nextflow (`!>=25.10.4`)
+- Nextflow (`!>=26.04.1`)
 - Docker, Singularity, or Apple Silicon container engine configuration.
 
 ### 2. Execution Examples

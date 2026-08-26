@@ -8,7 +8,7 @@ Welcome! This document provides context, architectural guidelines, coding standa
 - **Name**: SVModeller
 - **Domain**: Bioinformatics / Structural Variant (SV) Simulation using Oxford Nanopore and PacBio long-read technology.
 - **Workflow Manager**: Nextflow (strict syntax mode enabled).
-- **Required Nextflow Version**: `DSL2` and Nextflow version `\ge 25.10.4`.
+- **Required Nextflow Version**: `DSL2` and Nextflow version `\ge 26.04.1`.
 
 SVModeller is structured into 5 independent Python modules designed to extract polymorphic SV distribution features, simulate event profiles, modify reference genomes, and simulate sub-clonal reads.
 

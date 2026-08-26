@@ -18,7 +18,7 @@ trap _term TERM
 
 export NXF_JVM_ARGS="-Xms2g -Xmx10g"
 export NXF_SYNTAX_PARSER=v2
-NXF_VER=25.10.4 "$@" & pid=$!
+NXF_VER=26.04.1 "$@" & pid=$!
 
 echo "Waiting for ${pid}"
 wait $pid

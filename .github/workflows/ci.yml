@@ -26,7 +26,7 @@ jobs:
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v2
         with:
-          version: "latest"
+          version: "26.04.1"
 
       - name: Show Nextflow version
         run: nextflow -version
