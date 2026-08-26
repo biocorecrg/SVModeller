@@ -176,9 +176,8 @@ workflow {
     bai                      = SVMODELLER.out.bai
     report                   = multiout.report
     report_data              = multiout.data
-}
 
-workflow.onComplete {
+    onComplete:
     end_messaged(params.slack_url)
 }
 
