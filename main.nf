@@ -67,19 +67,17 @@ workflow {
     if (!params.sva_vntr) {
         error("Parameter --sva_vntr is required!")
     }
-    if (!params.skip_simulation) {
-        if (!params.method_file) {
-            log.warn("Parameter --method_file not set; PBSIM3 will use the model bundled in the container.")
-        }
-        if (!params.sim_method) {
-            error("Parameter --sim_method is required!")
-        }
-        if (params.coverage == null) {
-            error("Parameter --coverage is required!")
-        }
-        if (params.allele_frequency == null) {
-            error("Parameter --allele_frequency is required!")
-        }
+    if (!params.method_file) {
+        log.warn("Parameter --method_file not set; PBSIM3 will use the model bundled in the container.")
+    }
+    if (!params.sim_method) {
+        error("Parameter --sim_method is required!")
+    }
+    if (params.coverage == null) {
+        error("Parameter --coverage is required!")
+    }
+    if (params.allele_frequency == null) {
+        error("Parameter --allele_frequency is required!")
     }
 
     // Channel preparation
@@ -118,11 +116,8 @@ workflow {
     )
 
     // BAM2STATS
-    join_bam_stats = Channel.empty()
-    if (!params.skip_simulation) {
-        bam2stats_out = BAM2STATS(SVMODELLER.out.bam, SVMODELLER.out.ref_fasta.collect())
-        join_bam_stats = JOIN_BAM_STATS(bam2stats_out.stats.map { it[1] }.collect()).join_stats
-    }
+    bam2stats_out = BAM2STATS(SVMODELLER.out.bam, SVMODELLER.out.ref_fasta.collect())
+    join_bam_stats = JOIN_BAM_STATS(bam2stats_out.stats.map { it[1] }.collect()).join_stats
 
     // Gather versions
     ch_versions = Channel.topic("versions")
@@ -322,25 +317,18 @@ workflow SVMODELLER {
     )
 
     // Module 5: Simulate long reads from reference & modified genomes, align, merge
-    ch_bam = Channel.empty()
-    ch_bai = Channel.empty()
+    ch_modified_genome_aligned_meta = SVMODELLER_MODULE4.out.modified_genome
+        .combine(ch_ref_fasta_decompressed)
+        .map { meta_mod, fasta_mod, meta_ref, fasta_ref -> [ meta_ref, fasta_mod ] }
 
-    if (!params.skip_simulation) {
-        ch_modified_genome_aligned_meta = SVMODELLER_MODULE4.out.modified_genome
-            .combine(ch_ref_fasta_decompressed)
-            .map { meta_mod, fasta_mod, meta_ref, fasta_ref -> [ meta_ref, fasta_mod ] }
-
-        SVMODELLER_MODULE5(
-            ch_modified_genome_aligned_meta,
-            ch_ref_fasta_decompressed,
-            method_file,
-            sim_method,
-            coverage,
-            allele_frequency,
-        )
-        ch_bam = SVMODELLER_MODULE5.out.bam
-        ch_bai = SVMODELLER_MODULE5.out.bai
-    }
+    SVMODELLER_MODULE5(
+        ch_modified_genome_aligned_meta,
+        ch_ref_fasta_decompressed,
+        method_file,
+        sim_method,
+        coverage,
+        allele_frequency,
+    )
 
     // Assign output channels for publishing
     genome_wide_distribution = SVMODELLER_MODULE1.out.genome_wide_distribution
@@ -350,8 +338,8 @@ workflow SVMODELLER {
     deletions_table = SVMODELLER_MODULE3.out.deletions_table
     modified_genome = SVMODELLER_MODULE4.out.modified_genome
     sorted_events = SVMODELLER_MODULE4.out.sorted_events
-    bam = ch_bam
-    bai = ch_bai
+    bam = SVMODELLER_MODULE5.out.bam
+    bai = SVMODELLER_MODULE5.out.bai
     ref_fasta = ch_ref_fasta_decompressed
 
     emit:

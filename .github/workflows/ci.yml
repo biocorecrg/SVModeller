@@ -33,4 +33,4 @@ jobs:
 
       - name: Run pipeline (test profile)
         run: |
-          nextflow run . -profile test,docker --skip_simulation -ansi-log false
+          nextflow run . -profile test,docker -ansi-log false

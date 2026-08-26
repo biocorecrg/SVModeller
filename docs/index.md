@@ -45,6 +45,10 @@ graph TD
     DEL_TAB --> M4
     REF_FA --> M4
     M4 --> MOD_FA[Modified Genome FASTA]
+
+    MOD_FA --> M5[Module 5 - Read Simulation and BAM Alignment]
+    REF_FA --> M5
+    M5 --> BAM[Simulated BAM and FastQ Reads]
 ```
 
 ---
