@@ -35,4 +35,4 @@ jobs:
 
       - name: Run pipeline (test profile)
         run: |
-          nextflow run . -profile docker -params-file params.test.yaml --coverage 1 --num_events 10 -ansi-log false
+          nextflow run main.nf -profile docker -params-file params.test.yaml -ansi-log false
