@@ -4,7 +4,7 @@
 
 ![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A525.10.4-23aa62.svg)
 ![Nextflow](https://img.shields.io/badge/nextflow-strict-23aa62.svg)
-[![.github/workflows/ci.yml](https://github.com/biocorecrg/MOP4-G/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/biocorecrg/MOP4-G/actions/workflows/ci.yml)
+[![Nextflow CI](https://github.com/biocorecrg/SVModeller/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/biocorecrg/SVModeller/actions/workflows/ci.yml)
 
 
 # SVModeller
