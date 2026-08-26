@@ -9,6 +9,7 @@
 
 # SVModeller
 
+
 SVModeller is a computational tool to simulate synthetic human haplotypes containing embedded structural variants (SV). This simulator has been trained using an extensive catalogue of curated polymorphic SVs identified in a dataset comprising 1.019 samples from the 1000 Genomes Project, sequenced with Oxford Nanopore long-read technology (Schloissnig et al., 2024). This dataset provides detailed sequence information and annotation of SV classes that has not been previously available.
 
 One of the key innovations of this simulator is its ability to include large repetitive insertions, such as Variable Number of Tandem Repeats (VNTR), mobile element insertions (MEI), transduction-related insertions, and mitochondrial insertions; all of them taking into consideration their specific features such as polyadenylation tails, SVA hexamers or TSDs, between others, addressing the limitations of prior simulators. This computational tool will enable the research community to create gold-standard sets of synthetic human genomes, which will be crucial for benchmarking and evaluating methods for detecting and annotating SVs using long-read sequencing data.
