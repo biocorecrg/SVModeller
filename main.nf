@@ -8,6 +8,7 @@ nextflow.enable.moduleBinaries = true
  * Simulates synthetic human haplotypes with structural variants
  */
 
+
 include { SVMODELLER_MODULE1     } from './modules/local/svmodeller/module1/main'
 include { SVMODELLER_MODULE2     } from './modules/local/svmodeller/module2/main'
 include { SVMODELLER_MODULE3     } from './modules/local/svmodeller/module3/main'
