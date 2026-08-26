@@ -21,4 +21,3 @@ Pre-computed distribution sets, motif lists, model profiles, and consensus seque
 - **`consensus_sequences_complete.fa`**: FASTA consensus sequences for Alu, LINE-1, and SVA mobile elements.
 - **`source_loci_LINE1.tsv` & `source_loci_SVA.tsv`**: Genomic loci tables for transductions.
 - **`Separated_Motifs.tsv` & `SVA_VNTR_Motifs.txt`**: Motifs for tandem repeat sampling.
-- **`ERRHMM-ONT-HQ.model`**: Error model file for Oxford Nanopore read simulation in Module 5.

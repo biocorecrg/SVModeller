@@ -1,0 +1,36 @@
+name: Nextflow CI
+
+on:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '**.rst'
+      - '.github/workflows/generate_command_builder.yml'
+  pull_request:
+    branches: [main, master]
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '**.rst'
+      - '.github/workflows/generate_command_builder.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Nextflow
+        uses: nf-core/setup-nextflow@v2
+        with:
+          version: "25.10.4"
+
+      - name: Show Nextflow version
+        run: nextflow -version
+
+      - name: Run pipeline (test profile)
+        run: |
+          nextflow run . -profile test,docker --skip_simulation -ansi-log false

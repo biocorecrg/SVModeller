@@ -116,42 +116,6 @@ Module4.py \
 
 ---
 
-## Module 5: Sub-clonal Read Simulation & BAM Generation
-
-Simulates sequencing reads at designated coverage and allele frequency levels using `pbsim3`, aligns reads with `minimap2`, and sorts/indexes BAM files with `samtools`.
-
-### Input Parameters
-- `--reference_genome`: Reference FASTA
-- `--modified_genome`: Modified FASTA (from Module 4)
-- `--method`: `error_model`, `quality_score`, or `training`
-- `--method_file`: Model file (e.g., `ERRHMM-ONT-HQ.model`)
-- `--coverage`: Depth of coverage (e.g., `30`)
-- `--allele_frequency`: Allele frequency between 0 and 1 (e.g., `0.5`)
-- `--technology`: `ONT`, `PB`, or `HiFi`
-- `--output_dir`: Output directory
-- `--threads`: Number of threads (e.g., `8`)
-
-### Output Files
-- `combined_final_alignment.bam` (and `.bam.bai`)
-- Modified genome reads (`.fastq`)
-- Reference genome reads (`.fastq`)
-
-### Command
-```bash
-Module5.py \
-    --reference_genome chm13v2.0.fa \
-    --modified_genome Modified_Reference_Genome.fasta \
-    --method_file ERRHMM-ONT-HQ.model \
-    --method error_model \
-    --coverage 30 \
-    --allele_frequency 0.5 \
-    --output_dir BAM_Output \
-    --technology ONT \
-    --threads 8
-```
-
----
-
 ## Additional Scripts
 
 ### `Filter_VCF_information.py`
@@ -165,10 +129,7 @@ Filter_VCF_information.py input.vcf output_filtered.vcf
 
 ## MultiQC & Methods Section Reporting
 
-The Nextflow pipeline automatically integrates **MultiQC** to compile and present alignment quality statistics along with an auto-generated methods citation section.
-
-### BAM Statistics (BAM2STATS)
-After Module 5 completes read simulation and alignment, the pipeline runs the `BAM2STATS` module to calculate sequencing alignment and quality statistics. These stats are merged via `JOIN_BAM_STATS` and displayed as the **Alignment QC** table in the MultiQC report.
+The Nextflow pipeline automatically integrates **MultiQC** to compile and present quality statistics along with an auto-generated methods citation section.
 
 ### Auto-Generated Methods Section
 The pipeline extracts the parameters used for execution and utilizes the `METHODS_SECTION` module to automatically compile a methods description including references/citations for the tools used (`pbsim3`, `minimap2`, `samtools`, and `svmodeller`).
