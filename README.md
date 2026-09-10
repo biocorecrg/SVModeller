@@ -55,7 +55,8 @@ Second module objective is to generate from determine distributions the final se
 - Genome-Wide Distribution _(Genome_Wide_Distribution.tsv)_
 - Insertion Features _(Insertion_Features.tsv)_
 - Event Probabilities or Number of each event to simulate _(Probabilities.tsv)_
-- OPTIONAL: Just in case of providing probabilities, total number of events to simulate _(integer number)_
+- OPTIONAL: Just in case of providing probabilities, total number of events to simulate _(integer number)_
+- OPTIONAL: Random seed for reproducibility, by default 42 _(integer number)_
 - Table with source loci to LINE-1 transductions _(source_loci_LINE1.tsv)_
 - Table with source loci to SVA transductions _(source_loci_SVA.tsv)_
 - Consensus sequences _(consensus_sequences_complete.fa)_
@@ -85,6 +86,7 @@ python3 Module2.py \
     --SVA_VNTR_path SVA_VNTR_Motifs.txt\
     --reference_fasta_path chm13v2.0.fa \
     --chromosome_length_path chr_length.txt \
+    --seed 42 \
     --VCF
 ```
 
@@ -97,6 +99,7 @@ Third module generates deletions events. It takes the data from VCF and based on
 - Chromosomes length _(chr_length.txt)_
 - OPTIONAL: Reference genome _(chm13v2.0.fa)_ just if VCF file is desired
 - OPTIONAL: Window size for genome segmentation, by default 1 Mega base _(integer number)_
+- OPTIONAL: Random seed for reproducibility, by default 42 _(integer number)_
 
 **Output:**
 - Deletion regions _(Deletions_table.tsv)_
@@ -108,6 +111,7 @@ python3 Module3.py \
     --vcf_path VCF_Deletions.vcf \
     --path_chromosome_length chr_length.txt \
     --num_events 1000 \
+    --seed 42 \
     --VCF \
     --reference_fasta_path chm13v2.0.fa
 ```
@@ -119,6 +123,7 @@ Fourth module results in a modified genome. It takes data frames of insertion an
 - Events to mofidy reference genome (.tsv)
 - Reference genome (.fasta)
 - OPTIONAL: additional events table (.tsv)
+- OPTIONAL: Random seed for reproducibility, by default 42 _(integer number)_
 
 **Output:**
 - Modified reference genome _(Modified_Reference_Genome.fasta)_
@@ -132,7 +137,8 @@ Fourth module results in a modified genome. It takes data frames of insertion an
 python3 Module4.py \
     --file1 Insertions_table.tsv \
     --fasta_file chm13v2.0.fa \
-    --file2 Deletions_table.tsv
+    --file2 Deletions_table.tsv \
+    --seed 42
 ```
 
 ### Module 5

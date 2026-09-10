@@ -16,6 +16,7 @@ process SVMODELLER_MODULE2 {
     tuple val(meta9), path(ref_fasta)
     tuple val(meta10), path(chr_length)
     val num_events
+    val seed
 
     output:
     tuple val(meta), path("Insertions_table.tsv.gz"), emit: insertions_table
@@ -27,6 +28,7 @@ process SVMODELLER_MODULE2 {
     script:
     def args           = task.ext.args ?: ''
     def num_events_arg = num_events ? "--num_events ${num_events}" : ''
+    def seed_arg       = seed != null ? "--seed ${seed}" : ''
     """
     mkdir -p \$PWD/tmp
     export MPLCONFIGDIR=\$PWD/tmp
@@ -43,6 +45,7 @@ process SVMODELLER_MODULE2 {
         --reference_fasta_path ${ref_fasta} \\
         --chromosome_length_path ${chr_length} \\
         ${num_events_arg} \\
+        ${seed_arg} \\
         ${args}
 
     gzip Insertions_table.tsv

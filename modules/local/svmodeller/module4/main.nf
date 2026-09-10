@@ -8,6 +8,7 @@ process SVMODELLER_MODULE4 {
     tuple val(meta), path(insertions_table)
     tuple val(meta2), path(ref_fasta)
     tuple val(meta3), path(deletions_table)
+    val seed
 
     output:
     tuple val(meta), path("Modified_Reference_Genome.fasta.gz"), emit: modified_genome
@@ -18,8 +19,9 @@ process SVMODELLER_MODULE4 {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    def del_arg = deletions_table ? "--file2 ${deletions_table}" : ''
+    def args     = task.ext.args ?: ''
+    def del_arg  = deletions_table ? "--file2 ${deletions_table}" : ''
+    def seed_arg = seed != null ? "--seed ${seed}" : ''
     """
     mkdir -p \$PWD/tmp
     export MPLCONFIGDIR=\$PWD/tmp
@@ -28,6 +30,7 @@ process SVMODELLER_MODULE4 {
         --file1 ${insertions_table} \\
         --fasta_file ${ref_fasta} \\
         ${del_arg} \\
+        ${seed_arg} \\
         ${args}
 
     gzip Sorted_Genomic_Events.tsv

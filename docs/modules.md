@@ -44,6 +44,7 @@ Generates synthetic insertion event sequences based on feature distributions der
 - `--motifs_path`: `Separated_Motifs.tsv`
 - `--SVA_VNTR_path`: `SVA_VNTR_Motifs.txt`
 - `--chromosome_length_path`: `chr_length.txt`
+- *(Optional)* `--seed`: Random seed for reproducibility (default: `42`)
 
 ### Output Files
 - `Insertions_table.tsv`
@@ -62,6 +63,7 @@ Module2.py \
     --SVA_VNTR_path SVA_VNTR_Motifs.txt \
     --reference_fasta_path chm13v2.0.fa \
     --chromosome_length_path chr_length.txt \
+    --seed 42 \
     --VCF
 ```
 
@@ -76,6 +78,7 @@ Selects regions to be deleted based on a VCF containing deletion events.
 - `--path_chromosome_length`: `chr_length.txt`
 - `--num_events`: Number of deletion events to simulate
 - *(Optional)* `--reference_fasta_path`: Reference genome FASTA
+- *(Optional)* `--seed`: Random seed for reproducibility (default: `42`)
 
 ### Output Files
 - `Deletions_table.tsv`
@@ -87,6 +90,7 @@ Module3.py \
     --vcf_path VCF_Deletions.vcf \
     --path_chromosome_length chr_length.txt \
     --num_events 1000 \
+    --seed 42 \
     --VCF \
     --reference_fasta_path chm13v2.0.fa
 ```

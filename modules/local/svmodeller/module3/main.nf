@@ -9,6 +9,7 @@ process SVMODELLER_MODULE3 {
     tuple val(meta2), path(chr_length)
     val num_events
     val bin_size
+    val seed
 
     output:
     tuple val(meta), path("Deletions_table.tsv.gz"), emit: deletions_table
@@ -21,6 +22,7 @@ process SVMODELLER_MODULE3 {
     def args = task.ext.args ?: ''
     def num_events_arg = num_events ? "--num_events ${num_events}" : ''
     def bin_size_arg = bin_size ? "--bin_size ${bin_size}" : ''
+    def seed_arg = seed != null ? "--seed ${seed}" : ''
     """
     mkdir -p \$PWD/tmp
     export MPLCONFIGDIR=\$PWD/tmp
@@ -30,6 +32,7 @@ process SVMODELLER_MODULE3 {
         --path_chromosome_length ${chr_length} \\
         ${num_events_arg} \\
         ${bin_size_arg} \\
+        ${seed_arg} \\
         ${args}
 
     gzip Deletions_table.tsv

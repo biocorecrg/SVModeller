@@ -15,6 +15,7 @@ sva_vntr:       ""
 # Simulation Settings
 num_events: 10
 bin_size:   1000000
+seed:       42
 
 # Module 5 - Read Simulation
 

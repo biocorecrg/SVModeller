@@ -90,6 +90,7 @@ motifs:         "pipeline_inputs/VNTR_with_start_position_chr20.tsv.gz"
 sva_vntr:       "pipeline_inputs/SVA_VNTR_Motifs_chr20.tsv.gz"
 num_events:     1000
 bin_size:       1000000
+seed:           42
 sim_method:     "qshmm"
 coverage:       30
 allele_frequency: 0.5

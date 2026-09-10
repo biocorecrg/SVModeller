@@ -109,6 +109,7 @@ workflow {
         ch_sva_vntr,
         params.num_events,
         params.bin_size,
+        params.seed,
         ch_method_file,
         params.sim_method,
         params.coverage,
@@ -258,6 +259,7 @@ workflow SVMODELLER {
     sva_vntr
     num_events
     bin_size
+    seed
     method_file
     sim_method
     coverage
@@ -299,6 +301,7 @@ workflow SVMODELLER {
         ch_ref_fasta_decompressed,
         ch_chr_length_ready,
         num_events,
+        seed,
     )
 
     // Module 3: Build deletion model & simulate deletions
@@ -307,6 +310,7 @@ workflow SVMODELLER {
         ch_chr_length_ready,
         num_events,
         bin_size,
+        seed,
     )
 
     // Module 4: Embed SVs into reference genome
@@ -314,6 +318,7 @@ workflow SVMODELLER {
         SVMODELLER_MODULE2.out.insertions_table,
         ch_ref_fasta_decompressed,
         SVMODELLER_MODULE3.out.deletions_table,
+        seed,
     )
 
     // Module 5: Simulate long reads from reference & modified genomes, align, merge
@@ -382,6 +387,7 @@ ${c.green}motifs${c.reset}                    : ${params.motifs ?: 'Default pack
 ${c.green}sva_vntr${c.reset}                  : ${params.sva_vntr ?: 'Default package motifs'}
 ${c.green}num_events${c.reset}                : ${params.num_events}
 ${c.green}bin_size${c.reset}                  : ${params.bin_size}
+${c.green}seed${c.reset}                      : ${params.seed}
 ${c.green}outdir${c.reset}                    : ${params.outdir}
 ${c.bold}Module 5 Parameters${c.reset}
 ----------------------------------------------------
@@ -423,6 +429,7 @@ ${c.bold}${c.yellow}OPTIONAL PARAMETERS:${c.reset}
   ${c.bold}${c.green}--sva_vntr${c.reset}              : ${c.cyan}<path>${c.reset}  ${c.gray}# Text file with SVA VNTR motifs${c.reset}
   ${c.bold}${c.green}--num_events${c.reset}            : ${c.cyan}<int>${c.reset}   ${c.gray}# Number of events to simulate (default: 10)${c.reset}
   ${c.bold}${c.green}--bin_size${c.reset}              : ${c.cyan}<int>${c.reset}   ${c.gray}# Size of genomic bins in bp (default: 1000000)${c.reset}
+  ${c.bold}${c.green}--seed${c.reset}                  : ${c.cyan}<int>${c.reset}   ${c.gray}# Random seed for reproducibility (default: 42)${c.reset}
 
 ${c.bold}${c.yellow}MODULE 5 PARAMETERS:${c.reset}
   ${c.bold}${c.green}--method_file${c.reset}           : ${c.cyan}<path>${c.reset}  ${c.gray}# PBSIM3 model file (.qshmm, .errhmm, or sample)${c.reset}
