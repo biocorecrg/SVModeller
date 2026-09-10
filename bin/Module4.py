@@ -100,7 +100,7 @@ if __name__ == "__main__":
     parser.add_argument('--file1', type=str, required=True, help='Path to the first TSV file.')
     parser.add_argument('--fasta_file', type=str, required=True, help='Path to the FASTA file.')
     parser.add_argument('--file2', type=str, nargs='?', default=None, required=False, help='Optional path to the second TSV file.')
-    parser.add_argument('--seed', type=str, nargs='?', default=None, required=False, help='Optional path to the second TSV file.')
+    parser.add_argument('--seed', type=int, required=False, default=42, help='Random seed for reproducibility (default: 42).')
 
     args = parser.parse_args()
     main(args.file1, args.file2, args.fasta_file, args.seed)
