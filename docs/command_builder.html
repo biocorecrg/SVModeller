@@ -202,7 +202,7 @@ title: Command Builder
             </div>
             <pre><code id="commandOutput"></code></pre>
         </div>
-
+        
         <div class="output-card">
             <div class="output-header">
                 <span class="output-title">params.yaml Content</span>
@@ -278,17 +278,17 @@ title: Command Builder
 
         function generateCommand() {
             let cmd = `nextflow run ${pipelinePath}`;
-
+            
             const profileEl = document.getElementById('profile');
             if (profileEl && profileEl.value) {
                 cmd += ` -profile ${profileEl.value}`;
             }
-
+            
             const workDirEl = document.getElementById('work_dir');
             if (workDirEl && workDirEl.value.trim() !== '') {
                 cmd += ` -w ${workDirEl.value.trim()}`;
             }
-
+            
             const resumeEl = document.getElementById('resume');
             if (resumeEl && resumeEl.checked) {
                 cmd += ' -resume';
@@ -318,7 +318,7 @@ title: Command Builder
                         if (el) {
                             val = (el.type === 'checkbox') ? el.checked : el.value;
                         }
-
+                        
                         let valStr = '';
                         if (typeof val === 'boolean' || line.isBool) {
                             valStr = val ? 'true' : 'false';
@@ -331,7 +331,7 @@ title: Command Builder
                         } else {
                             valStr = String(val);
                         }
-
+                        
                         const colonSep = line.colonSep || ': ';
                         yaml += `${line.indent}${line.key}${colonSep}${valStr}${line.inlineComment || ''}\n`;
                     }
@@ -354,7 +354,7 @@ title: Command Builder
                     }
                 });
             }
-
+            
             document.getElementById('commandOutput').textContent = cmd;
             document.getElementById('yamlOutput').textContent = yaml;
         }
@@ -366,7 +366,7 @@ title: Command Builder
                 setTimeout(() => btn.textContent = 'Copy', 2000);
             });
         });
-
+        
         document.getElementById('copyYamlBtn').addEventListener('click', () => {
             navigator.clipboard.writeText(document.getElementById('yamlOutput').textContent).then(() => {
                 const btn = document.getElementById('copyYamlBtn');
