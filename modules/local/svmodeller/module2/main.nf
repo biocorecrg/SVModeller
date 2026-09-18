@@ -2,7 +2,7 @@ process SVMODELLER_MODULE2 {
     tag "$meta.id"
     label 'process_medium'
 
-    container 'ghcr.io/biocorecrg/svmodeller:sha-09ab4c7'
+    container 'ghcr.io/biocorecrg/svmodeller:sha-19638f3'
 
     input:
     tuple val(meta), path(consensus)
