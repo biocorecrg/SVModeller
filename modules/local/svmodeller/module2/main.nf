@@ -2,8 +2,6 @@ process SVMODELLER_MODULE2 {
     tag "$meta.id"
     label 'process_medium'
 
-    container 'ghcr.io/biocorecrg/svmodeller:sha-19638f3'
-
     input:
     tuple val(meta), path(consensus)
     tuple val(meta2), path(probabilities_numbers)

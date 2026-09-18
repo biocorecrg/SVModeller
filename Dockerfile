@@ -27,19 +27,10 @@ WORKDIR /app
 # Clone GAPI repository directly into /app/GAPI
 RUN git clone --depth 1 https://github.com/biocorecrg/GAPI.git /app/GAPI
 
-# Copy repository content
-COPY --chown=$MAMBA_USER:$MAMBA_USER . /app
-
-# Make python modules executable
-USER root
-RUN chmod +x /app/bin/*.py /app/Additional_scripts/*.py
-
-USER $MAMBA_USER
-
-# Add /app/bin, /app, and /app/Additional_scripts to front of PATH so all modules can be invoked directly by name
-ENV PATH="/app/bin:/app:/app/Additional_scripts:/opt/conda/bin:${PATH}"
-ENV PYTHONPATH="/app/bin:/app:${PYTHONPATH}"
+# Add conda environment to PATH and /app to PYTHONPATH for GAPI resolution
+ENV PATH="/opt/conda/bin:${PATH}"
+ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 WORKDIR /data
 
-CMD ["Module1.py", "--help"]
+CMD ["/bin/bash"]

@@ -2,8 +2,6 @@ process SVMODELLER_MODULE1 {
     tag "$meta.id"
     label 'process_single'
 
-    container 'ghcr.io/biocorecrg/svmodeller:sha-19638f3'
-
     input:
     tuple val(meta), path(vcf)
     tuple val(meta2), path(chr_length)
