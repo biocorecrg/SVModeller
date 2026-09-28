@@ -8,9 +8,11 @@ process SVMODELLER_MODULE1 {
     val bin_size
 
     output:
-    tuple val(meta), path("Genome_Wide_Distribution.tsv.gz"), emit: genome_wide_distribution
-    tuple val(meta), path("Insertion_Features.tsv.gz")      , emit: insertion_features
-    tuple val(meta), path("Probabilities.tsv.gz")           , emit: probabilities
+    tuple val(meta), path("Genome_Wide_Distribution.tsv.gz")  , emit: genome_wide_distribution
+    tuple val(meta), path("Insertion_Features.tsv.gz")        , emit: insertion_features
+    tuple val(meta), path("Probabilities.tsv.gz")             , emit: probabilities
+    tuple val(meta), path("SVA_VNTR_Motifs.txt.gz")           , emit: sva_vntr_motifs
+    tuple val(meta), path("VNTR_with_start_position.txt.gz")  , emit: vntr_with_start_position
     tuple val("${task.process}"), val('svmodeller'), val('0.5.0'), topic: versions, emit: versions_svmodeller
 
     when:
@@ -29,8 +31,7 @@ process SVMODELLER_MODULE1 {
         ${bin_size_arg} \\
         ${args}
 
-    gzip Genome_Wide_Distribution.tsv
-    gzip Insertion_Features.tsv
-    gzip Probabilities.tsv
+    for i in *.tsv; do gzip \$i; done
+    for i in *.txt; do gzip \$i; done
     """
 }
