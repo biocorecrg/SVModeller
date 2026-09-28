@@ -29,6 +29,6 @@ coverage:          30
 allele_frequency:  0.5
 
 # method_file: Optional path to a custom PBSIM3 model file (.qshmm, .errhmm, or sample FASTQ). If omitted, the model bundled in the container is used: /usr/local/data/QSHMM-RSII.model (for qshmm) or /usr/local/data/ERRHMM-RSII.model (for errhmm)
-method_file:       ""
+method_file:       "/usr/local/data/QSHMM-RSII.model"
 
 slack_url: ""
