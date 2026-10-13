@@ -52,18 +52,18 @@ jobs:
           "
           ls -lh zenodo_data/
 
-      - name: Run Module 1 Test (Zenodo Data)
+      - name: Run preprocess_sv_callset Test (Zenodo Data)
         run: |
-          python3 bin/Module1.py \
+          python3 bin/preprocess_sv_callset.py \
             --file_path zenodo_data/VCF_Insertions.vcf \
             --chromosome_length zenodo_data/chr_length.txt
           test -f Genome_Wide_Distribution.tsv
           test -f Insertion_Features.tsv
           test -f Probabilities.tsv
 
-      - name: Run Module 2 Test (Zenodo Data)
+      - name: Run simulate_insertions Test (Zenodo Data)
         run: |
-          python3 bin/Module2.py \
+          python3 bin/simulate_insertions.py \
             --consensus_path zenodo_data/consensus_sequences_complete.fa \
             --probabilities_numbers_path zenodo_data/Number_events.tsv \
             --insertion_features_path Insertion_Features.tsv \
@@ -77,17 +77,17 @@ jobs:
             --num_events ${{ github.event.inputs.num_events || 10 }}
           test -f Insertions_table.tsv
 
-      - name: Run Module 3 Test (Zenodo Data)
+      - name: Run simulate_deletions Test (Zenodo Data)
         run: |
-          python3 bin/Module3.py \
+          python3 bin/simulate_deletions.py \
             --vcf_path zenodo_data/VCF_Deletions.vcf \
             --path_chromosome_length zenodo_data/chr_length.txt \
             --num_events ${{ github.event.inputs.num_events || 10 }}
           test -f Deletions_table.tsv
 
-      - name: Run Module 4 Test (Zenodo Data)
+      - name: Run simulate_haplotype Test (Zenodo Data)
         run: |
-          python3 bin/Module4.py \
+          python3 bin/simulate_haplotype.py \
             --file1 Insertions_table.tsv \
             --fasta_file zenodo_data/chm13v2.0.fa \
             --file2 Deletions_table.tsv

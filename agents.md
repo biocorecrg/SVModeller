@@ -20,8 +20,10 @@ The repository is structured with the end-to-end Nextflow pipeline files, the st
 - `main.nf`: The main entrypoint Nextflow pipeline script.
 - `nextflow.config`: Global configuration file containing profiles, parameters, and container settings.
 - `modules/`: Standardized process-level Nextflow modules:
-  - `local/svmodeller/`: Modules 1 through 5 of SVModeller.
+  - `local/svmodeller/`: Modules of SVModeller (`preprocess_sv_callset`, `simulate_insertions`, `simulate_deletions`, `simulate_haplotype`).
   - `nf-core/`: Standard public modules (like `gunzip`, `samtools`, `multiqc`).
+- `subworkflows/`: Subworkflows:
+  - `local/svmodeller/`: `simulate_wgs_data`.
 - `BioNextflow3/`: Shared library subdirectory mapping to helper functions and local bio-informatics process definitions:
   - `BioNextflow3/modules/local/`: Shared modules (`bam2stats`, `stats/join_bam_stats`, `methods`).
   - `BioNextflow3/global_functions.nf`: Common pipeline utilities and reporting functions.

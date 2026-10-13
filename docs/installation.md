@@ -18,7 +18,7 @@ Mount your local working directory containing input datasets into `/data`:
 
 ```bash
 docker run --rm -v $(pwd):/data ghcr.io/biocorecrg/svmodeller:0.5.0 \
-    Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
+    preprocess_sv_callset.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
 ```
 
 ---

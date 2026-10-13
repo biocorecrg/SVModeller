@@ -1,4 +1,4 @@
-process SVMODELLER_MODULE3 {
+process SIMULATE_DELETIONS {
     tag "$meta.id"
     label 'process_single'
 
@@ -25,7 +25,7 @@ process SVMODELLER_MODULE3 {
     mkdir -p \$PWD/tmp
     export MPLCONFIGDIR=\$PWD/tmp
 
-    Module3.py \\
+    simulate_deletions.py \\
         --vcf_path ${vcf} \\
         --path_chromosome_length ${chr_length} \\
         ${num_events_arg} \\

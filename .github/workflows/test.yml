@@ -37,18 +37,18 @@ jobs:
           tar -xzf tests/test_data.tar.gz -C test_data/
           ls -la test_data
 
-      - name: Run Module 1 Test
+      - name: Run preprocess_sv_callset Test
         run: |
-          python3 bin/Module1.py \
+          python3 bin/preprocess_sv_callset.py \
             --file_path test_data/VCF_Insertions.vcf \
             --chromosome_length test_data/chr_length.txt
           test -f Genome_Wide_Distribution.tsv
           test -f Insertion_Features.tsv
           test -f Probabilities.tsv
 
-      - name: Run Module 2 Test
+      - name: Run simulate_insertions Test
         run: |
-          python3 bin/Module2.py \
+          python3 bin/simulate_insertions.py \
             --consensus_path test_data/consensus_sequences_complete.fa \
             --probabilities_numbers_path test_data/Number_events.tsv \
             --insertion_features_path Insertion_Features.tsv \
@@ -62,17 +62,17 @@ jobs:
             --num_events 10
           test -f Insertions_table.tsv
 
-      - name: Run Module 3 Test
+      - name: Run simulate_deletions Test
         run: |
-          python3 bin/Module3.py \
+          python3 bin/simulate_deletions.py \
             --vcf_path test_data/VCF_Deletions.vcf \
             --path_chromosome_length test_data/chr_length.txt \
             --num_events 10
           test -f Deletions_table.tsv
 
-      - name: Run Module 4 Test
+      - name: Run simulate_haplotype Test
         run: |
-          python3 bin/Module4.py \
+          python3 bin/simulate_haplotype.py \
             --file1 Insertions_table.tsv \
             --fasta_file test_data/toy_ref.fa \
             --file2 Deletions_table.tsv

@@ -1,10 +1,10 @@
-name: svmodeller_module1
-description: Process input VCF with insertion structural variants and chromosome length file to extract insertion feature distributions, genomic bin probabilities, and background insertion statistics.
+name: simulate_deletions
+description: Process deletion structural variants from VCF data and simulate synthetic deletion events.
 keywords:
   - structural variants
   - simulation
   - genomics
-  - insertions
+  - deletions
 tools:
   - svmodeller:
       description: Simulator of synthetic human haplotypes containing embedded structural variants (SV)
@@ -20,38 +20,27 @@ input:
         description: Groovy Map containing sample information e.g. [ id:'svmodeller' ]
     - vcf:
         type: file
-        description: Input VCF file containing insertion structural variants
+        description: Input VCF file containing deletion structural variants
   - - meta2:
         type: map
         description: Groovy Map containing reference information e.g. [ id:'svmodeller' ]
     - chr_length:
         type: file
         description: File containing chromosome names and lengths
+  - - num_events:
+        type: integer
+        description: Target number of deletion events to simulate
   - - bin_size:
         type: integer
         description: Size of genomic bins in bp (default 1000000)
 output:
-  - genome_wide_distribution:
+  - deletions_table:
       - meta:
           type: map
           description: Groovy Map containing sample information
-      - Genome_Wide_Distribution.tsv:
+      - Deletions_table.tsv:
           type: file
-          description: TSV table of genome-wide event distribution across bins
-  - insertion_features:
-      - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - Insertion_Features.tsv:
-          type: file
-          description: TSV table of insertion feature counts and lengths
-  - probabilities:
-      - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - Probabilities.tsv:
-          type: file
-          description: TSV table of calculated insertion event probabilities
+          description: TSV table of generated deletion events
   - versions_svmodeller:
       - ${task.process}:
           type: string

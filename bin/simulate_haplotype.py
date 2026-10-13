@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SVModeller - Module 4
+# SVModeller - simulate_haplotype
 
 # Modify reference genome
 

@@ -5,7 +5,7 @@ include { MINIMAP2_ALIGN as MINIMAP2_ALIGN_MOD } from '../../../../modules/nf-co
 include { SAMTOOLS_MERGE                  } from '../../../../modules/nf-core/samtools/merge/main'
 include { SAMTOOLS_INDEX                  } from '../../../../modules/nf-core/samtools/index/main'
 
-workflow SVMODELLER_MODULE5 {
+workflow SIMULATE_WGS_DATA {
     take:
     modified_genome     // tuple val(meta), path(modified_genome)
     ref_fasta           // tuple val(meta), path(ref_fasta)

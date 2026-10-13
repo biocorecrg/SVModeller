@@ -8,11 +8,11 @@ nextflow.enable.moduleBinaries = true
  */
 
 
-include { SVMODELLER_MODULE1     } from './modules/local/svmodeller/module1/main'
-include { SVMODELLER_MODULE2     } from './modules/local/svmodeller/module2/main'
-include { SVMODELLER_MODULE3     } from './modules/local/svmodeller/module3/main'
-include { SVMODELLER_MODULE4     } from './modules/local/svmodeller/module4/main'
-include { SVMODELLER_MODULE5     } from './subworkflows/local/svmodeller/module5/main'
+include { PREPROCESS_SV_CALLSET } from './modules/local/svmodeller/preprocess_sv_callset/main'
+include { SIMULATE_INSERTIONS   } from './modules/local/svmodeller/simulate_insertions/main'
+include { SIMULATE_DELETIONS    } from './modules/local/svmodeller/simulate_deletions/main'
+include { SIMULATE_HAPLOTYPE    } from './modules/local/svmodeller/simulate_haplotype/main'
+include { SIMULATE_WGS_DATA     } from './subworkflows/local/svmodeller/simulate_wgs_data/main'
 include { GUNZIP                 } from './modules/nf-core/gunzip/main'
 include { SAMTOOLS_FAIDX         } from './modules/nf-core/samtools/faidx/main'
 include { logColours             } from './subworkflows/nf-core/utils_nfcore_pipeline/main'
@@ -186,55 +186,55 @@ output {
     genome_wide_distribution {
         mode 'copy'
         path { meta, file ->
-            file >> "module1/${file.name}"
+            file >> "preprocess_sv_callset/${file.name}"
         }
     }
     insertion_features {
         mode 'copy'
         path { meta, file ->
-            file >> "module1/${file.name}"
+            file >> "preprocess_sv_callset/${file.name}"
         }
     }
     probabilities {
         mode 'copy'
         path { meta, file ->
-            file >> "module1/${file.name}"
+            file >> "preprocess_sv_callset/${file.name}"
         }
     }
     insertions_table {
         mode 'copy'
         path { meta, file ->
-            file >> "module2/${file.name}"
+            file >> "simulate_insertions/${file.name}"
         }
     }
     deletions_table {
         mode 'copy'
         path { meta, file ->
-            file >> "module3/${file.name}"
+            file >> "simulate_deletions/${file.name}"
         }
     }
     modified_genome {
         mode 'copy'
         path { meta, file ->
-            file >> "module4/${file.name}"
+            file >> "simulate_haplotype/${file.name}"
         }
     }
     sorted_events {
         mode 'copy'
         path { meta, file ->
-            file >> "module4/${file.name}"
+            file >> "simulate_haplotype/${file.name}"
         }
     }
     bam {
         mode 'copy'
         path { meta, file ->
-            file >> "module5/${file.name}"
+            file >> "simulate_wgs_data/${file.name}"
         }
     }
     bai {
         mode 'copy'
         path { meta, file ->
-            file >> "module5/${file.name}"
+            file >> "simulate_wgs_data/${file.name}"
         }
     }
     report {
@@ -281,19 +281,19 @@ workflow SVMODELLER {
     SAMTOOLS_FAIDX(ch_faidx_input, true)
     ch_chr_length_ready = SAMTOOLS_FAIDX.out.sizes
 
-    // Module 1: Build insertion model
-    SVMODELLER_MODULE1(
+    // Step 1: Preprocess SV callset
+    PREPROCESS_SV_CALLSET(
         vcf_insertions,
         ch_chr_length_ready,
         bin_size,
     )
 
-    // Module 2: Simulate insertions
-    SVMODELLER_MODULE2(
+    // Step 2: Simulate insertions
+    SIMULATE_INSERTIONS(
         consensus,
-        SVMODELLER_MODULE1.out.probabilities,
-        SVMODELLER_MODULE1.out.insertion_features,
-        SVMODELLER_MODULE1.out.genome_wide_distribution,
+        PREPROCESS_SV_CALLSET.out.probabilities,
+        PREPROCESS_SV_CALLSET.out.insertion_features,
+        PREPROCESS_SV_CALLSET.out.genome_wide_distribution,
         source_l1,
         source_sva,
         motifs,
@@ -304,8 +304,8 @@ workflow SVMODELLER {
         seed,
     )
 
-    // Module 3: Build deletion model & simulate deletions
-    SVMODELLER_MODULE3(
+    // Step 3: Build deletion model & simulate deletions
+    SIMULATE_DELETIONS(
         vcf_deletions,
         ch_chr_length_ready,
         num_events,
@@ -313,20 +313,20 @@ workflow SVMODELLER {
         seed,
     )
 
-    // Module 4: Embed SVs into reference genome
-    SVMODELLER_MODULE4(
-        SVMODELLER_MODULE2.out.insertions_table,
+    // Step 4: Embed SVs into reference genome (simulate haplotype)
+    SIMULATE_HAPLOTYPE(
+        SIMULATE_INSERTIONS.out.insertions_table,
         ch_ref_fasta_decompressed,
-        SVMODELLER_MODULE3.out.deletions_table,
+        SIMULATE_DELETIONS.out.deletions_table,
         seed,
     )
 
-    // Module 5: Simulate long reads from reference & modified genomes, align, merge
-    ch_modified_genome_aligned_meta = SVMODELLER_MODULE4.out.modified_genome
+    // Step 5: Simulate long reads from reference & modified genomes, align, merge (simulate WGS data)
+    ch_modified_genome_aligned_meta = SIMULATE_HAPLOTYPE.out.modified_genome
         .combine(ch_ref_fasta_decompressed)
         .map { meta_mod, fasta_mod, meta_ref, fasta_ref -> [ meta_ref, fasta_mod ] }
 
-    SVMODELLER_MODULE5(
+    SIMULATE_WGS_DATA(
         ch_modified_genome_aligned_meta,
         ch_ref_fasta_decompressed,
         method_file,
@@ -336,15 +336,15 @@ workflow SVMODELLER {
     )
 
     // Assign output channels for publishing
-    genome_wide_distribution = SVMODELLER_MODULE1.out.genome_wide_distribution
-    insertion_features = SVMODELLER_MODULE1.out.insertion_features
-    probabilities = SVMODELLER_MODULE1.out.probabilities
-    insertions_table = SVMODELLER_MODULE2.out.insertions_table
-    deletions_table = SVMODELLER_MODULE3.out.deletions_table
-    modified_genome = SVMODELLER_MODULE4.out.modified_genome
-    sorted_events = SVMODELLER_MODULE4.out.sorted_events
-    bam = SVMODELLER_MODULE5.out.bam
-    bai = SVMODELLER_MODULE5.out.bai
+    genome_wide_distribution = PREPROCESS_SV_CALLSET.out.genome_wide_distribution
+    insertion_features = PREPROCESS_SV_CALLSET.out.insertion_features
+    probabilities = PREPROCESS_SV_CALLSET.out.probabilities
+    insertions_table = SIMULATE_INSERTIONS.out.insertions_table
+    deletions_table = SIMULATE_DELETIONS.out.deletions_table
+    modified_genome = SIMULATE_HAPLOTYPE.out.modified_genome
+    sorted_events = SIMULATE_HAPLOTYPE.out.sorted_events
+    bam = SIMULATE_WGS_DATA.out.bam
+    bai = SIMULATE_WGS_DATA.out.bai
     ref_fasta = ch_ref_fasta_decompressed
 
     emit:
@@ -389,7 +389,7 @@ ${c.green}num_events${c.reset}                : ${params.num_events}
 ${c.green}bin_size${c.reset}                  : ${params.bin_size}
 ${c.green}seed${c.reset}                      : ${params.seed}
 ${c.green}outdir${c.reset}                    : ${params.outdir}
-${c.bold}Module 5 Parameters${c.reset}
+${c.bold}simulate_wgs_data Parameters${c.reset}
 ----------------------------------------------------
 ${c.green}method_file${c.reset}               : ${params.method_file}
 ${c.green}sim_method${c.reset}                : ${params.sim_method}
@@ -431,7 +431,7 @@ ${c.bold}${c.yellow}OPTIONAL PARAMETERS:${c.reset}
   ${c.bold}${c.green}--bin_size${c.reset}              : ${c.cyan}<int>${c.reset}   ${c.gray}# Size of genomic bins in bp (default: 1000000)${c.reset}
   ${c.bold}${c.green}--seed${c.reset}                  : ${c.cyan}<int>${c.reset}   ${c.gray}# Random seed for reproducibility (default: 42)${c.reset}
 
-${c.bold}${c.yellow}MODULE 5 PARAMETERS:${c.reset}
+${c.bold}${c.yellow}SIMULATE_WGS_DATA PARAMETERS:${c.reset}
   ${c.bold}${c.green}--method_file${c.reset}           : ${c.cyan}<path>${c.reset}  ${c.gray}# PBSIM3 model file (.qshmm, .errhmm, or sample)${c.reset}
   ${c.bold}${c.green}--sim_method${c.reset}            : ${c.cyan}<str>${c.reset}   ${c.gray}# Simulation method: qshmm | errhmm | sample${c.reset}
   ${c.bold}${c.green}--coverage${c.reset}              : ${c.cyan}<int>${c.reset}   ${c.gray}# Total sequencing coverage depth${c.reset}

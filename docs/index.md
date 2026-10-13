@@ -31,22 +31,22 @@ layout: default
 
 ```mermaid
 graph TD
-    VCF_IN[Input VCF Insertions] --> M1[Module 1 - Distribution Analysis]
+    VCF_IN[Input VCF Insertions] --> M1[preprocess_sv_callset - Distribution Analysis]
     M1 --> DIST[Features and Probabilities TSVs]
-    DIST --> M2[Module 2 - Generate Insertion Events]
+    DIST --> M2[simulate_insertions - Generate Insertion Events]
     REF_FA[Reference Genome FASTA] --> M2
     M2 --> INS_TAB[Insertions Table TSV]
 
-    VCF_DEL[Input VCF Deletions] --> M3[Module 3 - Generate Deletion Events]
+    VCF_DEL[Input VCF Deletions] --> M3[simulate_deletions - Generate Deletion Events]
     REF_FA --> M3
     M3 --> DEL_TAB[Deletions Table TSV]
 
-    INS_TAB --> M4[Module 4 - Genome Modification]
+    INS_TAB --> M4[simulate_haplotype - Genome Modification]
     DEL_TAB --> M4
     REF_FA --> M4
     M4 --> MOD_FA[Modified Genome FASTA]
 
-    MOD_FA --> M5[Module 5 - Read Simulation and BAM Alignment]
+    MOD_FA --> M5[simulate_wgs_data - Read Simulation and BAM Alignment]
     REF_FA --> M5
     M5 --> BAM[Simulated BAM and FastQ Reads]
 ```
@@ -60,9 +60,9 @@ graph TD
 # Pull the v0.5.0 Docker container
 docker pull ghcr.io/biocorecrg/svmodeller:0.5.0
 
-# Run Module 1
+# Run preprocess_sv_callset
 docker run --rm -v $(pwd):/data ghcr.io/biocorecrg/svmodeller:0.5.0 \
-    Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
+    preprocess_sv_callset.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
 ```
 
 ### Nextflow (End-to-End Pipeline)

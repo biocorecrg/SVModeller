@@ -1,10 +1,10 @@
-name: svmodeller_module3
-description: Process deletion structural variants from VCF data and simulate synthetic deletion events.
+name: preprocess_sv_callset
+description: Process input VCF with insertion structural variants and chromosome length file to extract insertion feature distributions, genomic bin probabilities, and background insertion statistics.
 keywords:
   - structural variants
   - simulation
   - genomics
-  - deletions
+  - insertions
 tools:
   - svmodeller:
       description: Simulator of synthetic human haplotypes containing embedded structural variants (SV)
@@ -20,27 +20,38 @@ input:
         description: Groovy Map containing sample information e.g. [ id:'svmodeller' ]
     - vcf:
         type: file
-        description: Input VCF file containing deletion structural variants
+        description: Input VCF file containing insertion structural variants
   - - meta2:
         type: map
         description: Groovy Map containing reference information e.g. [ id:'svmodeller' ]
     - chr_length:
         type: file
         description: File containing chromosome names and lengths
-  - - num_events:
-        type: integer
-        description: Target number of deletion events to simulate
   - - bin_size:
         type: integer
         description: Size of genomic bins in bp (default 1000000)
 output:
-  - deletions_table:
+  - genome_wide_distribution:
       - meta:
           type: map
           description: Groovy Map containing sample information
-      - Deletions_table.tsv:
+      - Genome_Wide_Distribution.tsv:
           type: file
-          description: TSV table of generated deletion events
+          description: TSV table of genome-wide event distribution across bins
+  - insertion_features:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - Insertion_Features.tsv:
+          type: file
+          description: TSV table of insertion feature counts and lengths
+  - probabilities:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - Probabilities.tsv:
+          type: file
+          description: TSV table of calculated insertion event probabilities
   - versions_svmodeller:
       - ${task.process}:
           type: string

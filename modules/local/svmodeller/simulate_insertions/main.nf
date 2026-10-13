@@ -1,4 +1,4 @@
-process SVMODELLER_MODULE2 {
+process SIMULATE_INSERTIONS {
     tag "$meta.id"
     label 'process_medium'
 
@@ -31,7 +31,7 @@ process SVMODELLER_MODULE2 {
     mkdir -p \$PWD/tmp
     export MPLCONFIGDIR=\$PWD/tmp
 
-    Module2.py \\
+    simulate_insertions.py \\
         --consensus_path ${consensus} \\
         --probabilities_numbers_path ${probabilities_numbers} \\
         --insertion_features_path ${insertion_features} \\

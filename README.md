@@ -15,18 +15,18 @@ SVModeller is a computational tool to simulate synthetic human haplotypes contai
 One of the key innovations of this simulator is its ability to include large repetitive insertions, such as Variable Number of Tandem Repeats (VNTR), mobile element insertions (MEI), transduction-related insertions, and mitochondrial insertions; all of them taking into consideration their specific features such as polyadenylation tails, SVA hexamers or TSDs, between others, addressing the limitations of prior simulators. This computational tool will enable the research community to create gold-standard sets of synthetic human genomes, which will be crucial for benchmarking and evaluating methods for detecting and annotating SVs using long-read sequencing data.
 
 The simulator is implemented in python (Van Rossum & Drake, 2009), and is structured in 5 different independent modules:
-- Module 1: Process insertion features distributions from a variant calling file (VCF).
-- Module 2: Generate insertion events from user-defined distributions or those derived from Module 1.
-- Module 3: Generate deletion events sampling data stored in a VCF.
-- Module 4: Modify a reference genome.
-- Module 5: Generate sub-clonal variant reads at different coverage and allele frequency levels.
+- preprocess_sv_callset (module 1): Process insertion features distributions from a variant calling file (VCF).
+- simulate_insertions (module 2): Generate insertion events from user-defined distributions or those derived from preprocess_sv_callset.
+- simulate_deletions (module 3): Generate deletion events sampling data stored in a VCF.
+- simulate_haplotype (module 4): Modify a reference genome with structural variants.
+- simulate_wgs_data (module 5): Generate sub-clonal variant reads at different coverage and allele frequency levels.
 
 Structural Variants generated: Mobile Element Insertions (MEIs) of Alu, LINE-1 and SVA, MEIs mediating transductions, mitochondrial insertions (NUMT), VNTRs, duplications, inversions, deletions, inverted duplications, orphan insertions, and deletions.
 
 ## Modules description, input and output
 <img width="881" alt="Figure_SVModeller" src="https://github.com/user-attachments/assets/3812ce77-67a2-4721-820a-fadec290bbb6" />
 
-### Module 1
+### preprocess_sv_callset (Module 1)
 This module aims to process the insertion data from the VCF obtaining different distributions such as how the different events are genome-wide spread, the distribution of the different features that constitute each event, and the probability of finding each event on the genome.
 
 **Input:**
@@ -43,13 +43,13 @@ This module aims to process the insertion data from the VCF obtaining different 
 
 **Sample command:**
 ```bash
-python3 Module1.py \
+python3 preprocess_sv_callset.py \
     --file_path VCF_Insertions.vcf \
     --chromosome_length chr_length.txt
 ```
 
-### Module 2
-Second module objective is to generate from determine distributions the final sequences that will be inserted in a genome. It takes the genome-wide and insertion features distributions, even from module 1 or user-defined ones with the same structure as the ones derived from module 1. From these distributions samples different values to build the new events and returns their generated sequence.
+### simulate_insertions (Module 2)
+Second module objective is to generate from determine distributions the final sequences that will be inserted in a genome. It takes the genome-wide and insertion features distributions, even from preprocess_sv_callset or user-defined ones with the same structure as the ones derived from preprocess_sv_callset. From these distributions samples different values to build the new events and returns their generated sequence.
 
 **Input:**
 - Genome-Wide Distribution _(Genome_Wide_Distribution.tsv)_
@@ -75,7 +75,7 @@ Second module objective is to generate from determine distributions the final se
 
 **Sample command:**
 ```bash
-python3 Module2.py \
+python3 simulate_insertions.py \
     --consensus_path consensus_sequences_complete.fa\
     --probabilities_numbers_path Number_events.tsv \
     --insertion_features_path Insertion_Features.tsv \
@@ -90,7 +90,7 @@ python3 Module2.py \
     --VCF
 ```
 
-### Module 3
+### simulate_deletions (Module 3)
 Third module generates deletions events. It takes the data from VCF and based on the determine number of events to simulate, selects the regions to be deleted, and returns a data frame with the regions to be removed from the genome.
 
 **Input:**
@@ -107,7 +107,7 @@ Third module generates deletions events. It takes the data from VCF and based on
 
 **Sample command:**
 ```bash
-python3 Module3.py \
+python3 simulate_deletions.py \
     --vcf_path VCF_Deletions.vcf \
     --path_chromosome_length chr_length.txt \
     --num_events 1000 \
@@ -116,8 +116,8 @@ python3 Module3.py \
     --reference_fasta_path chm13v2.0.fa
 ```
 
-### Module 4
-Fourth module results in a modified genome. It takes data frames of insertion and deletion data (even from modules 2 and 3 or user-defined) and modifies a reference genome with the determine information. The result is the reference genome with the specified changes.
+### simulate_haplotype (Module 4)
+Fourth module results in a modified genome. It takes data frames of insertion and deletion data (even from simulate_insertions and simulate_deletions or user-defined) and modifies a reference genome with the determine information. The result is the reference genome with the specified changes.
 
 **Input:**
 - Events to mofidy reference genome (.tsv)
@@ -134,14 +134,14 @@ Fourth module results in a modified genome. It takes data frames of insertion an
 
 **Sample command:**
 ```bash
-python3 Module4.py \
+python3 simulate_haplotype.py \
     --file1 Insertions_table.tsv \
     --fasta_file chm13v2.0.fa \
     --file2 Deletions_table.tsv \
     --seed 42
 ```
 
-### Module 5
+### simulate_wgs_data (Module 5)
 Fifth module aims to generate sub-clonal variant reads with different coverage and allele frequency levels. It takes the reference and modified genomes, as well as the method file (based on error model, quality score, or fastQ files) and the corresponding method file, the technology of the simulated reads (Oxford Nanopore - ONT, PacBio - PB, PacBio-HiFi - HiFi), and desired coverage and allele frequency. Please ensure consistency in the technology used across all files
 
 **Input:**
@@ -158,20 +158,6 @@ Fifth module aims to generate sub-clonal variant reads with different coverage a
 - Alignment _(combined_final_alignment.bam)_
 - Modified genome reads (.fastq)
 - Reference genome reads (.fastq)
-
-**Sample command:**
-```bash
-python3 Module5.py \
-    --reference_genome chm13v2.0.fa \
-    --modified_genome Modified_Reference_Genome.fasta \
-    --method_file ERRHMM-ONT-HQ.model \
-    --method error_model \
-    --coverage 30 \
-    --allele_frequency 0.5 \
-    --output_dir BAM_Output \
-    --technology ONT \
-    --threads 8
-```
 
 ## Data
 Available data to run the modules for versions 0.1 and 0.2 available at:
@@ -196,7 +182,7 @@ You can run SVModeller without installing external dependencies using the pre-bu
 docker pull ghcr.io/biocorecrg/svmodeller:0.5.0
 
 # Run a module using Docker
-docker run --rm -v $(pwd):/data ghcr.io/biocorecrg/svmodeller:0.5.0 Module1.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
+docker run --rm -v $(pwd):/data ghcr.io/biocorecrg/svmodeller:0.5.0 preprocess_sv_callset.py --file_path /data/VCF_Insertions.vcf --chromosome_length /data/chr_length.txt
 ```
 
 ### Option 2: Conda / Micromamba

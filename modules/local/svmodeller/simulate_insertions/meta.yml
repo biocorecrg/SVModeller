@@ -1,4 +1,4 @@
-name: svmodeller_module2
+name: simulate_insertions
 description: Simulate synthetic insertion structural variants based on learned feature distributions, consensus sequences, and source loci.
 keywords:
   - structural variants

@@ -1,4 +1,4 @@
-process SVMODELLER_MODULE1 {
+process PREPROCESS_SV_CALLSET {
     tag "$meta.id"
     label 'process_single'
 
@@ -25,7 +25,7 @@ process SVMODELLER_MODULE1 {
     mkdir -p \$PWD/tmp
     export MPLCONFIGDIR=\$PWD/tmp
 
-    Module1.py \\
+    preprocess_sv_callset.py \\
         --file_path ${vcf} \\
         --chromosome_length ${chr_length} \\
         ${bin_size_arg} \\

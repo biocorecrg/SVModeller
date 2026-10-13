@@ -1,4 +1,4 @@
-process SVMODELLER_MODULE4 {
+process SIMULATE_HAPLOTYPE {
     tag "$meta.id"
     label 'process_medium'
 
@@ -24,7 +24,7 @@ process SVMODELLER_MODULE4 {
     mkdir -p \$PWD/tmp
     export MPLCONFIGDIR=\$PWD/tmp
 
-    Module4.py \\
+    simulate_haplotype.py \\
         --file1 ${insertions_table} \\
         --fasta_file ${ref_fasta} \\
         ${del_arg} \\

@@ -17,7 +17,7 @@ num_events: 10
 bin_size:   1000000
 seed:       42
 
-# Module 5 - Read Simulation
+# simulate_wgs_data - Read Simulation
 
 # sim_method: Read simulation method (can be qshmm, errhmm, or sample)
 sim_method:        "qshmm"

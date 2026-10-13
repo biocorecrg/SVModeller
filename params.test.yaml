@@ -16,7 +16,7 @@ num_events: 1000
 bin_size:   1000000
 seed:       42
 
-# Module 5 - Read Simulation
+# simulate_wgs_data - Read Simulation
 # sim_method options: qshmm | errhmm | sample
 # method_file: not set — using the model bundled in the container (/usr/local/data/QSHMM-RSII.model)
 sim_method:       "qshmm"

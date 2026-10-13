@@ -4,7 +4,7 @@ layout: default
 
 # Module Reference Guide
 
-## Module 1: Distribution Analysis
+## preprocess_sv_callset (Module 1)
 
 Extracts genome-wide and feature distributions from an insertion VCF file.
 
@@ -22,16 +22,16 @@ Extracts genome-wide and feature distributions from an insertion VCF file.
 
 ### Command
 ```bash
-Module1.py \
+preprocess_sv_callset.py \
     --file_path VCF_Insertions.vcf \
     --chromosome_length chr_length.txt
 ```
 
 ---
 
-## Module 2: Event Generation
+## simulate_insertions (Module 2)
 
-Generates synthetic insertion event sequences based on feature distributions derived from Module 1 or user-defined tables.
+Generates synthetic insertion event sequences based on feature distributions derived from preprocess_sv_callset or user-defined tables.
 
 ### Input Files
 - `--genome_wide_path`: `Genome_Wide_Distribution.tsv`
@@ -52,7 +52,7 @@ Generates synthetic insertion event sequences based on feature distributions der
 
 ### Command
 ```bash
-Module2.py \
+simulate_insertions.py \
     --consensus_path consensus_sequences_complete.fa \
     --probabilities_numbers_path Number_events.tsv \
     --insertion_features_path Insertion_Features.tsv \
@@ -69,7 +69,7 @@ Module2.py \
 
 ---
 
-## Module 3: Deletion Processing
+## simulate_deletions (Module 3)
 
 Selects regions to be deleted based on a VCF containing deletion events.
 
@@ -86,7 +86,7 @@ Selects regions to be deleted based on a VCF containing deletion events.
 
 ### Command
 ```bash
-Module3.py \
+simulate_deletions.py \
     --vcf_path VCF_Deletions.vcf \
     --path_chromosome_length chr_length.txt \
     --num_events 1000 \
@@ -97,9 +97,9 @@ Module3.py \
 
 ---
 
-## Module 4: Reference Modification
+## simulate_haplotype (Module 4)
 
-Applies insertion and deletion events (from Modules 2 and 3) to a reference genome to generate a modified synthetic genome.
+Applies insertion and deletion events (from simulate_insertions and simulate_deletions) to a reference genome to generate a modified synthetic genome.
 
 ### Input Files
 - `--file1`: `Insertions_table.tsv`
@@ -112,7 +112,7 @@ Applies insertion and deletion events (from Modules 2 and 3) to a reference geno
 
 ### Command
 ```bash
-Module4.py \
+simulate_haplotype.py \
     --file1 Insertions_table.tsv \
     --fasta_file chm13v2.0.fa \
     --file2 Deletions_table.tsv
@@ -120,9 +120,9 @@ Module4.py \
 
 ---
 
-## Module 5: Sub-clonal Read Simulation & BAM Generation (Nextflow Pipeline only)
+## simulate_wgs_data (Module 5: Sub-clonal Read Simulation & BAM Generation)
 
-Simulates sequencing reads at designated coverage and allele frequency levels using `pbsim3`, aligns reads with `minimap2`, and sorts/indexes BAM files with `samtools`. This module is implemented as part of the end-to-end Nextflow pipeline and does not have a standalone Python command.
+Simulates sequencing reads at designated coverage and allele frequency levels using `pbsim3`, aligns reads with `minimap2`, and sorts/indexes BAM files with `samtools`. This subworkflow is implemented as part of the end-to-end Nextflow pipeline and does not have a standalone Python command.
 
 ### Pipeline Parameters
 - `--sim_method`: `error_model`, `quality_score`, or `training`
@@ -154,7 +154,7 @@ Filter_VCF_information.py input.vcf output_filtered.vcf
 The Nextflow pipeline automatically integrates **MultiQC** to compile and present alignment quality statistics along with an auto-generated methods citation section.
 
 ### BAM Statistics (BAM2STATS)
-After Module 5 completes read simulation and alignment, the pipeline runs the `BAM2STATS` module to calculate sequencing alignment and quality statistics. These stats are merged via `JOIN_BAM_STATS` and displayed as the **Alignment QC** table in the MultiQC report.
+After simulate_wgs_data completes read simulation and alignment, the pipeline runs the `BAM2STATS` module to calculate sequencing alignment and quality statistics. These stats are merged via `JOIN_BAM_STATS` and displayed as the **Alignment QC** table in the MultiQC report.
 
 ### Auto-Generated Methods Section
 The pipeline extracts the parameters used for execution and utilizes the `METHODS_SECTION` module to automatically compile a methods description including references/citations for the tools used (`pbsim3`, `minimap2`, `samtools`, and `svmodeller`).

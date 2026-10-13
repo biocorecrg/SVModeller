@@ -1,4 +1,4 @@
-name: svmodeller_module4
+name: simulate_haplotype
 description: Embed simulated insertion and deletion structural variants into the reference genome FASTA sequence to produce modified haplotypes.
 keywords:
   - structural variants

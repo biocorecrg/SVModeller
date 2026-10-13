@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SVModeller - Module 2
+# SVModeller - simulate_insertions
 
 # Model probabilities, insertion features, and genome wide distribution to generate new events
 
