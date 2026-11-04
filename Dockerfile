@@ -10,7 +10,7 @@ LABEL org.opencontainers.image.title="SVModeller" \
       org.opencontainers.image.source="https://github.com/biocorecrg/SVModeller"
 
 USER root
-RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates procps && rm -rf /var/lib/apt/lists/*
 
 USER $MAMBA_USER
 

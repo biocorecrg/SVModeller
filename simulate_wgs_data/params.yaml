@@ -1,0 +1,32 @@
+# simulate_wgs_data Pipeline Parameters
+#=======================================
+
+# Input Genomes (Required)
+## Reference genome FASTA file (.fa, .fasta, .fa.gz, or .fasta.gz)
+ref_fasta:        ""
+
+## Modified reference genome FASTA file with embedded SVs (.fa, .fasta, .fa.gz, or .fasta.gz)
+modified_genome:  ""
+
+# Read Simulation Settings
+## Read simulation method. Can be qshmm / errhmm / sample
+sim_method:       "qshmm"
+
+## Total sequencing coverage depth (e.g. 30 for 30x)
+coverage:         30
+
+## Fraction of reads from the modified genome (0.0 - 1.0)
+allele_frequency: 0.5
+
+## Sequencing technology. Can be HiFi / ONT / PB
+technology:       "HiFi"
+
+## Optional PBSIM3 model file (.qshmm, .errhmm, or sample FASTQ). If omitted, the container's built-in model is used
+method_file:      ""
+
+## Output directory
+outdir:           "results"
+
+## Optional Slack webhook URL for completion notifications
+slack_url:        ""
+

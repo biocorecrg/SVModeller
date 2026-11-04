@@ -62,36 +62,31 @@ pip install -r requirements.txt
 
 ---
 
-## 4. Running as a Nextflow Pipeline
+## 4. Running Nextflow Pipelines
 
-The entire modular workflow can also be executed end-to-end as a single Nextflow pipeline. This automatically orchestrates all 5 modules.
+SVModeller provides two Nextflow pipelines:
+- **`svmodeller/`**: Automates all 5 modules end-to-end.
+- **`simulate_wgs_data/`**: Standalone pipeline dedicated to sub-clonal WGS read simulation and alignment from reference and modified FASTA files.
 
-### Run Command
-To run the pipeline using the test dataset:
+### Run Commands
+
+#### Running the End-to-End Pipeline (`svmodeller`):
 ```bash
-nextflow run . -profile applecontainer -params-file params.test.yaml -resume
+cd svmodeller
+nextflow run main.nf -profile applecontainer -params-file params.test.yaml -resume
+```
+
+#### Running the Standalone Read Simulator (`simulate_wgs_data`):
+```bash
+cd simulate_wgs_data
+nextflow run main.nf -profile applecontainer -params-file params.test.yaml -resume
 ```
 
 ### Profiles
 - `applecontainer`: Native Apple Silicon container virtualization (highly recommended for Apple Silicon Macs).
 - `docker`: Standard Docker containerization.
 - `singularity`: Standard Singularity containerization.
+- `crg`: SLURM cluster profile for CRG HPC environment.
 
 ### Parameters Configuration
-The pipeline inputs and settings are configured via a YAML parameters file (e.g. `params.test.yaml`):
-```yaml
-vcf_insertions: "pipeline_inputs/VCF_Insertions.chr20.vcf.gz"
-vcf_deletions:  "pipeline_inputs/VCF_Deletions.chr20.vcf.gz"
-ref_fasta:      "pipeline_inputs/chm13v2.0.chr20.fa.gz"
-consensus:      "pipeline_inputs/consensus_sequences_complete.fa.gz"
-source_l1:      "pipeline_inputs/source_loci_LINE1_chr20.tsv.gz"
-source_sva:     "pipeline_inputs/source_loci_SVA_chr20.tsv.gz"
-motifs:         "pipeline_inputs/VNTR_with_start_position_chr20.tsv.gz"
-sva_vntr:       "pipeline_inputs/SVA_VNTR_Motifs_chr20.tsv.gz"
-num_events:     1000
-bin_size:       1000000
-seed:           42
-sim_method:     "qshmm"
-coverage:       30
-allele_frequency: 0.5
-```
+The pipeline inputs and settings are configured via YAML parameters files located inside each pipeline directory (`svmodeller/params.yaml` and `simulate_wgs_data/params.yaml`).

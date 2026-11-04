@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Status Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #000000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .COMPLETED {
+            background-color: #d4edda;
+        }
+        .CACHED {
+            background-color: #d4edda;
+        }
+        .FAILED {
+            background-color: #f8d7da;
+        }
+        .RETRIED {
+            background-color: #fff3cd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Task Status Report</h1>
+    <p>Report Type: task-status-report</p>
+    <p>Generated At: 2026-11-04T17:29:11.540781204+01:00</p>
+
+    <h2>Summary</h2>
+    <ul>
+        <li>Total Tasks: 9</li>
+        <li>Completed: 2</li>
+        <li>Cached: 0</li>
+        <li>Failed: 1</li>
+        
+            
+            <li>Tasks Compute Cost: €0.0000</li>
+            <li>Head Job Cost: €0.0031</li>
+            
+        <li>Total Compute Cost: €0.0031</li>
+        <li>Projected Monthly Storage Cost: €0.0002</li>
+        <li>Total Estimated Cost (Compute + Storage): €0.0033</li>
+        
+        
+        <li>Pricing Rates:
+            <ul>
+                <li>Currency: EUR</li>
+                <li>kCPUHr: 9.69</li>
+                <li>kGBHr: 1.08</li>
+                <li>kGPUGBHr: 11.63</li>
+                <li>TBMonth: 3.3</li>
+            </ul>
+        </li>
+        
+    </ul>
+
+    
+    <h2>Cost Summary by Process / Module</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Process / Module Name</th>
+                <th>Task Count</th>
+                <th>Compute Cost</th>
+                <th>Projected Monthly Storage Cost</th>
+                <th>Total Estimated Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <td><strong>SVMODELLER:GUNZIP</strong></td>
+                <td>1</td>
+                <td>€0.0000</td>
+                <td>€0.0002</td>
+                <td>€0.0002</td>
+            </tr>
+            
+            <tr>
+                <td><strong>SVMODELLER:SAMTOOLS_FAIDX</strong></td>
+                <td>1</td>
+                <td>€0.0000</td>
+                <td>€0.0000</td>
+                <td>€0.0000</td>
+            </tr>
+            
+            <tr>
+                <td><strong>SVMODELLER:SIMULATE_DELETIONS</strong></td>
+                <td>3</td>
+                <td>€0.0000</td>
+                <td>€0.0000</td>
+                <td>€0.0000</td>
+            </tr>
+            
+            <tr>
+                <td><strong>SVMODELLER:PREPROCESS_SV_CALLSET</strong></td>
+                <td>3</td>
+                <td>€0.0000</td>
+                <td>€0.0000</td>
+                <td>€0.0000</td>
+            </tr>
+            
+            <tr>
+                <td><strong>SVMODELLER:SIMULATE_WGS_DATA:PBSIM3</strong></td>
+                <td>1</td>
+                <td>€0.0000</td>
+                <td>€0.0000</td>
+                <td>€0.0000</td>
+            </tr>
+            
+        </tbody>
+    </table>
+    
+
+    <h2>Tasks by Status</h2>
+    
+        <h3>COMPLETED</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr class="COMPLETED">
+                    <td>1</td>
+                    <td>COMPLETED</td>
+                    <td>
+                        <ul>
+                            
+                            <li><strong>task_id:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>hash:</strong>
+                                
+                                    4b/e64b68
+                                
+                            </li>
+                            
+                            <li><strong>process_name:</strong>
+                                
+                                    SVMODELLER:GUNZIP
+                                
+                            </li>
+                            
+                            <li><strong>task_name:</strong>
+                                
+                                    SVMODELLER:GUNZIP (chm13v2.0.chr20.fa.gz)
+                                
+                            </li>
+                            
+                            <li><strong>tag:</strong>
+                                
+                                    chm13v2.0.chr20.fa.gz
+                                
+                            </li>
+                            
+                            <li><strong>status:</strong>
+                                
+                                    COMPLETED
+                                
+                            </li>
+                            
+                            <li><strong>exit_status:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>compute_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>projected_monthly_storage_cost:</strong>
+                                
+                                    €0.0002
+                                
+                            </li>
+                            
+                            <li><strong>total_estimated_cost:</strong>
+                                
+                                    €0.0002
+                                
+                            </li>
+                            
+                            <li><strong>raw_compute_cost:</strong>
+                                
+                                    6.44266566E-6
+                                
+                            </li>
+                            
+                            <li><strong>raw_storage_cost:</strong>
+                                
+                                    2.0203099766149534E-4
+                                
+                            </li>
+                            
+                            <li><strong>allocated_cpus:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>allocated_mem_gb:</strong>
+                                
+                                    12.00 GB
+                                
+                            </li>
+                            
+                            <li><strong>allocated_gpus:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>output_size:</strong>
+                                
+                                    0.0627 GB
+                                
+                            </li>
+                            
+                            <li><strong>submit_time:</strong>
+                                
+                                    2026-11-04T17:21:05.929+01:00
+                                
+                            </li>
+                            
+                            <li><strong>start_time:</strong>
+                                
+                                    2026-11-04T17:21:54.704+01:00
+                                
+                            </li>
+                            
+                            <li><strong>complete_time:</strong>
+                                
+                                    2026-11-04T17:21:54.725+01:00
+                                
+                            </li>
+                            
+                            <li><strong>duration_ms:</strong>
+                                
+                                    48796
+                                
+                            </li>
+                            
+                            <li><strong>realtime_ms:</strong>
+                                
+                                    1024
+                                
+                            </li>
+                            
+                            <li><strong>attempt:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>rchar:</strong>
+                                
+                                    19.8 MB
+                                
+                            </li>
+                            
+                            <li><strong>wchar:</strong>
+                                
+                                    64.2 MB
+                                
+                            </li>
+                            
+                            <li><strong>pct_cpu:</strong>
+                                
+                                    37.6
+                                
+                            </li>
+                            
+                            <li><strong>peak_rss:</strong>
+                                
+                                    5.3 MB
+                                
+                            </li>
+                            
+                            <li><strong>peak_vmem:</strong>
+                                
+                                    8.1 MB
+                                
+                            </li>
+                            
+                            <li><strong>workdir:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/4b/e64b68e9e887abf87c119e33892eac
+                                
+                            </li>
+                            
+                            <li><strong>log:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/4b/e64b68e9e887abf87c119e33892eac/.command.log
+                                
+                            </li>
+                            
+                            <li><strong>out:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/4b/e64b68e9e887abf87c119e33892eac/.command.out
+                                
+                            </li>
+                            
+                            <li><strong>err:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/4b/e64b68e9e887abf87c119e33892eac/.command.err
+                                
+                            </li>
+                            
+                            <li><strong>scratch:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>container:</strong>
+                                
+                                    /no_backup/bi/containers/community-cr-prod.seqera.io-docker-registry-v2-blobs-sha256-52-52ccce28d2ab928ab862e25aae26314d69c8e38bd41ca9431c67ef05221348aa-data.img
+                                
+                            </li>
+                            
+                            <li><strong>outputs:</strong>
+                                
+                                    <table>
+                                        
+                                        <tr>
+                                            <td>/scripts/bi/nextflow2/SVModeller/svmodeller/work/4b/e64b68e9e887abf87c119e33892eac/chm13v2.0.chr20.fa</td>
+                                        </tr>
+                                        
+                                    </table>
+                                
+                            </li>
+                            
+                        </ul>
+                    </td>
+                </tr>
+                
+                <tr class="COMPLETED">
+                    <td>2</td>
+                    <td>COMPLETED</td>
+                    <td>
+                        <ul>
+                            
+                            <li><strong>task_id:</strong>
+                                
+                                    2
+                                
+                            </li>
+                            
+                            <li><strong>hash:</strong>
+                                
+                                    a5/14b362
+                                
+                            </li>
+                            
+                            <li><strong>process_name:</strong>
+                                
+                                    SVMODELLER:SAMTOOLS_FAIDX
+                                
+                            </li>
+                            
+                            <li><strong>task_name:</strong>
+                                
+                                    SVMODELLER:SAMTOOLS_FAIDX (chm13v2.0.chr20.fa)
+                                
+                            </li>
+                            
+                            <li><strong>tag:</strong>
+                                
+                                    chm13v2.0.chr20.fa
+                                
+                            </li>
+                            
+                            <li><strong>status:</strong>
+                                
+                                    COMPLETED
+                                
+                            </li>
+                            
+                            <li><strong>exit_status:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>compute_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>projected_monthly_storage_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>total_estimated_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>raw_compute_cost:</strong>
+                                
+                                    8.877540659999999E-6
+                                
+                            </li>
+                            
+                            <li><strong>raw_storage_cost:</strong>
+                                
+                                    1.1405063560232519E-10
+                                
+                            </li>
+                            
+                            <li><strong>allocated_cpus:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>allocated_mem_gb:</strong>
+                                
+                                    12.00 GB
+                                
+                            </li>
+                            
+                            <li><strong>allocated_gpus:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>output_size:</strong>
+                                
+                                    0.0000 GB
+                                
+                            </li>
+                            
+                            <li><strong>submit_time:</strong>
+                                
+                                    2026-11-04T17:21:55.148+01:00
+                                
+                            </li>
+                            
+                            <li><strong>start_time:</strong>
+                                
+                                    2026-11-04T17:22:54.707+01:00
+                                
+                            </li>
+                            
+                            <li><strong>complete_time:</strong>
+                                
+                                    2026-11-04T17:22:59.709+01:00
+                                
+                            </li>
+                            
+                            <li><strong>duration_ms:</strong>
+                                
+                                    64561
+                                
+                            </li>
+                            
+                            <li><strong>realtime_ms:</strong>
+                                
+                                    1411
+                                
+                            </li>
+                            
+                            <li><strong>attempt:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>rchar:</strong>
+                                
+                                    64.5 MB
+                                
+                            </li>
+                            
+                            <li><strong>wchar:</strong>
+                                
+                                    2.6 KB
+                                
+                            </li>
+                            
+                            <li><strong>pct_cpu:</strong>
+                                
+                                    17.4
+                                
+                            </li>
+                            
+                            <li><strong>peak_rss:</strong>
+                                
+                                    15.2 MB
+                                
+                            </li>
+                            
+                            <li><strong>peak_vmem:</strong>
+                                
+                                    36.5 MB
+                                
+                            </li>
+                            
+                            <li><strong>workdir:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/a5/14b362f214bdfd45eb33a22c7afe54
+                                
+                            </li>
+                            
+                            <li><strong>log:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/a5/14b362f214bdfd45eb33a22c7afe54/.command.log
+                                
+                            </li>
+                            
+                            <li><strong>out:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/a5/14b362f214bdfd45eb33a22c7afe54/.command.out
+                                
+                            </li>
+                            
+                            <li><strong>err:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/a5/14b362f214bdfd45eb33a22c7afe54/.command.err
+                                
+                            </li>
+                            
+                            <li><strong>scratch:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>container:</strong>
+                                
+                                    /no_backup/bi/containers/community-cr-prod.seqera.io-docker-registry-v2-blobs-sha256-e9-e994bf4eb3731150511a14f5706b7bdfd64df1b6d40898fff334286c027e0859-data.img
+                                
+                            </li>
+                            
+                            <li><strong>outputs:</strong>
+                                
+                                    <table>
+                                        
+                                        <tr>
+                                            <td>/scripts/bi/nextflow2/SVModeller/svmodeller/work/a5/14b362f214bdfd45eb33a22c7afe54/chm13v2.0.chr20.fa.sizes</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>/scripts/bi/nextflow2/SVModeller/svmodeller/work/a5/14b362f214bdfd45eb33a22c7afe54/chm13v2.0.chr20.fa.fai</td>
+                                        </tr>
+                                        
+                                    </table>
+                                
+                            </li>
+                            
+                        </ul>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+    
+        <h3>CACHED</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    
+        <h3>FAILED</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr class="FAILED">
+                    <td>8</td>
+                    <td>FAILED</td>
+                    <td>
+                        <ul>
+                            
+                            <li><strong>task_id:</strong>
+                                
+                                    8
+                                
+                            </li>
+                            
+                            <li><strong>hash:</strong>
+                                
+                                    7f/9390c1
+                                
+                            </li>
+                            
+                            <li><strong>process_name:</strong>
+                                
+                                    SVMODELLER:PREPROCESS_SV_CALLSET
+                                
+                            </li>
+                            
+                            <li><strong>task_name:</strong>
+                                
+                                    SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)
+                                
+                            </li>
+                            
+                            <li><strong>tag:</strong>
+                                
+                                    VCF_Insertions.chr20.vcf.gz
+                                
+                            </li>
+                            
+                            <li><strong>status:</strong>
+                                
+                                    FAILED
+                                
+                            </li>
+                            
+                            <li><strong>exit_status:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>compute_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>projected_monthly_storage_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>total_estimated_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>raw_compute_cost:</strong>
+                                
+                                    6.745887300000001E-8
+                                
+                            </li>
+                            
+                            <li><strong>raw_storage_cost:</strong>
+                                
+                                    0.0
+                                
+                            </li>
+                            
+                            <li><strong>allocated_cpus:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>allocated_mem_gb:</strong>
+                                
+                                    36.00 GB
+                                
+                            </li>
+                            
+                            <li><strong>allocated_gpus:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>output_size:</strong>
+                                
+                                    0.0000 GB
+                                
+                            </li>
+                            
+                            <li><strong>submit_time:</strong>
+                                
+                                    2026-11-04T17:24:59.89+01:00
+                                
+                            </li>
+                            
+                            <li><strong>start_time:</strong>
+                                
+                                    2026-11-04T17:29:09.727+01:00
+                                
+                            </li>
+                            
+                            <li><strong>complete_time:</strong>
+                                
+                                    2026-11-04T17:29:09.732+01:00
+                                
+                            </li>
+                            
+                            <li><strong>duration_ms:</strong>
+                                
+                                    249842
+                                
+                            </li>
+                            
+                            <li><strong>realtime_ms:</strong>
+                                
+                                    5
+                                
+                            </li>
+                            
+                            <li><strong>attempt:</strong>
+                                
+                                    3
+                                
+                            </li>
+                            
+                            <li><strong>rchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>wchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>pct_cpu:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_rss:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_vmem:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>workdir:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/7f/9390c180def25ae437b6388c7d4e5d
+                                
+                            </li>
+                            
+                            <li><strong>log:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/7f/9390c180def25ae437b6388c7d4e5d/.command.log
+                                
+                            </li>
+                            
+                            <li><strong>out:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/7f/9390c180def25ae437b6388c7d4e5d/.command.out
+                                
+                            </li>
+                            
+                            <li><strong>err:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/7f/9390c180def25ae437b6388c7d4e5d/.command.err
+                                
+                            </li>
+                            
+                            <li><strong>scratch:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>container:</strong>
+                                
+                                    /no_backup/bi/containers/ghcr.io-biocorecrg-svmodeller-0.5.0.img
+                                
+                            </li>
+                            
+                            <li><strong>outputs:</strong>
+                                
+                                    <table>
+                                        
+                                    </table>
+                                
+                            </li>
+                            
+                        </ul>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+    
+        <h3>ABORTED</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr class="ABORTED">
+                    <td>3</td>
+                    <td>ABORTED</td>
+                    <td>
+                        <ul>
+                            
+                            <li><strong>task_id:</strong>
+                                
+                                    3
+                                
+                            </li>
+                            
+                            <li><strong>hash:</strong>
+                                
+                                    f0/1f0346
+                                
+                            </li>
+                            
+                            <li><strong>process_name:</strong>
+                                
+                                    SVMODELLER:SIMULATE_WGS_DATA:PBSIM3
+                                
+                            </li>
+                            
+                            <li><strong>task_name:</strong>
+                                
+                                    SVMODELLER:SIMULATE_WGS_DATA:PBSIM3 (chm13v2.0.chr20_ref)
+                                
+                            </li>
+                            
+                            <li><strong>tag:</strong>
+                                
+                                    chm13v2.0.chr20_ref
+                                
+                            </li>
+                            
+                            <li><strong>status:</strong>
+                                
+                                    ABORTED
+                                
+                            </li>
+                            
+                            <li><strong>exit_status:</strong>
+                                
+                                    2147483647
+                                
+                            </li>
+                            
+                            <li><strong>compute_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>projected_monthly_storage_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>total_estimated_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>raw_compute_cost:</strong>
+                                
+                                    0.0
+                                
+                            </li>
+                            
+                            <li><strong>raw_storage_cost:</strong>
+                                
+                                    0.0
+                                
+                            </li>
+                            
+                            <li><strong>allocated_cpus:</strong>
+                                
+                                    8
+                                
+                            </li>
+                            
+                            <li><strong>allocated_mem_gb:</strong>
+                                
+                                    64.00 GB
+                                
+                            </li>
+                            
+                            <li><strong>allocated_gpus:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>output_size:</strong>
+                                
+                                    0.0000 GB
+                                
+                            </li>
+                            
+                            <li><strong>submit_time:</strong>
+                                
+                                    2026-11-04T17:21:54.985+01:00
+                                
+                            </li>
+                            
+                            <li><strong>start_time:</strong>
+                                
+                                    1970-01-01T01:00:00+01:00
+                                
+                            </li>
+                            
+                            <li><strong>complete_time:</strong>
+                                
+                                    1970-01-01T01:00:00+01:00
+                                
+                            </li>
+                            
+                            <li><strong>duration_ms:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>realtime_ms:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>attempt:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>rchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>wchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>pct_cpu:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_rss:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_vmem:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>workdir:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/f0/1f0346f7909270b9c368e32da6f278
+                                
+                            </li>
+                            
+                            <li><strong>log:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/f0/1f0346f7909270b9c368e32da6f278/.command.log
+                                
+                            </li>
+                            
+                            <li><strong>out:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/f0/1f0346f7909270b9c368e32da6f278/.command.out
+                                
+                            </li>
+                            
+                            <li><strong>err:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/f0/1f0346f7909270b9c368e32da6f278/.command.err
+                                
+                            </li>
+                            
+                            <li><strong>scratch:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>container:</strong>
+                                
+                                    /no_backup/bi/containers/quay.io-biocontainers-pbsim3-3.0.5--h9948957_2.img
+                                
+                            </li>
+                            
+                            <li><strong>outputs:</strong>
+                                
+                                    <table>
+                                        
+                                    </table>
+                                
+                            </li>
+                            
+                        </ul>
+                    </td>
+                </tr>
+                
+                <tr class="ABORTED">
+                    <td>9</td>
+                    <td>ABORTED</td>
+                    <td>
+                        <ul>
+                            
+                            <li><strong>task_id:</strong>
+                                
+                                    9
+                                
+                            </li>
+                            
+                            <li><strong>hash:</strong>
+                                
+                                    49/ffdfd0
+                                
+                            </li>
+                            
+                            <li><strong>process_name:</strong>
+                                
+                                    SVMODELLER:SIMULATE_DELETIONS
+                                
+                            </li>
+                            
+                            <li><strong>task_name:</strong>
+                                
+                                    SVMODELLER:SIMULATE_DELETIONS (VCF_Deletions.chr20.vcf.gz)
+                                
+                            </li>
+                            
+                            <li><strong>tag:</strong>
+                                
+                                    VCF_Deletions.chr20.vcf.gz
+                                
+                            </li>
+                            
+                            <li><strong>status:</strong>
+                                
+                                    ABORTED
+                                
+                            </li>
+                            
+                            <li><strong>exit_status:</strong>
+                                
+                                    2147483647
+                                
+                            </li>
+                            
+                            <li><strong>compute_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>projected_monthly_storage_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>total_estimated_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>raw_compute_cost:</strong>
+                                
+                                    0.0
+                                
+                            </li>
+                            
+                            <li><strong>raw_storage_cost:</strong>
+                                
+                                    0.0
+                                
+                            </li>
+                            
+                            <li><strong>allocated_cpus:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>allocated_mem_gb:</strong>
+                                
+                                    36.00 GB
+                                
+                            </li>
+                            
+                            <li><strong>allocated_gpus:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>output_size:</strong>
+                                
+                                    0.0000 GB
+                                
+                            </li>
+                            
+                            <li><strong>submit_time:</strong>
+                                
+                                    2026-11-04T17:25:19.895+01:00
+                                
+                            </li>
+                            
+                            <li><strong>start_time:</strong>
+                                
+                                    1970-01-01T01:00:00+01:00
+                                
+                            </li>
+                            
+                            <li><strong>complete_time:</strong>
+                                
+                                    1970-01-01T01:00:00+01:00
+                                
+                            </li>
+                            
+                            <li><strong>duration_ms:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>realtime_ms:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>attempt:</strong>
+                                
+                                    3
+                                
+                            </li>
+                            
+                            <li><strong>rchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>wchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>pct_cpu:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_rss:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_vmem:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>workdir:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/49/ffdfd0e9d55548c64845991f42e0e3
+                                
+                            </li>
+                            
+                            <li><strong>log:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/49/ffdfd0e9d55548c64845991f42e0e3/.command.log
+                                
+                            </li>
+                            
+                            <li><strong>out:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/49/ffdfd0e9d55548c64845991f42e0e3/.command.out
+                                
+                            </li>
+                            
+                            <li><strong>err:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/49/ffdfd0e9d55548c64845991f42e0e3/.command.err
+                                
+                            </li>
+                            
+                            <li><strong>scratch:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>container:</strong>
+                                
+                                    /no_backup/bi/containers/ghcr.io-biocorecrg-svmodeller-0.5.0.img
+                                
+                            </li>
+                            
+                            <li><strong>outputs:</strong>
+                                
+                                    <table>
+                                        
+                                    </table>
+                                
+                            </li>
+                            
+                        </ul>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+    
+        <h3>RETRIED</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr class="RETRIED">
+                    <td>4</td>
+                    <td>FAILED</td>
+                    <td>
+                        <ul>
+                            
+                            <li><strong>task_id:</strong>
+                                
+                                    4
+                                
+                            </li>
+                            
+                            <li><strong>hash:</strong>
+                                
+                                    9c/b131c9
+                                
+                            </li>
+                            
+                            <li><strong>process_name:</strong>
+                                
+                                    SVMODELLER:SIMULATE_DELETIONS
+                                
+                            </li>
+                            
+                            <li><strong>task_name:</strong>
+                                
+                                    SVMODELLER:SIMULATE_DELETIONS (VCF_Deletions.chr20.vcf.gz)
+                                
+                            </li>
+                            
+                            <li><strong>tag:</strong>
+                                
+                                    VCF_Deletions.chr20.vcf.gz
+                                
+                            </li>
+                            
+                            <li><strong>status:</strong>
+                                
+                                    FAILED
+                                
+                            </li>
+                            
+                            <li><strong>exit_status:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>compute_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>projected_monthly_storage_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>total_estimated_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>raw_compute_cost:</strong>
+                                
+                                    1.2584340000000001E-8
+                                
+                            </li>
+                            
+                            <li><strong>raw_storage_cost:</strong>
+                                
+                                    0.0
+                                
+                            </li>
+                            
+                            <li><strong>allocated_cpus:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>allocated_mem_gb:</strong>
+                                
+                                    12.00 GB
+                                
+                            </li>
+                            
+                            <li><strong>allocated_gpus:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>output_size:</strong>
+                                
+                                    0.0000 GB
+                                
+                            </li>
+                            
+                            <li><strong>submit_time:</strong>
+                                
+                                    2026-11-04T17:23:00.084+01:00
+                                
+                            </li>
+                            
+                            <li><strong>start_time:</strong>
+                                
+                                    2026-11-04T17:23:54.71+01:00
+                                
+                            </li>
+                            
+                            <li><strong>complete_time:</strong>
+                                
+                                    2026-11-04T17:23:54.712+01:00
+                                
+                            </li>
+                            
+                            <li><strong>duration_ms:</strong>
+                                
+                                    54628
+                                
+                            </li>
+                            
+                            <li><strong>realtime_ms:</strong>
+                                
+                                    2
+                                
+                            </li>
+                            
+                            <li><strong>attempt:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>rchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>wchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>pct_cpu:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_rss:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_vmem:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>workdir:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/9c/b131c9014002de34ea16966af0c7ea
+                                
+                            </li>
+                            
+                            <li><strong>log:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/9c/b131c9014002de34ea16966af0c7ea/.command.log
+                                
+                            </li>
+                            
+                            <li><strong>out:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/9c/b131c9014002de34ea16966af0c7ea/.command.out
+                                
+                            </li>
+                            
+                            <li><strong>err:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/9c/b131c9014002de34ea16966af0c7ea/.command.err
+                                
+                            </li>
+                            
+                            <li><strong>scratch:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>container:</strong>
+                                
+                                    /no_backup/bi/containers/ghcr.io-biocorecrg-svmodeller-0.5.0.img
+                                
+                            </li>
+                            
+                            <li><strong>outputs:</strong>
+                                
+                                    <table>
+                                        
+                                    </table>
+                                
+                            </li>
+                            
+                        </ul>
+                    </td>
+                </tr>
+                
+                <tr class="RETRIED">
+                    <td>5</td>
+                    <td>FAILED</td>
+                    <td>
+                        <ul>
+                            
+                            <li><strong>task_id:</strong>
+                                
+                                    5
+                                
+                            </li>
+                            
+                            <li><strong>hash:</strong>
+                                
+                                    db/5f6ad3
+                                
+                            </li>
+                            
+                            <li><strong>process_name:</strong>
+                                
+                                    SVMODELLER:PREPROCESS_SV_CALLSET
+                                
+                            </li>
+                            
+                            <li><strong>task_name:</strong>
+                                
+                                    SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)
+                                
+                            </li>
+                            
+                            <li><strong>tag:</strong>
+                                
+                                    VCF_Insertions.chr20.vcf.gz
+                                
+                            </li>
+                            
+                            <li><strong>status:</strong>
+                                
+                                    FAILED
+                                
+                            </li>
+                            
+                            <li><strong>exit_status:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>compute_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>projected_monthly_storage_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>total_estimated_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>raw_compute_cost:</strong>
+                                
+                                    6.292170000000001E-9
+                                
+                            </li>
+                            
+                            <li><strong>raw_storage_cost:</strong>
+                                
+                                    0.0
+                                
+                            </li>
+                            
+                            <li><strong>allocated_cpus:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>allocated_mem_gb:</strong>
+                                
+                                    12.00 GB
+                                
+                            </li>
+                            
+                            <li><strong>allocated_gpus:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>output_size:</strong>
+                                
+                                    0.0000 GB
+                                
+                            </li>
+                            
+                            <li><strong>submit_time:</strong>
+                                
+                                    2026-11-04T17:23:00.237+01:00
+                                
+                            </li>
+                            
+                            <li><strong>start_time:</strong>
+                                
+                                    2026-11-04T17:23:54.713+01:00
+                                
+                            </li>
+                            
+                            <li><strong>complete_time:</strong>
+                                
+                                    2026-11-04T17:23:54.714+01:00
+                                
+                            </li>
+                            
+                            <li><strong>duration_ms:</strong>
+                                
+                                    54477
+                                
+                            </li>
+                            
+                            <li><strong>realtime_ms:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>attempt:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>rchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>wchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>pct_cpu:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_rss:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_vmem:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>workdir:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/db/5f6ad35dd693a26fa8b2c02d81aae5
+                                
+                            </li>
+                            
+                            <li><strong>log:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/db/5f6ad35dd693a26fa8b2c02d81aae5/.command.log
+                                
+                            </li>
+                            
+                            <li><strong>out:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/db/5f6ad35dd693a26fa8b2c02d81aae5/.command.out
+                                
+                            </li>
+                            
+                            <li><strong>err:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/db/5f6ad35dd693a26fa8b2c02d81aae5/.command.err
+                                
+                            </li>
+                            
+                            <li><strong>scratch:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>container:</strong>
+                                
+                                    /no_backup/bi/containers/ghcr.io-biocorecrg-svmodeller-0.5.0.img
+                                
+                            </li>
+                            
+                            <li><strong>outputs:</strong>
+                                
+                                    <table>
+                                        
+                                    </table>
+                                
+                            </li>
+                            
+                        </ul>
+                    </td>
+                </tr>
+                
+                <tr class="RETRIED">
+                    <td>6</td>
+                    <td>FAILED</td>
+                    <td>
+                        <ul>
+                            
+                            <li><strong>task_id:</strong>
+                                
+                                    6
+                                
+                            </li>
+                            
+                            <li><strong>hash:</strong>
+                                
+                                    85/03bc91
+                                
+                            </li>
+                            
+                            <li><strong>process_name:</strong>
+                                
+                                    SVMODELLER:PREPROCESS_SV_CALLSET
+                                
+                            </li>
+                            
+                            <li><strong>task_name:</strong>
+                                
+                                    SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)
+                                
+                            </li>
+                            
+                            <li><strong>tag:</strong>
+                                
+                                    VCF_Insertions.chr20.vcf.gz
+                                
+                            </li>
+                            
+                            <li><strong>status:</strong>
+                                
+                                    FAILED
+                                
+                            </li>
+                            
+                            <li><strong>exit_status:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>compute_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>projected_monthly_storage_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>total_estimated_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>raw_compute_cost:</strong>
+                                
+                                    2.9673813E-8
+                                
+                            </li>
+                            
+                            <li><strong>raw_storage_cost:</strong>
+                                
+                                    0.0
+                                
+                            </li>
+                            
+                            <li><strong>allocated_cpus:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>allocated_mem_gb:</strong>
+                                
+                                    24.00 GB
+                                
+                            </li>
+                            
+                            <li><strong>allocated_gpus:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>output_size:</strong>
+                                
+                                    0.0000 GB
+                                
+                            </li>
+                            
+                            <li><strong>submit_time:</strong>
+                                
+                                    2026-11-04T17:23:54.934+01:00
+                                
+                            </li>
+                            
+                            <li><strong>start_time:</strong>
+                                
+                                    2026-11-04T17:24:59.71+01:00
+                                
+                            </li>
+                            
+                            <li><strong>complete_time:</strong>
+                                
+                                    2026-11-04T17:24:59.713+01:00
+                                
+                            </li>
+                            
+                            <li><strong>duration_ms:</strong>
+                                
+                                    64779
+                                
+                            </li>
+                            
+                            <li><strong>realtime_ms:</strong>
+                                
+                                    3
+                                
+                            </li>
+                            
+                            <li><strong>attempt:</strong>
+                                
+                                    2
+                                
+                            </li>
+                            
+                            <li><strong>rchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>wchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>pct_cpu:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_rss:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_vmem:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>workdir:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/85/03bc9188cdb5420cae543f1098d167
+                                
+                            </li>
+                            
+                            <li><strong>log:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/85/03bc9188cdb5420cae543f1098d167/.command.log
+                                
+                            </li>
+                            
+                            <li><strong>out:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/85/03bc9188cdb5420cae543f1098d167/.command.out
+                                
+                            </li>
+                            
+                            <li><strong>err:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/85/03bc9188cdb5420cae543f1098d167/.command.err
+                                
+                            </li>
+                            
+                            <li><strong>scratch:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>container:</strong>
+                                
+                                    /no_backup/bi/containers/ghcr.io-biocorecrg-svmodeller-0.5.0.img
+                                
+                            </li>
+                            
+                            <li><strong>outputs:</strong>
+                                
+                                    <table>
+                                        
+                                    </table>
+                                
+                            </li>
+                            
+                        </ul>
+                    </td>
+                </tr>
+                
+                <tr class="RETRIED">
+                    <td>7</td>
+                    <td>FAILED</td>
+                    <td>
+                        <ul>
+                            
+                            <li><strong>task_id:</strong>
+                                
+                                    7
+                                
+                            </li>
+                            
+                            <li><strong>hash:</strong>
+                                
+                                    69/e25909
+                                
+                            </li>
+                            
+                            <li><strong>process_name:</strong>
+                                
+                                    SVMODELLER:SIMULATE_DELETIONS
+                                
+                            </li>
+                            
+                            <li><strong>task_name:</strong>
+                                
+                                    SVMODELLER:SIMULATE_DELETIONS (VCF_Deletions.chr20.vcf.gz)
+                                
+                            </li>
+                            
+                            <li><strong>tag:</strong>
+                                
+                                    VCF_Deletions.chr20.vcf.gz
+                                
+                            </li>
+                            
+                            <li><strong>status:</strong>
+                                
+                                    FAILED
+                                
+                            </li>
+                            
+                            <li><strong>exit_status:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>compute_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>projected_monthly_storage_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>total_estimated_cost:</strong>
+                                
+                                    €0.0000
+                                
+                            </li>
+                            
+                            <li><strong>raw_compute_cost:</strong>
+                                
+                                    2.9673813E-8
+                                
+                            </li>
+                            
+                            <li><strong>raw_storage_cost:</strong>
+                                
+                                    0.0
+                                
+                            </li>
+                            
+                            <li><strong>allocated_cpus:</strong>
+                                
+                                    1
+                                
+                            </li>
+                            
+                            <li><strong>allocated_mem_gb:</strong>
+                                
+                                    24.00 GB
+                                
+                            </li>
+                            
+                            <li><strong>allocated_gpus:</strong>
+                                
+                                    0
+                                
+                            </li>
+                            
+                            <li><strong>output_size:</strong>
+                                
+                                    0.0000 GB
+                                
+                            </li>
+                            
+                            <li><strong>submit_time:</strong>
+                                
+                                    2026-11-04T17:23:55.122+01:00
+                                
+                            </li>
+                            
+                            <li><strong>start_time:</strong>
+                                
+                                    2026-11-04T17:25:19.733+01:00
+                                
+                            </li>
+                            
+                            <li><strong>complete_time:</strong>
+                                
+                                    2026-11-04T17:25:19.736+01:00
+                                
+                            </li>
+                            
+                            <li><strong>duration_ms:</strong>
+                                
+                                    84614
+                                
+                            </li>
+                            
+                            <li><strong>realtime_ms:</strong>
+                                
+                                    3
+                                
+                            </li>
+                            
+                            <li><strong>attempt:</strong>
+                                
+                                    2
+                                
+                            </li>
+                            
+                            <li><strong>rchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>wchar:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>pct_cpu:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_rss:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>peak_vmem:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>workdir:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/69/e25909659dedce446a5a2028a01a55
+                                
+                            </li>
+                            
+                            <li><strong>log:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/69/e25909659dedce446a5a2028a01a55/.command.log
+                                
+                            </li>
+                            
+                            <li><strong>out:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/69/e25909659dedce446a5a2028a01a55/.command.out
+                                
+                            </li>
+                            
+                            <li><strong>err:</strong>
+                                
+                                    /scripts/bi/nextflow2/SVModeller/svmodeller/work/69/e25909659dedce446a5a2028a01a55/.command.err
+                                
+                            </li>
+                            
+                            <li><strong>scratch:</strong>
+                                
+                                    null
+                                
+                            </li>
+                            
+                            <li><strong>container:</strong>
+                                
+                                    /no_backup/bi/containers/ghcr.io-biocorecrg-svmodeller-0.5.0.img
+                                
+                            </li>
+                            
+                            <li><strong>outputs:</strong>
+                                
+                                    <table>
+                                        
+                                    </table>
+                                
+                            </li>
+                            
+                        </ul>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+    
+        <h3>IGNORED</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    
+</body>
+</html>

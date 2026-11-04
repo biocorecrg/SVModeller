@@ -1,12 +1,12 @@
-name: Generate Command Builder
+name: Generate Command Builders
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'nextflow.config'
-      - 'params.yaml'
+      - '**/nextflow.config'
+      - '**/params*.yaml'
       - '.github/workflows/generate_command_builder.yml'
   workflow_dispatch:
 
@@ -20,16 +20,39 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           submodules: recursive
 
-      - name: Generate HTML Command Builder
+      - name: Generate svmodeller builder
         run: |
           docker run --rm -v "$(pwd):/workspace" \
             ghcr.io/biocorecrg/nf_command_builder:latest \
-            /workspace -o /workspace/docs/command_builder.html -t "SVModeller"
+            /workspace/svmodeller \
+            -c /workspace/svmodeller/nextflow.config \
+            -p /workspace/svmodeller/params.yaml \
+            -o /workspace/docs/command_builder_svmodeller.html \
+            -t "SVModeller" \
+            -m main.nf
           python3 -c "
-          with open('docs/command_builder.html') as f:
+          with open('docs/command_builder_svmodeller.html') as f:
               html = f.read()
-          front_matter = '---\nlayout: default\ntitle: Command Builder\n---\n\n'
-          with open('docs/command_builder.html', 'w') as f:
+          front_matter = '---\nlayout: default\ntitle: SVModeller Command Builder\n---\n\n'
+          with open('docs/command_builder_svmodeller.html', 'w') as f:
+              f.write(front_matter + html)
+          "
+
+      - name: Generate simulate_wgs_data builder
+        run: |
+          docker run --rm -v "$(pwd):/workspace" \
+            ghcr.io/biocorecrg/nf_command_builder:latest \
+            /workspace/simulate_wgs_data \
+            -c /workspace/simulate_wgs_data/nextflow.config \
+            -p /workspace/simulate_wgs_data/params.yaml \
+            -o /workspace/docs/command_builder_simulate_wgs_data.html \
+            -t "simulate_wgs_data" \
+            -m main.nf
+          python3 -c "
+          with open('docs/command_builder_simulate_wgs_data.html') as f:
+              html = f.read()
+          front_matter = '---\nlayout: default\ntitle: simulate_wgs_data Command Builder\n---\n\n'
+          with open('docs/command_builder_simulate_wgs_data.html', 'w') as f:
               f.write(front_matter + html)
           "
 
@@ -37,6 +60,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/command_builder.html
-          git diff-index --quiet HEAD || git commit -m "Auto-generate interactive HTML command builder [skip ci]"
+          git add docs/command_builder_*.html
+          git diff-index --quiet HEAD || git commit -m "Auto-generate interactive HTML command builders [skip ci]"
           git push

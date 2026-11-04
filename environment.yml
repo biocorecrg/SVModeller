@@ -12,5 +12,6 @@ dependencies:
   - samtools>=1.19.2
   - minimap2>=2.22
   - pbsim3>=3.0.4
+  - procps-ng
   - git
   - pip

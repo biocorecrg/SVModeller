@@ -33,6 +33,7 @@ jobs:
       - name: Show Nextflow version
         run: nextflow -version
 
-      - name: Run pipeline (test profile)
+      - name: Run svmodeller pipeline (test profile)
         run: |
+          cd svmodeller
           nextflow run main.nf -profile docker -params-file params.test.yaml -ansi-log false

@@ -8,21 +8,21 @@ nextflow.enable.moduleBinaries = true
  */
 
 
-include { PREPROCESS_SV_CALLSET } from './modules/local/svmodeller/preprocess_sv_callset/main'
-include { SIMULATE_INSERTIONS   } from './modules/local/svmodeller/simulate_insertions/main'
-include { SIMULATE_DELETIONS    } from './modules/local/svmodeller/simulate_deletions/main'
-include { SIMULATE_HAPLOTYPE    } from './modules/local/svmodeller/simulate_haplotype/main'
-include { SIMULATE_WGS_DATA     } from './subworkflows/local/svmodeller/simulate_wgs_data/main'
-include { GUNZIP                 } from './modules/nf-core/gunzip/main'
-include { SAMTOOLS_FAIDX         } from './modules/nf-core/samtools/faidx/main'
-include { logColours             } from './subworkflows/nf-core/utils_nfcore_pipeline/main'
-include { end_messaged ; fromStringToNFCoreSeqs } from './BioNextflow3/global_functions.nf'
-include { emptyMeta              } from './BioNextflow3/global_functions.nf'
-include { BAM2STATS              } from './BioNextflow3/modules/local/bam2stats/main'
-include { JOIN_BAM_STATS         } from './BioNextflow3/modules/local/stats/join_bam_stats/main'
-include { METHODS_SECTION        } from './BioNextflow3/modules/local/methods/main'
-include { MULTIQC                } from './modules/nf-core/multiqc/main'
-include { make_yaml_methods ; makeSoftwareVersionYamlFile ; add_report_header_info ; fromParToValueFileChannel } from './BioNextflow3/global_functions.nf'
+include { PREPROCESS_SV_CALLSET } from '../modules/local/svmodeller/preprocess_sv_callset/main'
+include { SIMULATE_INSERTIONS   } from '../modules/local/svmodeller/simulate_insertions/main'
+include { SIMULATE_DELETIONS    } from '../modules/local/svmodeller/simulate_deletions/main'
+include { SIMULATE_HAPLOTYPE    } from '../modules/local/svmodeller/simulate_haplotype/main'
+include { SIMULATE_WGS_DATA     } from '../subworkflows/local/svmodeller/simulate_wgs_data/main'
+include { GUNZIP                 } from '../modules/nf-core/gunzip/main'
+include { SAMTOOLS_FAIDX         } from '../modules/nf-core/samtools/faidx/main'
+include { logColours             } from '../subworkflows/nf-core/utils_nfcore_pipeline/main'
+include { end_messaged ; fromStringToNFCoreSeqs } from '../BioNextflow3/global_functions.nf'
+include { emptyMeta              } from '../BioNextflow3/global_functions.nf'
+include { BAM2STATS              } from '../BioNextflow3/modules/local/bam2stats/main'
+include { JOIN_BAM_STATS         } from '../BioNextflow3/modules/local/stats/join_bam_stats/main'
+include { METHODS_SECTION        } from '../BioNextflow3/modules/local/methods/main'
+include { MULTIQC                } from '../modules/nf-core/multiqc/main'
+include { make_yaml_methods ; makeSoftwareVersionYamlFile ; add_report_header_info ; fromParToValueFileChannel } from '../BioNextflow3/global_functions.nf'
 
 workflow {
 
@@ -125,7 +125,7 @@ workflow {
     ch_collated_versions = makeSoftwareVersionYamlFile(ch_versions)
 
     // Methods section
-    module_paths = channel.fromPath(["${projectDir}/modules", "${projectDir}/BioNextflow3/modules/local"]).collect()
+    module_paths = channel.fromPath(["${projectDir}/../modules", "${projectDir}/../BioNextflow3/modules/local"]).collect()
 
     def mypars = [:]
     mypars.sim_method = params.sim_method
@@ -147,8 +147,8 @@ workflow {
     // Run MultiQC
     def header_map = [:]
     header_map.project = "SVModeller"
-    def multiconfig = add_report_header_info("${projectDir}/multiqc_config.yaml", header_map)
-    def logo = fromParToValueFileChannel("${projectDir}/logo_svmodeller.png")
+    def multiconfig = add_report_header_info("${projectDir}/../multiqc_config.yaml", header_map)
+    def logo = fromParToValueFileChannel("${projectDir}/../logo_svmodeller.png")
 
     multiqc_files = multiqc_data
         .collect()

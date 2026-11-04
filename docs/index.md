@@ -21,9 +21,9 @@ layout: default
 
 1. [Installation Guide](installation.md): How to set up SVModeller using Docker, Conda, or Pip.
 2. [Module Reference Guide](modules.md): Comprehensive parameter breakdown, input/output files, and sample commands for Modules 1 through 5.
-3. [Running as a Nextflow Pipeline](installation.md#4-running-as-a-nextflow-pipeline): Guide on executing the end-to-end pipeline.
+3. [Running Nextflow Pipelines](installation.md#4-running-nextflow-pipelines): Guide on executing the `svmodeller` and `simulate_wgs_data` pipelines.
 4. [Data & Reference Sets](data.md): Access pre-calculated model distributions and reference datasets on Zenodo.
-5. [Interactive Command Builder](command_builder.html): Dynamically construct your pipeline or module run commands in the browser.
+5. Interactive Command Builders: Dynamically construct your pipeline run commands in the browser for [SVModeller](command_builder_svmodeller.html) or [simulate_wgs_data](command_builder_simulate_wgs_data.html).
 
 ---
 

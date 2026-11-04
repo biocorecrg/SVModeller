@@ -15,15 +15,17 @@ SVModeller is structured into 5 independent Python modules designed to extract p
 ---
 
 ## 2. Directory Structure
-The repository is structured with the end-to-end Nextflow pipeline files, the standalone Python modules, and shared configurations:
+The repository is structured as a monorepo containing two independent Nextflow pipelines alongside shared modules, subworkflows, and configurations:
 
-- `main.nf`: The main entrypoint Nextflow pipeline script.
-- `nextflow.config`: Global configuration file containing profiles, parameters, and container settings.
+- `svmodeller/`: End-to-end SVModeller pipeline folder containing `main.nf`, `nextflow.config`, `params.yaml`, and `params.test.yaml`.
+- `simulate_wgs_data/`: Standalone sub-clonal WGS read simulation and BAM alignment pipeline folder containing `main.nf`, `nextflow.config`, `params.yaml`, and `params.test.yaml`.
 - `modules/`: Standardized process-level Nextflow modules:
   - `local/svmodeller/`: Modules of SVModeller (`preprocess_sv_callset`, `simulate_insertions`, `simulate_deletions`, `simulate_haplotype`).
   - `nf-core/`: Standard public modules (like `gunzip`, `samtools`, `multiqc`).
 - `subworkflows/`: Subworkflows:
   - `local/svmodeller/`: `simulate_wgs_data`.
+- `conf/`: Global configuration files containing pipeline profiles and resource profiles (`base.config`, `crg.config`, `applecontainer.config`, etc.).
+- `bin/`: Standalone Python CLI scripts (`preprocess_sv_callset.py`, etc.).
 - `BioNextflow3/`: Shared library subdirectory mapping to helper functions and local bio-informatics process definitions:
   - `BioNextflow3/modules/local/`: Shared modules (`bam2stats`, `stats/join_bam_stats`, `methods`).
   - `BioNextflow3/global_functions.nf`: Common pipeline utilities and reporting functions.

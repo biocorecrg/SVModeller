@@ -1,0 +1,16 @@
+# simulate_wgs_data Pipeline Parameters - chr20 test dataset
+#=============================================================
+
+# Input Genomes (Required)
+ref_fasta:        "../pipeline_inputs/chm13v2.0.chr20.fa.gz"
+modified_genome:  "../results/module4/Modified_Reference_Genome.fasta.gz"
+
+# Read Simulation Settings
+sim_method:       "qshmm"
+coverage:         30
+allele_frequency: 0.5
+technology:       "HiFi"
+
+outdir:           "results"
+slack_url:        ""
+

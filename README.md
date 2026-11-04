@@ -205,9 +205,13 @@ Note: Ensure `pbsim3` (>=3.0.4), `minimap2` (>=2.22), and `samtools` (>=1.19.2) 
 ### Interactive Command Builder
 To quickly construct commands for both the Nextflow pipeline and standalone modules, open the interactive [Command Builder](https://biocorecrg.github.io/SVModeller/command_builder.html) in your browser.
 
-## Running as a Nextflow Pipeline
+## Running Nextflow Pipelines
 
-SVModeller includes an end-to-end **Nextflow pipeline** to automate all five modules. It supports multiple container engines (Docker, Singularity, Apple Silicon/Lima) and automatically compiles comprehensive quality metrics.
+SVModeller is structured as a monorepo offering two independent Nextflow pipelines:
+1. **`svmodeller`**: The end-to-end pipeline automating all 5 modules (SV callset preprocessing, insertion simulation, deletion simulation, haplotype sequence modification, and read simulation with BAM alignment).
+2. **`simulate_wgs_data`**: A standalone pipeline dedicated to Module 5, simulating sub-clonal long reads from existing reference and modified FASTA genomes, aligning them with Minimap2, merging/indexing with Samtools, and generating comprehensive QC reports.
+
+Both pipelines support multiple container engines (Docker, Singularity, Apple Silicon/Lima) and compile alignment metrics into an interactive MultiQC report.
 
 ### 1. Requirements
 - Nextflow (`!>=26.04.1`)
@@ -215,22 +219,40 @@ SVModeller includes an end-to-end **Nextflow pipeline** to automate all five mod
 
 ### 2. Execution Examples
 
-#### Using Docker (Standard):
+#### Pipeline 1: SVModeller (End-to-End)
 ```bash
-nextflow run . \
+cd svmodeller
+
+# Using Docker (Standard):
+nextflow run main.nf \
     -profile standard \
-    --vcf_insertions test_data/VCF_Insertions.vcf.gz \
-    --vcf_deletions test_data/VCF_Deletions.vcf.gz \
-    --ref_fasta test_data/reference.fasta.gz \
-    --consensus test_data/consensus.fa.gz \
+    --vcf_insertions ../test_data/VCF_Insertions.vcf.gz \
+    --vcf_deletions ../test_data/VCF_Deletions.vcf.gz \
+    --ref_fasta ../test_data/reference.fasta.gz \
+    --consensus ../test_data/consensus.fa.gz \
     --coverage 30 \
     --allele_frequency 0.5 \
     --outdir results
+
+# Using test profile:
+nextflow run main.nf -profile applecontainer -params-file params.test.yaml -resume
 ```
 
-#### On Apple Silicon (macOS):
+#### Pipeline 2: simulate_wgs_data (Standalone Read Simulator)
 ```bash
-nextflow run . -profile applecontainer -params-file params.test.yaml -resume
+cd simulate_wgs_data
+
+# Run with custom reference and modified genome:
+nextflow run main.nf \
+    -profile standard \
+    --ref_fasta /path/to/reference.fasta \
+    --modified_genome /path/to/modified.fasta \
+    --coverage 30 \
+    --allele_frequency 0.5 \
+    --outdir results
+
+# Using test profile:
+nextflow run main.nf -profile applecontainer -params-file params.test.yaml -resume
 ```
 
 ### 3. Pipeline Output & Reporting

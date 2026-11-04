@@ -1,0 +1,146 @@
+Waiting for 3964781
+[33mNextflow 26.10.5 is available - Please consider updating your version to it(B[m
+N E X T F L O W  ~  version 26.04.1
+Launching `./main.nf` [angry_einstein] - revision: 742b7891e1
+
+[0;33m[1m
+╔═╗╦  ╦┌┬┐┌─┐┌┬┐┌─┐┬  ┬  ┌─┐┬─┐
+╚═╗╚╗╔╝││││ │ ││├┤ │  │  ├┤ ├┬┘
+╚═╝ ╚╝ ┴ ┴└─┘─┴┘└─┘┴─┘┴─┘└─┘┴└─
+=====================================================================
+BIOCORE@CRG SVModeller Pipeline  ~  version 0.5.0
+=====================================================================
+[0m
+[1mInput Parameters[0m
+----------------------------------------------------
+[0;32mvcf_insertions[0m            : ../pipeline_inputs/VCF_Insertions.chr20.vcf.gz
+[0;32mvcf_deletions[0m             : ../pipeline_inputs/VCF_Deletions.chr20.vcf.gz
+[0;32mref_fasta[0m                 : ../pipeline_inputs/chm13v2.0.chr20.fa.gz
+[0;32mconsensus[0m                 : ../pipeline_inputs/consensus_sequences_complete.fa.gz
+[0;32msource_l1[0m                 : ../pipeline_inputs/source_loci_LINE1_chr20.tsv.gz
+[0;32msource_sva[0m                : ../pipeline_inputs/source_loci_SVA_chr20.tsv.gz
+[0;32mmotifs[0m                    : ../pipeline_inputs/VNTR_with_start_position_chr20.tsv.gz
+[0;32msva_vntr[0m                  : ../pipeline_inputs/SVA_VNTR_Motifs_chr20.tsv.gz
+[0;32mnum_events[0m                : 1000
+[0;32mbin_size[0m                  : 1000000
+[0;32mseed[0m                      : 42
+[0;32moutdir[0m                    : results
+[1msimulate_wgs_data Parameters[0m
+----------------------------------------------------
+[0;32mmethod_file[0m               : null
+[0;32msim_method[0m                : qshmm
+[0;32mcoverage[0m                  : 30
+[0;32mallele_frequency[0m          : 0.5
+=====================================================================
+
+WARN: Parameter --method_file not set; PBSIM3 will use the model bundled in the container.
+[4b/e64b68] Submitted process > SVMODELLER:GUNZIP (chm13v2.0.chr20.fa.gz)
+[f0/1f0346] Submitted process > SVMODELLER:SIMULATE_WGS_DATA:PBSIM3 (chm13v2.0.chr20_ref)
+[a5/14b362] Submitted process > SVMODELLER:SAMTOOLS_FAIDX (chm13v2.0.chr20.fa)
+[9c/b131c9] Submitted process > SVMODELLER:SIMULATE_DELETIONS (VCF_Deletions.chr20.vcf.gz)
+[db/5f6ad3] Submitted process > SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)
+[db/5f6ad3] NOTE: Process `SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)` terminated with an error exit status (1) -- Execution is retried (1)
+[9c/b131c9] NOTE: Process `SVMODELLER:SIMULATE_DELETIONS (VCF_Deletions.chr20.vcf.gz)` terminated with an error exit status (1) -- Execution is retried (1)
+[85/03bc91] Re-submitted process > SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)
+[69/e25909] Re-submitted process > SVMODELLER:SIMULATE_DELETIONS (VCF_Deletions.chr20.vcf.gz)
+[85/03bc91] NOTE: Process `SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)` terminated with an error exit status (1) -- Execution is retried (2)
+[7f/9390c1] Re-submitted process > SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)
+[69/e25909] NOTE: Process `SVMODELLER:SIMULATE_DELETIONS (VCF_Deletions.chr20.vcf.gz)` terminated with an error exit status (1) -- Execution is retried (2)
+[49/ffdfd0] Re-submitted process > SVMODELLER:SIMULATE_DELETIONS (VCF_Deletions.chr20.vcf.gz)
+ERROR ~ Error executing process > 'SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)'
+
+Caused by:
+  Process `SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)` terminated with an error exit status (1)
+
+
+Command executed:
+
+  mkdir -p $PWD/tmp
+  export MPLCONFIGDIR=$PWD/tmp
+  
+  preprocess_sv_callset.py \
+      --file_path VCF_Insertions.chr20.vcf.gz \
+      --chromosome_length chm13v2.0.chr20.fa.sizes \
+      --bin_size 1000000 \
+  
+  
+  for i in *.tsv; do gzip $i; done
+  for i in *.txt; do gzip $i; done
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  INFO:    Environment variable SINGULARITYENV_TMPDIR is set, but APPTAINERENV_TMPDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_TASK_WORKDIR is set, but APPTAINERENV_NXF_TASK_WORKDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_DEBUG is set, but APPTAINERENV_NXF_DEBUG is preferred
+  Command 'ps' required by nextflow to collect task metrics cannot be found
+
+Work dir:
+  /scripts/bi/nextflow2/SVModeller/svmodeller/work/7f/9390c180def25ae437b6388c7d4e5d
+
+Container:
+  /no_backup/bi/containers/ghcr.io-biocorecrg-svmodeller-0.5.0.img
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+
+ -- Check '.nextflow.log' file for details
+---------------------------------------------------
+         *Pipeline SVModeller completed!*          
+---------------------------------------------------
+- Launched by `lcozzuto`
+- Started at 2026-11-04 17:20:59
+- Finished at 2026-11-04 17:29:10
+- Time elapsed: 8m 10s
+- Execution status: failed
+```nextflow run . -profile crg -params-file params.test.yaml -ansi-log false```
+
+```Error executing process > 'SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)'
+
+Caused by:
+  Process `SVMODELLER:PREPROCESS_SV_CALLSET (VCF_Insertions.chr20.vcf.gz)` terminated with an error exit status (1)
+
+
+Command executed:
+
+  mkdir -p $PWD/tmp
+  export MPLCONFIGDIR=$PWD/tmp
+  
+  preprocess_sv_callset.py \
+      --file_path VCF_Insertions.chr20.vcf.gz \
+      --chromosome_length chm13v2.0.chr20.fa.sizes \
+      --bin_size 1000000 \
+  
+  
+  for i in *.tsv; do gzip $i; done
+  for i in *.txt; do gzip $i; done
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  INFO:    Environment variable SINGULARITYENV_TMPDIR is set, but APPTAINERENV_TMPDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_TASK_WORKDIR is set, but APPTAINERENV_NXF_TASK_WORKDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_DEBUG is set, but APPTAINERENV_NXF_DEBUG is preferred
+  Command 'ps' required by nextflow to collect task metrics cannot be found
+
+Work dir:
+  /scripts/bi/nextflow2/SVModeller/svmodeller/work/7f/9390c180def25ae437b6388c7d4e5d
+
+Container:
+  /no_backup/bi/containers/ghcr.io-biocorecrg-svmodeller-0.5.0.img
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run````
+---------------------------------------------------
+
+Slack response: ok
+WARN: Killing running tasks (2)
+ERROR ~ Unexpected error [ClosedByInterruptException]
+
+ -- Check '.nextflow.log' file for details
