@@ -22,7 +22,7 @@ jobs:
 
       - name: Generate svmodeller builder
         run: |
-          docker run --rm -v "$(pwd):/workspace" \
+          docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/workspace" \
             ghcr.io/biocorecrg/nf_command_builder:latest \
             /workspace/svmodeller \
             -c /workspace/svmodeller/nextflow.config \
@@ -40,7 +40,7 @@ jobs:
 
       - name: Generate simulate_wgs_data builder
         run: |
-          docker run --rm -v "$(pwd):/workspace" \
+          docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/workspace" \
             ghcr.io/biocorecrg/nf_command_builder:latest \
             /workspace/simulate_wgs_data \
             -c /workspace/simulate_wgs_data/nextflow.config \
