@@ -13,9 +13,10 @@ source_sva:     "../pipeline_inputs/source_loci_SVA_chr20.tsv.gz"
 # sva_vntr:       "../pipeline_inputs/SVA_VNTR_Motifs_chr20.tsv.gz"
 
 # Simulation Settings
-num_events: 1000
-bin_size:   1000000
-seed:       42
+num_events_insertions: 1000
+num_events_deletions:  1000
+bin_size:              1000000
+seed:                  42
 
 # simulate_wgs_data - Read Simulation
 # sim_method options: qshmm | errhmm | sample

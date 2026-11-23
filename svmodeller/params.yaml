@@ -18,9 +18,10 @@ motifs:         ""
 sva_vntr:       ""
 
 # Simulation Settings
-num_events: 10
-bin_size:   1000000
-seed:       42
+num_events_insertions: 10
+num_events_deletions:  10
+bin_size:              1000000
+seed:                  42
 
 # simulate_wgs_data - Read Simulation
 
