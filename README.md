@@ -202,8 +202,10 @@ pip install -r requirements.txt
 
 Note: Ensure `pbsim3` (>=3.0.4), `minimap2` (>=2.22), and `samtools` (>=1.19.2) are installed and available in your system `PATH` for Module 5.
 
-### Interactive Command Builder
-To quickly construct commands for both the Nextflow pipeline and standalone modules, open the interactive [Command Builder](https://biocorecrg.github.io/SVModeller/command_builder.html) in your browser.
+### Interactive Command Builders
+To quickly construct commands and `params.yaml` files for the two Nextflow pipelines, open the interactive command builders in your browser:
+- **[SVModeller Command Builder](https://biocorecrg.github.io/SVModeller/command_builder_svmodeller.html)** (end-to-end SV simulation & read generation pipeline)
+- **[simulate_wgs_data Command Builder](https://biocorecrg.github.io/SVModeller/command_builder_simulate_wgs_data.html)** (standalone sub-clonal read simulation & alignment pipeline)
 
 ## Running Nextflow Pipelines
 
@@ -223,13 +225,18 @@ Both pipelines support multiple container engines (Docker, Singularity, Apple Si
 ```bash
 cd svmodeller
 
-# Using Docker (Standard):
+# Using Docker:
 nextflow run main.nf \
-    -profile standard \
-    --vcf_insertions ../test_data/VCF_Insertions.vcf.gz \
-    --vcf_deletions ../test_data/VCF_Deletions.vcf.gz \
-    --ref_fasta ../test_data/reference.fasta.gz \
-    --consensus ../test_data/consensus.fa.gz \
+    -profile docker \
+    --vcf_insertions ../pipeline_inputs/VCF_Insertions.chr20.vcf.gz \
+    --vcf_deletions ../pipeline_inputs/VCF_Deletions.chr20.vcf.gz \
+    --ref_fasta ../pipeline_inputs/chm13v2.0.chr20.fa.gz \
+    --consensus ../pipeline_inputs/consensus_sequences_complete.fa.gz \
+    --source_l1 ../pipeline_inputs/source_loci_LINE1_chr20.tsv.gz \
+    --source_sva ../pipeline_inputs/source_loci_SVA_chr20.tsv.gz \
+    --num_events_insertions 1000 \
+    --num_events_deletions 1000 \
+    --sim_method qshmm \
     --coverage 30 \
     --allele_frequency 0.5 \
     --outdir results
