@@ -35,23 +35,37 @@ output:
       - meta:
           type: map
           description: Groovy Map containing sample information
-      - Genome_Wide_Distribution.tsv:
+      - Genome_Wide_Distribution.tsv.gz:
           type: file
-          description: TSV table of genome-wide event distribution across bins
+          description: Gzipped TSV table of genome-wide event distribution across bins
   - insertion_features:
       - meta:
           type: map
           description: Groovy Map containing sample information
-      - Insertion_Features.tsv:
+      - Insertion_Features.tsv.gz:
           type: file
-          description: TSV table of insertion feature counts and lengths
+          description: Gzipped TSV table of insertion feature counts and lengths
   - probabilities:
       - meta:
           type: map
           description: Groovy Map containing sample information
-      - Probabilities.tsv:
+      - Probabilities.tsv.gz:
           type: file
-          description: TSV table of calculated insertion event probabilities
+          description: Gzipped TSV table of calculated insertion event probabilities
+  - sva_vntr_motifs:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - SVA_VNTR_Motifs.txt.gz:
+          type: file
+          description: Gzipped text file of extracted SVA VNTR motifs
+  - vntr_with_start_position:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - VNTR_with_start_position.txt.gz:
+          type: file
+          description: Gzipped TSV table of VNTR motifs with start positions and sequences
   - versions_svmodeller:
       - ${task.process}:
           type: string
