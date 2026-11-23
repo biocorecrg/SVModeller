@@ -8,8 +8,9 @@ ref_fasta:      "../pipeline_inputs/chm13v2.0.chr20.fa.gz"
 consensus:      "../pipeline_inputs/consensus_sequences_complete.fa.gz"
 source_l1:      "../pipeline_inputs/source_loci_LINE1_chr20.tsv.gz"
 source_sva:     "../pipeline_inputs/source_loci_SVA_chr20.tsv.gz"
-motifs:         "../pipeline_inputs/VNTR_with_start_position_chr20.tsv.gz"
-sva_vntr:       "../pipeline_inputs/SVA_VNTR_Motifs_chr20.tsv.gz"
+# Optional overrides (if omitted, generated automatically from vcf_insertions by PREPROCESS_SV_CALLSET)
+# motifs:         "../pipeline_inputs/VNTR_with_start_position_chr20.tsv.gz"
+# sva_vntr:       "../pipeline_inputs/SVA_VNTR_Motifs_chr20.tsv.gz"
 
 # Simulation Settings
 num_events: 1000

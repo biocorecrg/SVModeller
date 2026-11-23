@@ -9,7 +9,12 @@ consensus:      ""
 
 source_l1:      ""
 source_sva:     ""
+
+# Optional overrides (if omitted, generated automatically from vcf_insertions by PREPROCESS_SV_CALLSET)
+# motifs: Optional path to a custom VNTR_with_start_position.txt(.gz) file
 motifs:         ""
+
+# sva_vntr: Optional path to a custom SVA_VNTR_Motifs.txt(.gz) file
 sva_vntr:       ""
 
 # Simulation Settings

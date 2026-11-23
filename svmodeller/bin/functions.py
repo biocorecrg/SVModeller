@@ -4,13 +4,13 @@
 import sys
 import os
 
-# Add script directory and parent root directory to sys.path for GAPI resolution
+# Add script directory, parent directory, and repo root to sys.path for GAPI resolution
 script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(script_dir)
-if script_dir not in sys.path:
-    sys.path.insert(0, script_dir)
-if parent_dir not in sys.path:
-    sys.path.insert(0, parent_dir)
+repo_root = os.path.dirname(parent_dir)
+for path_entry in (script_dir, parent_dir, repo_root):
+    if path_entry not in sys.path:
+        sys.path.insert(0, path_entry)
 
 import glob
 import gzip
@@ -260,7 +260,7 @@ def mut_bins(bins, table, event_columns=None):
         chrom, start, end = window
         subset = table[(table['#ref'] == chrom) & (table['beg'] >= start) & (table['end'] <= end)]
         mutation_counts = subset['Event'].value_counts().to_dict()
-        row = {'window': f"{chrom}:{start}-{end}", 'beg': start, 'end': end}
+        row = {'window': chrom, 'beg': start, 'end': end}
         for mutation in event_columns:
             row[mutation] = mutation_counts.get(mutation, 0)
         df = pd.concat([df, pd.DataFrame([row])], ignore_index=True)

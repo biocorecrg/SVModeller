@@ -25,7 +25,7 @@ The repository is structured as a monorepo containing two independent Nextflow p
 - `subworkflows/`: Subworkflows:
   - `local/svmodeller/`: `simulate_wgs_data`.
 - `conf/`: Global configuration files containing pipeline profiles and resource profiles (`base.config`, `crg.config`, `applecontainer.config`, etc.).
-- `bin/`: Standalone Python CLI scripts (`preprocess_sv_callset.py`, etc.).
+- `svmodeller/bin/`: Standalone Python CLI scripts (`preprocess_sv_callset.py`, etc.).
 - `BioNextflow3/`: Shared library subdirectory mapping to helper functions and local bio-informatics process definitions:
   - `BioNextflow3/modules/local/`: Shared modules (`bam2stats`, `stats/join_bam_stats`, `methods`).
   - `BioNextflow3/global_functions.nf`: Common pipeline utilities and reporting functions.
